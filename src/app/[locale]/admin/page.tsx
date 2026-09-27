@@ -51,7 +51,7 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
   ] as const;
 
   return (
-    <div className="theme-light min-h-dvh bg-background text-foreground">
+    <div className="reading-light min-h-dvh bg-background text-foreground">
       <main className="mx-auto max-w-6xl space-y-6 px-4 pb-32 pt-[max(env(safe-area-inset-top),1.25rem)] md:px-6 md:pt-10">
         <header className="flex flex-wrap items-end justify-between gap-3">
           <div>

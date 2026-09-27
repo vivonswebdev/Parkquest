@@ -41,7 +41,9 @@
     "free": "Gratis",
     "paid": "Betalend",
     "pmr": "Rolstoeltoegankelijk",
-    "pmrPartial": "Gedeeltelijk toegankelijk"
+    "pmrPartial": "Gedeeltelijk toegankelijk",
+    "themeSystem": "Systeem",
+    "themeToggle": "Thema wijzigen"
   },
   "nav": {
     "home": "Start",

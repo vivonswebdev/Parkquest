@@ -44,7 +44,7 @@ export default async function TrailPage({ params }: Params) {
       <main className="pb-32 md:pb-16">
         <div className="relative h-[40vh] min-h-[280px] md:h-[380px]">
           <Image src={trail.coverImageUrl} alt="" fill priority sizes="100vw" className="object-cover" />
-          <div className="image-scrim absolute inset-0" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-background/10" />
           <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4 pt-[max(env(safe-area-inset-top),1rem)]">
             <Link href={`/parks/${park.slug}`} aria-label={t("common.back")} className="inline-flex size-12 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur">
               <ArrowLeft className="size-5" />

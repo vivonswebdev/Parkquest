@@ -8,6 +8,8 @@ import { BottomNav } from "@/components/layout/bottom-nav";
 import { DesktopHeader } from "@/components/layout/desktop-header";
 import { NetworkStatus } from "@/components/layout/network-status";
 import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
+import { themeInitScript } from "@/components/theme/theme";
+import { ThemeSync } from "@/components/theme/theme-switcher";
 import { routing } from "@/i18n/routing";
 
 const inter = Inter({ subsets: ["latin", "latin-ext"], variable: "--font-inter", display: "swap" });
@@ -44,14 +46,19 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   setRequestLocale(locale);
 
   return (
-    <html lang={locale} className={`${inter.variable} ${jakarta.variable}`}>
-      <body className="theme-dark">
+    // data-theme* sont posés avant le rendu par themeInitScript (préférence locale) → suppressHydrationWarning.
+    <html lang={locale} data-theme="dark" data-theme-pref="default" className={`${inter.variable} ${jakarta.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
+      <body>
         <NextIntlClientProvider>
           <NetworkStatus />
           <DesktopHeader />
           {children}
           <BottomNav />
           <ServiceWorkerRegister />
+          <ThemeSync />
         </NextIntlClientProvider>
       </body>
     </html>

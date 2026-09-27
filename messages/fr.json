@@ -41,7 +41,9 @@
     "free": "Gratuit",
     "paid": "Payant",
     "pmr": "Accessible PMR",
-    "pmrPartial": "Partiellement accessible"
+    "pmrPartial": "Partiellement accessible",
+    "themeSystem": "Système",
+    "themeToggle": "Changer de thème"
   },
   "nav": {
     "home": "Accueil",

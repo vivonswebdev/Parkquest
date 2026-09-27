@@ -60,3 +60,19 @@ test("GPS refusé : l'app reste utilisable", async ({ page, context }) => {
   await page.getByRole("button", { name: /Séquoia géant/ }).last().click();
   await expect(page.getByRole("link", { name: "Voir le spot" })).toBeVisible();
 });
+
+test("mode sombre / clair : bascule et persistance", async ({ page }) => {
+  await page.goto("/fr");
+  const html = page.locator("html");
+  await expect(html).toHaveAttribute("data-theme", "dark");
+  await page.getByRole("button", { name: "Changer de thème" }).first().click();
+  await expect(html).toHaveAttribute("data-theme", "light");
+  await page.reload();
+  await expect(html).toHaveAttribute("data-theme", "light");
+  // Sélecteur complet dans le profil
+  await page.goto("/fr/profile");
+  await page.getByRole("radio", { name: "Système" }).click();
+  await expect(html).toHaveAttribute("data-theme-pref", "system");
+  await page.getByRole("radio", { name: "Sombre" }).click();
+  await expect(html).toHaveAttribute("data-theme", "dark");
+});

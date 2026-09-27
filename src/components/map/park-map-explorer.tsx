@@ -212,7 +212,7 @@ export function ParkMapExplorer({
                     className="glass-strong flex w-44 shrink-0 flex-col gap-2 rounded-[20px] p-3 text-left"
                   >
                     <span className="flex items-center justify-between">
-                      <span className="inline-flex size-9 items-center justify-center rounded-xl bg-black/40" style={{ color: SPOT_KIND_COLOR[s.kind] }}>
+                      <span className="inline-flex size-9 items-center justify-center rounded-xl bg-inset" style={{ color: SPOT_KIND_COLOR[s.kind] }}>
                         <Icon className="size-[18px]" />
                       </span>
                       {discovered.has(s.id) && <Pill size="sm">✓</Pill>}

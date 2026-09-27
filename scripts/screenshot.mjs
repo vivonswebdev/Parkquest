@@ -1,4 +1,4 @@
-// Captures d'écran de contrôle : node scripts/screenshot.mjs <url> <out.png> [mobile|desktop] [fullPage]
+// Captures d'écran de contrôle : [THEME=light|dark|system] node scripts/screenshot.mjs <url> <out.png> [mobile|desktop] [fullPage]
 import { chromium } from "playwright";
 const [url, out, device = "mobile", full = "true"] = process.argv.slice(2);
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
@@ -7,6 +7,9 @@ const ctx = await browser.newContext(
     ? { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true }
     : { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 },
 );
+if (process.env.THEME) {
+  await ctx.addInitScript((t) => localStorage.setItem("parkquest.theme", t), process.env.THEME);
+}
 const page = await ctx.newPage();
 const errors = [];
 page.on("pageerror", (e) => errors.push(e.message));

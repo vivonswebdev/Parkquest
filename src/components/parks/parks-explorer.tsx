@@ -193,16 +193,16 @@ function WorldMap({ parks, hint }: { parks: ParkSummary[]; hint: string }) {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-[var(--radius-card)] border border-border bg-[#041d15]">
+    <div className="relative overflow-hidden rounded-[var(--radius-card)] border border-border bg-surface">
       <svg viewBox={`0 0 ${W} ${H}`} className="block h-auto w-full" role="img" aria-label={hint}>
         <defs>
           <radialGradient id="wm-glow" cx="0.5" cy="0.5" r="0.6">
-            <stop offset="0" stopColor="#0d3428" />
-            <stop offset="1" stopColor="#031711" />
+            <stop offset="0" stopColor="var(--surface-elevated)" />
+            <stop offset="1" stopColor="var(--background)" />
           </radialGradient>
         </defs>
         <rect width={W} height={H} fill="url(#wm-glow)" />
-        <g stroke="#8AF4C9" strokeOpacity="0.08">{grat}</g>
+        <g stroke="var(--map-topo)">{grat}</g>
         {clusters.map((c) => {
           const p = proj(c.lat, c.lng);
           if (p.x < -40 || p.x > W + 40 || p.y < -40 || p.y > H + 40) return null;
@@ -212,9 +212,9 @@ function WorldMap({ parks, hint }: { parks: ParkSummary[]; hint: string }) {
             return (
               <Link key={park.id} href={`/parks/${park.slug}`}>
                 <g className="cursor-pointer">
-                  <circle cx={p.x} cy={p.y} r={10} fill="#19E6A2" stroke="#031711" strokeWidth={3} />
-                  <rect x={p.x + 14} y={p.y - 14} rx={10} width={park.name.length * 8 + 20} height={28} fill="#031711" fillOpacity={0.85} stroke="#19E6A2" strokeOpacity={0.3} />
-                  <text x={p.x + 24} y={p.y + 5} fill="#F5FFFA" fontSize={14} fontWeight={600}>{park.name}</text>
+                  <circle cx={p.x} cy={p.y} r={10} fill="#19E6A2" stroke="var(--background)" strokeWidth={3} />
+                  <rect x={p.x + 14} y={p.y - 14} rx={10} width={park.name.length * 8 + 20} height={28} fill="var(--background)" fillOpacity={0.9} stroke="#19E6A2" strokeOpacity={0.3} />
+                  <text x={p.x + 24} y={p.y + 5} fill="var(--foreground)" fontSize={14} fontWeight={600}>{park.name}</text>
                 </g>
               </Link>
             );
@@ -229,7 +229,7 @@ function WorldMap({ parks, hint }: { parks: ParkSummary[]; hint: string }) {
           );
         })}
       </svg>
-      <p className="absolute left-3 top-3 max-w-[70%] rounded-full bg-black/50 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur">{hint}</p>
+      <p className="absolute left-3 top-3 max-w-[70%] glass-strong rounded-full px-3 py-1.5 text-xs text-muted-foreground">{hint}</p>
       <div className="absolute bottom-3 right-3 flex flex-col gap-2">
         <button type="button" aria-label="+" onClick={() => setLevel((l) => Math.min(LEVELS.length - 1, l + 1))} className="glass-strong inline-flex size-11 items-center justify-center rounded-full"><Plus className="size-5" /></button>
         <button type="button" aria-label="−" onClick={() => setLevel((l) => Math.max(0, l - 1))} className="glass-strong inline-flex size-11 items-center justify-center rounded-full"><Minus className="size-5" /></button>

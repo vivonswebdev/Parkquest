@@ -87,6 +87,13 @@ Styles utilisés : `dark-v11` (plan) et `satellite-streets-v12` (calque satellit
 Importer le dépôt, renseigner les variables d'environnement, déployer. Aucune configuration
 spécifique (Node ≥ 20.9).
 
+## Thème sombre / clair
+
+- Bouton soleil/lune dans l'en-tête (mobile et desktop) et sélecteur **Sombre / Clair / Système** dans le Profil.
+- Préférence stockée dans le navigateur (`localStorage`), appliquée avant l'affichage (pas de flash).
+- Sans choix explicite : app sombre (identité ParkQuest) et pages de lecture (blog, infos pratiques, légal, admin) en clair.
+- Les cartes suivent le thème (fond de repli clair/sombre, style Mapbox `light-v11` / `dark-v11`).
+
 ## Sécurité et confidentialité (résumé)
 
 - **RLS sur toutes les tables** ; rôles `SUPER_ADMIN`, `PLATFORM_ADMIN`, `PARK_ADMIN`, `EDITOR`,

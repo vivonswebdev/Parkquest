@@ -164,7 +164,7 @@ export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onS
   return (
     <div
       ref={containerRef}
-      className={cn("relative h-full w-full touch-none select-none overflow-hidden", sat ? "bg-[#0d2a1c]" : "bg-[#062519]", className)}
+      className={cn("relative h-full w-full touch-none select-none overflow-hidden", sat ? "bg-[#0d2a1c]" : "bg-[var(--map-bg)]", className)}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
@@ -175,21 +175,21 @@ export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onS
       {size.w > 0 && (
         <svg className="absolute left-0 top-0" width={size.w} height={size.h} aria-hidden>
           <g transform={`translate(${ox} ${oy}) scale(${s})`}>
-            <rect x={-400} y={-400} width={VIEW_W + 800} height={VIEW_H + 800} fill={sat ? "#123b26" : "#07291d"} />
+            <rect x={-400} y={-400} width={VIEW_W + 800} height={VIEW_H + 800} fill={sat ? "#123b26" : "var(--map-base)"} />
             {decor.lawns.map((d, i) => (
-              <path key={`l${i}`} d={d} fill={sat ? "#2f5e33" : "#0c3a2a"} opacity={0.9} />
+              <path key={`l${i}`} d={d} fill={sat ? "#2f5e33" : "var(--map-lawn)"} opacity={0.9} />
             ))}
             {decor.woods.map((d, i) => (
-              <path key={`w${i}`} d={d} fill={sat ? "#173d22" : "#0a3324"} />
+              <path key={`w${i}`} d={d} fill={sat ? "#173d22" : "var(--map-wood)"} />
             ))}
             {decor.trees.map((t, i) => (
-              <circle key={`t${i}`} cx={t.x} cy={t.y} r={t.r} fill={sat ? "#1f5a2f" : "#0f4531"} opacity={0.9} />
+              <circle key={`t${i}`} cx={t.x} cy={t.y} r={t.r} fill={sat ? "#1f5a2f" : "var(--map-tree)"} opacity={0.9} />
             ))}
             {water.map((p, i) => (
-              <path key={`p${i}`} d={blob(p.x, p.y, 45, seeded(`w${i}`))} fill={sat ? "#2c5f6e" : "#0f4b5a"} stroke="#5CC8FF" strokeOpacity={0.35} />
+              <path key={`p${i}`} d={blob(p.x, p.y, 45, seeded(`w${i}`))} fill={sat ? "#2c5f6e" : "var(--map-water)"} stroke="#5CC8FF" strokeOpacity={0.35} />
             ))}
             {!sat &&
-              decor.topo.map((d, i) => <path key={`c${i}`} d={d} fill="none" stroke="#8AF4C9" strokeOpacity={0.06} strokeWidth={1.5 / s} />)}
+              decor.topo.map((d, i) => <path key={`c${i}`} d={d} fill="none" stroke="var(--map-topo)" strokeWidth={1.5 / s} />)}
             {paths.map((p) => {
               const pts = p.coordinates.map(([lng, lat]) => project({ lat, lng }));
               const d = pts.map((q, i) => `${i ? "L" : "M"}${q.x.toFixed(1)} ${q.y.toFixed(1)}`).join(" ");

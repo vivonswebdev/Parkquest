@@ -200,10 +200,10 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
               <span className="shrink-0 font-display text-sm font-bold text-primary">{t("visit.progress", { current: foundCount, total: trail.spots.length })}</span>
             </div>
           </div>
-          <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-black/40 px-2.5 py-1.5 text-xs tabular-nums text-muted-foreground" aria-label={t("visit.elapsed")}>
+          <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-inset px-2.5 py-1.5 text-xs tabular-nums text-muted-foreground" aria-label={t("visit.elapsed")}>
             <Timer className="size-3.5" /> {mm}:{ss}
           </span>
-          <button type="button" onClick={() => setConfirmQuit(true)} aria-label={t("visit.quit")} className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-black/40 hover:bg-danger/20 hover:text-danger">
+          <button type="button" onClick={() => setConfirmQuit(true)} aria-label={t("visit.quit")} className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-inset hover:bg-danger/20 hover:text-danger">
             <X className="size-5" />
           </button>
         </div>
@@ -262,7 +262,7 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
                 </div>
 
                 {segment?.instruction && (
-                  <p className="mt-3 flex gap-2.5 rounded-2xl bg-black/30 p-3 text-sm leading-relaxed">
+                  <p className="mt-3 flex gap-2.5 rounded-2xl bg-inset p-3 text-sm leading-relaxed">
                     <Signpost className="mt-0.5 size-4 shrink-0 text-primary" />
                     {segment.instruction}
                   </p>
@@ -359,9 +359,9 @@ function FinishPanel({
     <div className="glass-strong rounded-[var(--radius-sheet)] p-5 card-shadow" aria-live="polite">
       <p className="flex items-center gap-2 font-display text-2xl font-extrabold text-primary"><PartyPopper className="size-7" /> {t("visit.trailComplete")}</p>
       <div className="mt-3 grid grid-cols-3 gap-2 text-center">
-        <div className="rounded-2xl bg-black/30 p-3"><p className="font-display text-xl font-bold">{foundCount}/{total}</p><p className="text-[11px] text-muted-foreground">spots</p></div>
-        <div className="rounded-2xl bg-black/30 p-3"><p className="font-display text-xl font-bold tabular-nums">{elapsed}</p><p className="text-[11px] text-muted-foreground">{t("visit.elapsed")}</p></div>
-        <div className="rounded-2xl bg-black/30 p-3"><p className="font-display text-xl font-bold">{formatDistance(walked, locale)}</p><p className="text-[11px] text-muted-foreground">{t("trail.distance")}</p></div>
+        <div className="rounded-2xl bg-inset p-3"><p className="font-display text-xl font-bold">{foundCount}/{total}</p><p className="text-[11px] text-muted-foreground">spots</p></div>
+        <div className="rounded-2xl bg-inset p-3"><p className="font-display text-xl font-bold tabular-nums">{elapsed}</p><p className="text-[11px] text-muted-foreground">{t("visit.elapsed")}</p></div>
+        <div className="rounded-2xl bg-inset p-3"><p className="font-display text-xl font-bold">{formatDistance(walked, locale)}</p><p className="text-[11px] text-muted-foreground">{t("trail.distance")}</p></div>
       </div>
       <div className="mt-3"><PointsBurst points={finish.pointsAwarded} badges={finish.newBadges} /></div>
       <div className="mt-2"><ModeNotice mode={finish.mode} /></div>

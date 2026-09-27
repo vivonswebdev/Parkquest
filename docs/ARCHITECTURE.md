@@ -166,7 +166,8 @@ Principes :
 10. **Carte de repli maison** plutôt qu'OpenStreetMap : aucune dépendance réseau ni clé, fonctionne partout.
 11. **Favoris** stockés localement au MVP (table `user_favorites` prête pour le Sprint 3).
 12. **Pages légales** : textes provisoires FR à faire valider juridiquement.
-13. **Distance parcourue** : calculée sur l'appareil (points GPS jamais envoyés), envoyée comme simple total borné.
+13. **Mode sombre / clair** : préférence Sombre / Clair / Système en `localStorage` + script inline avant rendu (pages statiques conservées, pas de cookie). Sans choix : app sombre + pages de lecture claires ; tout choix explicite s'applique partout.
+14. **Distance parcourue** : calculée sur l'appareil (points GPS jamais envoyés), envoyée comme simple total borné.
 
 ---
 

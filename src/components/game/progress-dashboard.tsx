@@ -92,7 +92,7 @@ export function ChallengeList({ challenges, live }: { challenges: Challenge[]; l
             <div className="min-w-0 flex-1">
               <p className={cn("font-medium leading-snug", done && "text-muted-foreground line-through")}>{c.title}</p>
               {target !== undefined && progress !== undefined && (
-                <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/10">
+                <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-track">
                   <div className="h-full rounded-full bg-primary" style={{ width: `${Math.min(100, (progress / target) * 100)}%` }} />
                 </div>
               )}
@@ -124,7 +124,7 @@ export function StatsGrid({ live, labels }: { live: LiveProgress | null; labels:
   return (
     <div className="grid grid-cols-5 gap-1.5">
       {items.map((i) => (
-        <div key={i.l} className="rounded-2xl bg-black/25 px-1 py-3 text-center">
+        <div key={i.l} className="rounded-2xl bg-inset px-1 py-3 text-center">
           <p className="font-display text-xl font-extrabold leading-none">{i.v}</p>
           <p className="mt-1 text-[10.5px] text-muted-foreground">{i.l}</p>
         </div>

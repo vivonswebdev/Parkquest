@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { Logo } from "@/components/brand/logo";
 import { Link } from "@/i18n/navigation";
 import { FEATURED_PARK_SLUG_PUBLIC } from "@/lib/constants";
+import { ThemeToggle } from "@/components/theme/theme-switcher";
 import { LocaleSwitcher } from "./locale-switcher";
 
 export async function DesktopHeader() {
@@ -33,6 +34,7 @@ export async function DesktopHeader() {
             <Search className="size-[18px]" />
           </Link>
           <LocaleSwitcher />
+          <ThemeToggle />
           <Link href="/profile" className="inline-flex h-10 items-center gap-2 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground hover:brightness-110">
             <UserRound className="size-4" />
             {t("profile")}

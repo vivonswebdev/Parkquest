@@ -41,7 +41,9 @@
     "free": "Kostenlos",
     "paid": "Kostenpflichtig",
     "pmr": "Rollstuhlgerecht",
-    "pmrPartial": "Teilweise barrierefrei"
+    "pmrPartial": "Teilweise barrierefrei",
+    "themeSystem": "System",
+    "themeToggle": "Design wechseln"
   },
   "nav": {
     "home": "Start",

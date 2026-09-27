@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { LevelLine, StatsGrid } from "@/components/game/progress-dashboard";
 import { LocaleSwitcher } from "@/components/layout/locale-switcher";
+import { ThemeSwitcher } from "@/components/theme/theme-switcher";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -70,10 +71,16 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
           ))}
         </Card>
 
-        <Card className="flex items-center gap-3 p-4">
-          <Settings className="size-5 text-primary" />
-          <span className="flex-1 font-medium">{t("profile.settings")} · {t("common.language")}</span>
-          <LocaleSwitcher />
+        <Card className="divide-y divide-border">
+          <div className="flex items-center gap-3 p-4">
+            <Settings className="size-5 text-primary" />
+            <span className="flex-1 font-medium">{t("profile.settings")} · {t("common.language")}</span>
+            <LocaleSwitcher />
+          </div>
+          <div className="flex flex-wrap items-center gap-3 p-4">
+            <span className="flex-1 font-medium">{t("common.theme")}</span>
+            <ThemeSwitcher />
+          </div>
         </Card>
         <p className="text-center text-xs text-muted-foreground">{t("profile.privacyBody")}</p>
       </main>

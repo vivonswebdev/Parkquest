@@ -19,7 +19,7 @@ export function Progress({
       aria-valuemax={max}
       aria-valuenow={value}
       aria-label={label}
-      className={cn("h-2 w-full overflow-hidden rounded-full bg-white/10", className)}
+      className={cn("h-2 w-full overflow-hidden rounded-full bg-track", className)}
     >
       <div
         className="h-full rounded-full bg-gradient-to-r from-green to-mint transition-[width] duration-500"

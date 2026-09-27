@@ -28,12 +28,12 @@ export function BottomNav() {
               className={cn(
                 "flex h-14 min-w-14 items-center justify-center rounded-[20px] transition-all duration-200",
                 active
-                  ? "flex-row gap-2 bg-black/60 px-4 text-primary ring-1 ring-primary/25"
+                  ? "flex-row gap-2 bg-nav-active px-4 text-mint ring-1 ring-mint/25"
                   : "flex-1 flex-col gap-0.5 text-muted-foreground hover:text-foreground",
               )}
             >
               <Icon className={cn("shrink-0", active ? "size-6" : "size-[22px]")} strokeWidth={active ? 2.3 : 1.8} />
-              <span className={cn("font-medium", active ? "text-sm text-foreground" : "text-[10.5px]")}>{t(key)}</span>
+              <span className={cn("font-medium", active ? "text-sm text-white" : "text-[10.5px]")}>{t(key)}</span>
             </Link>
           );
         })}
