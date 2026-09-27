@@ -15,7 +15,8 @@
     "demo:illustrations": "tsx scripts/generate-illustrations.ts",
     "pwa:icons": "tsx scripts/generate-icons.ts",
     "test:e2e": "playwright test",
-    "check": "npm run typecheck && npm run lint && npm run i18n:check"
+    "check": "npm run typecheck && npm run lint && npm run i18n:check",
+    "demo:capture": "node scripts/capture-demo.mjs http://localhost:3000 demo-shots"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
