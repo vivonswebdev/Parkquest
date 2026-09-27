@@ -25,7 +25,7 @@ export default async function ArticlePage({ params }: Params) {
   const a = await repo.getArticle(slug, locale);
   if (!a) notFound();
   return (
-    <div className="theme-light min-h-dvh bg-background text-foreground">
+    <div className="reading-light min-h-dvh bg-background text-foreground">
       <main className="mx-auto max-w-3xl space-y-6 px-4 pb-32 pt-[max(env(safe-area-inset-top),1.25rem)] md:px-6 md:pt-10">
         <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="size-4" /> {t("blog.title")}</Link>
         <div className="relative aspect-[16/9] overflow-hidden rounded-[28px]">

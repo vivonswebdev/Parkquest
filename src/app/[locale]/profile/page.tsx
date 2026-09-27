@@ -3,12 +3,14 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { LevelLine, StatsGrid } from "@/components/game/progress-dashboard";
 import { LocaleSwitcher } from "@/components/layout/locale-switcher";
+import { ThemeSwitcher } from "@/components/theme/theme-switcher";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { demoUser } from "@/features/demo/demo-data";
 import { Link } from "@/i18n/navigation";
 import { FEATURED_PARK_SLUG } from "@/lib/data";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { isDemoMode } from "@/lib/config/app-mode";
 import { getServerProgress } from "@/server/progress";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -22,7 +24,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
   setRequestLocale(locale);
   const t = await getTranslations();
   const live = await getServerProgress();
-  const name = live?.username || t("home.guest");
+  const name = live?.username || (isDemoMode ? demoUser.displayName : t("home.guest"));
 
   const sections = [
     { icon: Route, label: t("profile.myTrails"), href: `/parks/${FEATURED_PARK_SLUG}#trails` },
@@ -55,7 +57,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
         {!live && (
           <Card className="border-gold/30 p-5">
             <p className="font-semibold text-gold">{t("profile.demoProfile")}</p>
-            <p className="mt-1 text-sm text-muted-foreground">{isSupabaseConfigured ? t("visit.authRequired") : t("profile.demoProfileBody")}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{!isDemoMode ? t("visit.authRequired") : t("profile.demoProfileBody")}</p>
             <Button asChild className="mt-3" variant="outline"><Link href="/auth/sign-in">{t("profile.signInCta")}</Link></Button>
           </Card>
         )}
@@ -70,10 +72,16 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
           ))}
         </Card>
 
-        <Card className="flex items-center gap-3 p-4">
-          <Settings className="size-5 text-primary" />
-          <span className="flex-1 font-medium">{t("profile.settings")} · {t("common.language")}</span>
-          <LocaleSwitcher />
+        <Card className="divide-y divide-border">
+          <div className="flex items-center gap-3 p-4">
+            <Settings className="size-5 text-primary" />
+            <span className="flex-1 font-medium">{t("profile.settings")} · {t("common.language")}</span>
+            <LocaleSwitcher />
+          </div>
+          <div className="flex flex-wrap items-center gap-3 p-4">
+            <span className="flex-1 font-medium">{t("common.theme")}</span>
+            <ThemeSwitcher />
+          </div>
         </Card>
         <p className="text-center text-xs text-muted-foreground">{t("profile.privacyBody")}</p>
       </main>

@@ -1,6 +1,6 @@
 -- ============================================================================
 -- ParkQuest — SEED DE DÉMONSTRATION (généré, ne pas modifier à la main)
--- Source : src/content/demo/*  ·  Générateur : scripts/generate-seed.ts
+-- Source : src/features/demo/*  ·  Générateur : scripts/generate-seed.ts
 --
 -- ⚠️ Toutes ces données sont des DONNÉES DE DÉMONSTRATION (is_demo_data = true).
 -- Elles ne doivent jamais être présentées comme officielles sans validation

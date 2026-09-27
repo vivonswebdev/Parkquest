@@ -5,6 +5,7 @@ import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { LogoMark } from "@/components/brand/logo";
 import { CollectionProgress } from "@/components/game/collection-progress";
 import { LocaleSwitcher } from "@/components/layout/locale-switcher";
+import { ThemeToggle } from "@/components/theme/theme-switcher";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { ParkCard } from "@/components/park/park-card";
 import { SpotTile } from "@/components/park/spot-tile";
@@ -14,6 +15,8 @@ import { SectionHeader } from "@/components/shared/section-header";
 import { Button } from "@/components/ui/button";
 import { Card, GlassCard } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
+import { demoUser } from "@/features/demo/demo-data";
+import { isDemoMode } from "@/lib/config/app-mode";
 import { Link } from "@/i18n/navigation";
 import { FEATURED_PARK_SLUG, getPark, listSpots, listTrails, repo } from "@/lib/data";
 import { distanceM, walkingMinutes } from "@/lib/geo";
@@ -42,7 +45,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     .sort((a, b) => a.d - b.d)
     .slice(0, 4);
   const otherParks = parks.filter((p) => p.id !== park.id);
-  const name = progress?.username || t("home.guest");
+  const name = progress?.username || (isDemoMode ? demoUser.displayName : t("home.guest"));
 
   return (
     <>
@@ -58,6 +61,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </div>
           <div className="flex items-center gap-2">
             <LocaleSwitcher />
+            <ThemeToggle />
             <Link href="/challenges" aria-label={t("nav.challenges")} className="glass inline-flex size-11 items-center justify-center rounded-full">
               <Bell className="size-5" />
             </Link>
@@ -92,7 +96,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <section aria-label={t("home.selectedPark")} className="relative overflow-hidden rounded-[28px] border border-border card-shadow">
             <div className="absolute inset-0">
               <Image src={park.coverImageUrl} alt="" fill priority sizes="(max-width: 1024px) 100vw, 600px" className="object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-b from-background/55 via-background/5 to-background/90" />
+              <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/10 to-background/90" />
             </div>
             <div className="relative p-5 md:p-6">
               <div className="flex items-start justify-between gap-3">

@@ -41,7 +41,9 @@
     "free": "Gratis",
     "paid": "Betalend",
     "pmr": "Rolstoeltoegankelijk",
-    "pmrPartial": "Gedeeltelijk toegankelijk"
+    "pmrPartial": "Gedeeltelijk toegankelijk",
+    "themeSystem": "Systeem",
+    "themeToggle": "Thema wijzigen"
   },
   "nav": {
     "home": "Start",
@@ -473,5 +475,32 @@
   "pwa": {
     "install": "App installeren",
     "installBody": "Zet ParkQuest op je startscherm."
+  },
+  "demo": {
+    "title": "Demomodus",
+    "open": "Demopaneel openen",
+    "subtitle": "Lokale gegevens, geen sleutels of verbinding nodig. Er wordt niets via internet verzonden.",
+    "gps": "Gesimuleerde locatie",
+    "modes": {
+      "near": "Bij de spot · nauwkeurige gps",
+      "entrance": "Aan de ingang van het park",
+      "low-accuracy": "Onvoldoende nauwkeurig (± 60 m)",
+      "denied": "Gps geweigerd",
+      "unavailable": "Gps niet beschikbaar",
+      "real": "Echte gps van het toestel"
+    },
+    "realHint": "Echte gps vereist HTTPS op iPhone (tunnel, zie README).",
+    "progress": "Gesimuleerde voortgang",
+    "points": "punten",
+    "spots": "spots",
+    "badges": "badges",
+    "visits": "bezoeken",
+    "approvePhotos": "Mijn foto's goedkeuren (gesimuleerde moderator)",
+    "approved": "{count, plural, one {# foto goedgekeurd} other {# foto's goedgekeurd}}",
+    "noPending": "Geen foto's in afwachting.",
+    "reset": "Demo resetten",
+    "resetDone": "Demo gereset.",
+    "badgeUnlocked": "Badge ontgrendeld",
+    "profile": "Fictief profiel: {name}"
   }
 }

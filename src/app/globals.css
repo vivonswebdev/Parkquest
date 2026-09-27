@@ -3,8 +3,13 @@
 
 /*
  * ParkQuest — design system « Dark Premium Nature ».
- * Thème sombre par défaut ; `.theme-light` (ou [data-theme="light"]) pour
- * les contenus longs (blog, infos pratiques, admin) et les utilisateurs qui le préfèrent.
+ *
+ * Thèmes (préférence utilisateur, voir src/components/theme/) :
+ *  - html[data-theme="dark"|"light"]   : thème résolu (sombre / clair / système)
+ *  - html[data-theme-pref="default"]  : aucun choix explicite → app sombre,
+ *    pages de lecture (.reading-light : blog, infos pratiques, légal, admin) en clair.
+ *  - Un choix explicite (Sombre / Clair / Système) s'applique partout.
+ *  - `.theme-light` force localement le thème clair.
  */
 
 :root,
@@ -43,11 +48,22 @@
   --ring: rgba(25, 230, 162, 0.55);
   --topo-opacity: 0.07;
   --shadow-color: 0 0% 0%;
+  --track: rgba(245, 255, 250, 0.1);
+  --inset: rgba(0, 0, 0, 0.3);
+  --nav-active-bg: rgba(0, 0, 0, 0.6);
+  --map-bg: #062519;
+  --map-base: #07291d;
+  --map-lawn: #0c3a2a;
+  --map-wood: #0a3324;
+  --map-tree: #0f4531;
+  --map-water: #0f4b5a;
+  --map-topo: rgba(138, 244, 201, 0.06);
   color-scheme: dark;
 }
 
 .theme-light,
-[data-theme="light"] {
+html[data-theme="light"],
+html[data-theme-pref="default"] .reading-light {
   --pq-gold: #8a5d00; /* or plus foncé : contraste AA sur fond clair */
   --background: #f3f8f5;
   --foreground: #06231a;
@@ -67,8 +83,19 @@
   --danger: #c0392b;
   --ring: rgba(11, 107, 79, 0.45);
   --topo-opacity: 0.05;
+  --track: rgba(6, 35, 26, 0.1);
+  --inset: rgba(6, 35, 26, 0.06);
+  --nav-active-bg: #06231a;
+  --map-bg: #dcebe2;
+  --map-base: #e4f0e8;
+  --map-lawn: #cfe6d6;
+  --map-wood: #b9dcc4;
+  --map-tree: #a3cfb1;
+  --map-water: #9fd3e6;
+  --map-topo: rgba(11, 107, 79, 0.08);
   color-scheme: light;
 }
+
 
 @theme inline {
   --color-background: var(--background);
@@ -87,6 +114,9 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-danger: var(--danger);
   --color-ring: var(--ring);
+  --color-track: var(--track);
+  --color-inset: var(--inset);
+  --color-nav-active: var(--nav-active-bg);
 
   --color-forest: var(--pq-forest);
   --color-green: var(--pq-green);

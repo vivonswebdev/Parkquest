@@ -38,7 +38,7 @@ export default async function ParkPage({ params }: Params) {
         <section className="relative">
           <div className="relative h-[52vh] min-h-[360px] md:h-[440px]">
             <Image src={park.coverImageUrl} alt="" fill priority sizes="100vw" className="object-cover" />
-            <div className="image-scrim absolute inset-0" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-background/10" />
           </div>
           <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4 pt-[max(env(safe-area-inset-top),1rem)] md:hidden">
             <Link href="/parks" aria-label={t("common.back")} className="inline-flex size-11 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur">

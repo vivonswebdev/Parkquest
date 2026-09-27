@@ -1,11 +1,12 @@
 import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import { isSupabaseConfigured, supabaseAnonKey, supabaseUrl } from "./env";
+import { isDemoMode } from "@/lib/config/app-mode";
+import { supabaseAnonKey, supabaseUrl } from "./env";
 
 /** Client Supabase côté serveur, lié à la session de l'utilisateur (RLS appliquée). */
 export async function createSupabaseServerClient() {
-  if (!isSupabaseConfigured) return null;
+  if (isDemoMode) return null;
   const cookieStore = await cookies();
   return createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {

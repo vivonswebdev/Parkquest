@@ -55,7 +55,7 @@ export default async function LegalPage({ params }: Params) {
   setRequestLocale(locale);
   const t = await getTranslations("legal");
   return (
-    <div className="theme-light min-h-dvh bg-background text-foreground">
+    <div className="reading-light min-h-dvh bg-background text-foreground">
       <main className="mx-auto max-w-3xl space-y-5 px-4 pb-32 pt-[max(env(safe-area-inset-top),1.25rem)] md:px-6 md:pt-10">
         <h1 className="font-display text-3xl font-extrabold">{t(doc as Doc)}</h1>
         <p className="rounded-2xl bg-accent/10 p-3 text-sm">{t("placeholder")}</p>

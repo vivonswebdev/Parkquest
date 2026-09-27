@@ -41,7 +41,9 @@
     "free": "Gratis",
     "paid": "De pago",
     "pmr": "Accesible en silla de ruedas",
-    "pmrPartial": "Parcialmente accesible"
+    "pmrPartial": "Parcialmente accesible",
+    "themeSystem": "Sistema",
+    "themeToggle": "Cambiar tema"
   },
   "nav": {
     "home": "Inicio",
@@ -473,5 +475,32 @@
   "pwa": {
     "install": "Instalar la app",
     "installBody": "Añade ParkQuest a tu pantalla de inicio."
+  },
+  "demo": {
+    "title": "Modo demostración",
+    "open": "Abrir el panel demo",
+    "subtitle": "Datos locales, sin claves ni conexión. No se envía nada por Internet.",
+    "gps": "Ubicación simulada",
+    "modes": {
+      "near": "Cerca del punto · GPS preciso",
+      "entrance": "En la entrada del parque",
+      "low-accuracy": "Precisión insuficiente (± 60 m)",
+      "denied": "GPS denegado",
+      "unavailable": "GPS no disponible",
+      "real": "GPS real del dispositivo"
+    },
+    "realHint": "El GPS real requiere HTTPS en iPhone (túnel, ver README).",
+    "progress": "Progreso simulado",
+    "points": "puntos",
+    "spots": "puntos de interés",
+    "badges": "insignias",
+    "visits": "visitas",
+    "approvePhotos": "Aprobar mis fotos (moderador simulado)",
+    "approved": "{count, plural, one {# foto aprobada} other {# fotos aprobadas}}",
+    "noPending": "Ninguna foto pendiente.",
+    "reset": "Reiniciar la demo",
+    "resetDone": "Demo reiniciada.",
+    "badgeUnlocked": "Insignia desbloqueada",
+    "profile": "Perfil ficticio: {name}"
   }
 }

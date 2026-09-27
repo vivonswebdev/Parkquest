@@ -8,9 +8,10 @@ import { Button } from "@/components/ui/button";
 import { useGeolocation } from "@/hooks/use-geolocation";
 import type { DiscoverResult, LatLng } from "@/lib/domain/types";
 import { formatDistance } from "@/lib/format";
-import { updateDemoProgress, useDemoProgress } from "@/lib/game/demo-progress";
+import { updateDemoProgress, useDemoProgress } from "@/features/demo/demo-progress";
 import { GPS_RULES, distanceM } from "@/lib/geo";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { useDemoGeoTarget } from "@/features/demo/demo-geo";
+import { isDemoMode } from "@/lib/config/app-mode";
 import { cn } from "@/lib/utils";
 import { discoverSpotAction } from "@/server/game-actions";
 import { ActionErrorMessage, ModeNotice, PointsBurst } from "./feedback";
@@ -48,12 +49,14 @@ export function DiscoverSpotCard({
   const online = useOnline();
   const ownGeo = useGeolocation();
   const geo = externalGeo ?? ownGeo;
+  // Démo : la position simulée « près du spot » vise ce spot.
+  useDemoGeoTarget(spotLocation);
   const demo = useDemoProgress();
   const [result, setResult] = useState<DiscoverResult | null>(null);
   const [pending, start] = useTransition();
 
   // En mode démo, la collection locale fait foi ; en mode Supabase, uniquement le serveur.
-  const already = serverDiscovered || (!isSupabaseConfigured && demo.discovered.includes(spotId)) || (result?.ok && result.status === "ALREADY_DISCOVERED");
+  const already = serverDiscovered || (isDemoMode && demo.discovered.includes(spotId)) || (result?.ok && result.status === "ALREADY_DISCOVERED");
 
   const d = geo.position ? distanceM(geo.position, spotLocation) : null;
   const near = d !== null && d <= Math.max(GPS_RULES.nearHintM, radiusM);

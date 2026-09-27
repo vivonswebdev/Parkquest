@@ -11,9 +11,27 @@ import { MarkerPin } from "./fallback-map";
 import type { MapMarker, ParkMapProps } from "./types";
 
 const STYLES = {
-  plan: "mapbox://styles/mapbox/dark-v11",
+  planDark: "mapbox://styles/mapbox/dark-v11",
+  planLight: "mapbox://styles/mapbox/light-v11",
   satellite: "mapbox://styles/mapbox/satellite-streets-v12",
 } as const;
+
+/** Thème résolu courant (posé sur <html> par le script de thème). */
+function useResolvedTheme(): "dark" | "light" {
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  useEffect(() => {
+    const el = document.documentElement;
+    const read = () => setTheme(el.dataset.theme === "light" ? "light" : "dark");
+    read();
+    const mo = new MutationObserver(read);
+    mo.observe(el, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => mo.disconnect();
+  }, []);
+  return theme;
+}
+
+const styleFor = (layer: "plan" | "satellite", theme: "dark" | "light") =>
+  layer === "satellite" ? STYLES.satellite : theme === "light" ? STYLES.planLight : STYLES.planDark;
 
 /** Carte Mapbox GL (activée si NEXT_PUBLIC_MAPBOX_TOKEN est défini). */
 export function MapboxMap({ bounds, markers, paths = [], user, selectedId, onSelect, layer = "plan", className, paddingBottom = 0, ref }: ParkMapProps) {
@@ -22,6 +40,7 @@ export function MapboxMap({ bounds, markers, paths = [], user, selectedId, onSel
   const markerRefs = useRef(new Map<string, { marker: mapboxgl.Marker; root: Root }>());
   const userMarker = useRef<mapboxgl.Marker | null>(null);
   const [ready, setReady] = useState(false);
+  const theme = useResolvedTheme();
   const onSelectRef = useRef(onSelect);
   useEffect(() => {
     onSelectRef.current = onSelect;
@@ -37,7 +56,7 @@ export function MapboxMap({ bounds, markers, paths = [], user, selectedId, onSel
     mapboxgl.accessToken = mapboxToken;
     const m = new mapboxgl.Map({
       container: container.current,
-      style: STYLES[layer],
+      style: styleFor(layer, document.documentElement.dataset.theme === "light" ? "light" : "dark"),
       bounds: lngLatBounds(),
       fitBoundsOptions: { padding: { top: 60, left: 20, right: 20, bottom: paddingBottom + 20 } },
       attributionControl: true,
@@ -59,12 +78,12 @@ export function MapboxMap({ bounds, markers, paths = [], user, selectedId, onSel
     // eslint-disable-next-line react-hooks/exhaustive-deps -- carte créée une seule fois
   }, []);
 
-  // Changement de calque
+  // Changement de calque ou de thème
   useEffect(() => {
     const m = map.current;
     if (!m || !ready) return;
-    m.setStyle(STYLES[layer]);
-  }, [layer, ready]);
+    m.setStyle(styleFor(layer, theme));
+  }, [layer, theme, ready]);
 
   // Chemins (source GeoJSON, réinstallée après changement de style)
   useEffect(() => {

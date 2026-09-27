@@ -11,7 +11,7 @@ import { useGeolocation } from "@/hooks/use-geolocation";
 import { Link } from "@/i18n/navigation";
 import type { Facility, LatLng, Park, SpotCategory, SpotSummary, TrailSegment } from "@/lib/domain/types";
 import { formatDistance } from "@/lib/format";
-import { useDemoProgress } from "@/lib/game/demo-progress";
+import { useDemoProgress } from "@/features/demo/demo-progress";
 import { distanceM, walkingMinutes } from "@/lib/geo";
 import { cn } from "@/lib/utils";
 import { hasMapbox, ParkMap } from "./park-map";
@@ -212,7 +212,7 @@ export function ParkMapExplorer({
                     className="glass-strong flex w-44 shrink-0 flex-col gap-2 rounded-[20px] p-3 text-left"
                   >
                     <span className="flex items-center justify-between">
-                      <span className="inline-flex size-9 items-center justify-center rounded-xl bg-black/40" style={{ color: SPOT_KIND_COLOR[s.kind] }}>
+                      <span className="inline-flex size-9 items-center justify-center rounded-xl bg-inset" style={{ color: SPOT_KIND_COLOR[s.kind] }}>
                         <Icon className="size-[18px]" />
                       </span>
                       {discovered.has(s.id) && <Pill size="sm">✓</Pill>}

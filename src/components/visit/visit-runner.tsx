@@ -18,9 +18,10 @@ import { useGeolocation } from "@/hooks/use-geolocation";
 import { Link, useRouter } from "@/i18n/navigation";
 import type { ActionError, Challenge, LatLng, PublicQuiz, Trail } from "@/lib/domain/types";
 import { formatDistance } from "@/lib/format";
-import { useDemoProgress } from "@/lib/game/demo-progress";
+import { updateDemoProgress, useDemoProgress } from "@/features/demo/demo-progress";
 import { distanceM, pathLengthM, walkingMinutes } from "@/lib/geo";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { useDemoGeoTarget } from "@/features/demo/demo-geo";
+import { isDemoMode } from "@/lib/config/app-mode";
 import { cn } from "@/lib/utils";
 import { completeVisitAction, startVisitAction, updateVisitAction } from "@/server/game-actions";
 
@@ -57,7 +58,7 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
   const [finishing, startFinish] = useTransition();
 
   const discovered = useMemo(() => {
-    const base = isSupabaseConfigured ? (serverDiscovered ?? []) : demo.discovered;
+    const base = !isDemoMode ? (serverDiscovered ?? []) : demo.discovered;
     return new Set([...base, ...sessionFound]);
   }, [serverDiscovered, demo.discovered, sessionFound]);
 
@@ -65,6 +66,8 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
   const initialIndex = initialSpotSlug ? trail.spots.findIndex((s) => s.slug === initialSpotSlug) : -1;
   const [index, setIndex] = useState(initialIndex >= 0 ? initialIndex : Math.max(0, firstUndiscovered));
   const current = trail.spots[index];
+  // Démo : la position simulée suit le prochain spot du parcours.
+  useDemoGeoTarget(current?.location);
   const foundCount = trail.spots.filter((s) => discovered.has(s.id)).length;
   const allFound = foundCount === trail.spots.length;
 
@@ -73,6 +76,8 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
     let cancelled = false;
     startVisitAction({ parkId: park.id, trailId: trail.id }).then((r) => {
       if (cancelled) return;
+      // Démo : une visite de plus dans l'historique simulé.
+      if (r.ok && r.mode === "demo") updateDemoProgress((p) => ({ ...p, visits: p.visits + 1 }));
       if (r.ok) setVisitId(r.visitId);
       else setStartError(r.error);
     });
@@ -177,6 +182,15 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
     startFinish(async () => {
       geo.stop();
       const r = await completeVisitAction({ visitId, trailId: trail.id, distanceM: Math.round(walked), spotsFound: foundCount });
+      if (r.ok && r.mode === "demo") {
+        // Démo : distance simulée = longueur du parcours (pas de vrai déplacement), points et parcours terminé.
+        updateDemoProgress((p) => ({
+          ...p,
+          distanceM: p.distanceM + Math.max(Math.round(walked), r.trailCompleted ? trail.distanceM : 0),
+          trailsCompleted: p.trailsCompleted + (r.trailCompleted ? 1 : 0),
+          points: p.points + r.pointsAwarded,
+        }));
+      }
       setFinish(r);
     });
 
@@ -200,17 +214,17 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
               <span className="shrink-0 font-display text-sm font-bold text-primary">{t("visit.progress", { current: foundCount, total: trail.spots.length })}</span>
             </div>
           </div>
-          <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-black/40 px-2.5 py-1.5 text-xs tabular-nums text-muted-foreground" aria-label={t("visit.elapsed")}>
+          <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-inset px-2.5 py-1.5 text-xs tabular-nums text-muted-foreground" aria-label={t("visit.elapsed")}>
             <Timer className="size-3.5" /> {mm}:{ss}
           </span>
-          <button type="button" onClick={() => setConfirmQuit(true)} aria-label={t("visit.quit")} className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-black/40 hover:bg-danger/20 hover:text-danger">
+          <button type="button" onClick={() => setConfirmQuit(true)} aria-label={t("visit.quit")} className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-inset hover:bg-danger/20 hover:text-danger">
             <X className="size-5" />
           </button>
         </div>
         {startError === "AUTH_REQUIRED" && (
           <div className="mx-auto mt-2 max-w-xl"><ActionErrorMessage error="AUTH_REQUIRED" className="glass-strong" /></div>
         )}
-        {!isSupabaseConfigured && (
+        {isDemoMode && (
           <p className="glass-strong mx-auto mt-2 w-fit max-w-xl rounded-full px-3 py-1.5 text-center text-[11px] text-gold">{t("common.demoModeNotice")}</p>
         )}
       </div>
@@ -262,7 +276,7 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
                 </div>
 
                 {segment?.instruction && (
-                  <p className="mt-3 flex gap-2.5 rounded-2xl bg-black/30 p-3 text-sm leading-relaxed">
+                  <p className="mt-3 flex gap-2.5 rounded-2xl bg-inset p-3 text-sm leading-relaxed">
                     <Signpost className="mt-0.5 size-4 shrink-0 text-primary" />
                     {segment.instruction}
                   </p>
@@ -359,9 +373,9 @@ function FinishPanel({
     <div className="glass-strong rounded-[var(--radius-sheet)] p-5 card-shadow" aria-live="polite">
       <p className="flex items-center gap-2 font-display text-2xl font-extrabold text-primary"><PartyPopper className="size-7" /> {t("visit.trailComplete")}</p>
       <div className="mt-3 grid grid-cols-3 gap-2 text-center">
-        <div className="rounded-2xl bg-black/30 p-3"><p className="font-display text-xl font-bold">{foundCount}/{total}</p><p className="text-[11px] text-muted-foreground">spots</p></div>
-        <div className="rounded-2xl bg-black/30 p-3"><p className="font-display text-xl font-bold tabular-nums">{elapsed}</p><p className="text-[11px] text-muted-foreground">{t("visit.elapsed")}</p></div>
-        <div className="rounded-2xl bg-black/30 p-3"><p className="font-display text-xl font-bold">{formatDistance(walked, locale)}</p><p className="text-[11px] text-muted-foreground">{t("trail.distance")}</p></div>
+        <div className="rounded-2xl bg-inset p-3"><p className="font-display text-xl font-bold">{foundCount}/{total}</p><p className="text-[11px] text-muted-foreground">spots</p></div>
+        <div className="rounded-2xl bg-inset p-3"><p className="font-display text-xl font-bold tabular-nums">{elapsed}</p><p className="text-[11px] text-muted-foreground">{t("visit.elapsed")}</p></div>
+        <div className="rounded-2xl bg-inset p-3"><p className="font-display text-xl font-bold">{formatDistance(walked, locale)}</p><p className="text-[11px] text-muted-foreground">{t("trail.distance")}</p></div>
       </div>
       <div className="mt-3"><PointsBurst points={finish.pointsAwarded} badges={finish.newBadges} /></div>
       <div className="mt-2"><ModeNotice mode={finish.mode} /></div>

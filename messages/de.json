@@ -41,7 +41,9 @@
     "free": "Kostenlos",
     "paid": "Kostenpflichtig",
     "pmr": "Rollstuhlgerecht",
-    "pmrPartial": "Teilweise barrierefrei"
+    "pmrPartial": "Teilweise barrierefrei",
+    "themeSystem": "System",
+    "themeToggle": "Design wechseln"
   },
   "nav": {
     "home": "Start",
@@ -473,5 +475,32 @@
   "pwa": {
     "install": "App installieren",
     "installBody": "Füge ParkQuest zu deinem Startbildschirm hinzu."
+  },
+  "demo": {
+    "title": "Demomodus",
+    "open": "Demo-Panel öffnen",
+    "subtitle": "Lokale Daten, keine Schlüssel oder Verbindung nötig. Nichts wird ins Internet gesendet.",
+    "gps": "Simulierter Standort",
+    "modes": {
+      "near": "Am Spot · genaues GPS",
+      "entrance": "Am Parkeingang",
+      "low-accuracy": "Ungenau (± 60 m)",
+      "denied": "GPS abgelehnt",
+      "unavailable": "GPS nicht verfügbar",
+      "real": "Echtes GPS des Geräts"
+    },
+    "realHint": "Echtes GPS erfordert HTTPS auf dem iPhone (Tunnel, siehe README).",
+    "progress": "Simulierter Fortschritt",
+    "points": "Punkte",
+    "spots": "Spots",
+    "badges": "Abzeichen",
+    "visits": "Besuche",
+    "approvePhotos": "Meine Fotos freigeben (simulierter Moderator)",
+    "approved": "{count, plural, one {# Foto freigegeben} other {# Fotos freigegeben}}",
+    "noPending": "Keine ausstehenden Fotos.",
+    "reset": "Demo zurücksetzen",
+    "resetDone": "Demo zurückgesetzt.",
+    "badgeUnlocked": "Abzeichen freigeschaltet",
+    "profile": "Beispielprofil: {name}"
   }
 }

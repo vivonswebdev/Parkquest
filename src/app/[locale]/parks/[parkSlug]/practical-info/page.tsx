@@ -32,7 +32,7 @@ export default async function PracticalInfoPage({ params }: Params) {
 
   return (
     // Thème clair : meilleur contraste pour la lecture d'informations pratiques.
-    <div className="theme-light min-h-dvh bg-background text-foreground">
+    <div className="reading-light min-h-dvh bg-background text-foreground">
       <main className="mx-auto max-w-4xl space-y-5 px-4 pb-32 pt-[max(env(safe-area-inset-top),1.25rem)] md:px-6 md:pt-10">
         <Link href={`/parks/${park.slug}`} className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground">
           <ArrowLeft className="size-4" /> {park.name}

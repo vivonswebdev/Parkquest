@@ -1,10 +1,11 @@
 import { createServerClient } from "@supabase/ssr";
 import type { NextRequest, NextResponse } from "next/server";
-import { isSupabaseConfigured, supabaseAnonKey, supabaseUrl } from "./env";
+import { isDemoMode } from "@/lib/config/app-mode";
+import { supabaseAnonKey, supabaseUrl } from "./env";
 
 /** Rafraîchit les cookies de session Supabase sur la réponse produite par next-intl. */
 export async function updateSupabaseSession(request: NextRequest, response: NextResponse) {
-  if (!isSupabaseConfigured) return response;
+  if (isDemoMode) return response;
   const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
       getAll: () => request.cookies.getAll(),

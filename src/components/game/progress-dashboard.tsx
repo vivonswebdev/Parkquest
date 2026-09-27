@@ -6,7 +6,8 @@ import { iconByName } from "@/components/shared/icons";
 import { Card } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
 import type { Badge, Challenge, UserStats } from "@/lib/domain/types";
-import { useDemoProgress } from "@/lib/game/demo-progress";
+import { demoUser } from "@/features/demo/demo-data";
+import { useDemoProgress } from "@/features/demo/demo-progress";
 import { cn } from "@/lib/utils";
 
 export interface LiveProgress {
@@ -26,27 +27,11 @@ export function useUnifiedProgress(live: LiveProgress | null) {
     visits: demo.visits,
     spotsDiscovered: demo.discovered.length,
     distanceM: demo.distanceM,
-    photosApproved: 0,
-    badges: 0,
+    photosApproved: demo.photosApproved,
+    badges: demo.badges.length,
     quizzesPassed,
   };
-  return { mode: "demo" as const, stats, discoveredSpotIds: demo.discovered, badgeKeys: [] as string[], username: "", challenges: demo.challenges };
-}
-
-export function badgeUnlocked(b: Badge, s: UserStats, trailsDone = 0): boolean {
-  const v =
-    b.criteria === "SPOTS_DISCOVERED"
-      ? s.spotsDiscovered
-      : b.criteria === "QUIZZES_PASSED"
-        ? s.quizzesPassed
-        : b.criteria === "PHOTOS_APPROVED"
-          ? s.photosApproved
-          : b.criteria === "DISTANCE_M"
-            ? s.distanceM
-            : b.criteria === "TRAILS_COMPLETED"
-              ? trailsDone
-              : 0;
-  return v >= b.threshold;
+  return { mode: "demo" as const, stats, discoveredSpotIds: demo.discovered, badgeKeys: demo.badges, username: demoUser.displayName, challenges: demo.challenges };
 }
 
 export function BadgeGrid({ badges, live }: { badges: Badge[]; live: LiveProgress | null }) {
@@ -55,7 +40,7 @@ export function BadgeGrid({ badges, live }: { badges: Badge[]; live: LiveProgres
   return (
     <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-4 lg:grid-cols-7">
       {badges.map((b) => {
-        const on = p.mode === "live" ? p.badgeKeys.includes(b.key) : badgeUnlocked(b, p.stats);
+        const on = p.badgeKeys.includes(b.key);
         const Icon = iconByName(b.icon);
         return (
           <div key={b.id} className={cn("flex flex-col items-center gap-2 rounded-[20px] border p-3 text-center", on ? "border-primary/40 bg-primary-soft" : "border-border bg-surface")}>
@@ -92,7 +77,7 @@ export function ChallengeList({ challenges, live }: { challenges: Challenge[]; l
             <div className="min-w-0 flex-1">
               <p className={cn("font-medium leading-snug", done && "text-muted-foreground line-through")}>{c.title}</p>
               {target !== undefined && progress !== undefined && (
-                <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/10">
+                <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-track">
                   <div className="h-full rounded-full bg-primary" style={{ width: `${Math.min(100, (progress / target) * 100)}%` }} />
                 </div>
               )}
@@ -124,7 +109,7 @@ export function StatsGrid({ live, labels }: { live: LiveProgress | null; labels:
   return (
     <div className="grid grid-cols-5 gap-1.5">
       {items.map((i) => (
-        <div key={i.l} className="rounded-2xl bg-black/25 px-1 py-3 text-center">
+        <div key={i.l} className="rounded-2xl bg-inset px-1 py-3 text-center">
           <p className="font-display text-xl font-extrabold leading-none">{i.v}</p>
           <p className="mt-1 text-[10.5px] text-muted-foreground">{i.l}</p>
         </div>

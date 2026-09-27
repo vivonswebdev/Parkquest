@@ -1,14 +1,14 @@
 "use server";
 
 import { headers } from "next/headers";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { isDemoMode } from "@/lib/config/app-mode";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { signInSchema, type SignInInput } from "@/lib/validation";
 
 export async function sendMagicLinkAction(input: SignInInput): Promise<{ ok: boolean; error?: "DEMO" | "INVALID" | "SERVER" }> {
   const parsed = signInSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: "INVALID" };
-  if (!isSupabaseConfigured) return { ok: false, error: "DEMO" };
+  if (isDemoMode) return { ok: false, error: "DEMO" };
   const supabase = await createSupabaseServerClient();
   const h = await headers();
   const origin = process.env.NEXT_PUBLIC_APP_URL || `${h.get("x-forwarded-proto") ?? "https"}://${h.get("host")}`;
