@@ -7,7 +7,7 @@ import { useOnline } from "@/components/layout/network-status";
 import { Button } from "@/components/ui/button";
 import { Pill } from "@/components/ui/pill";
 import type { PublicQuiz, QuizResult } from "@/lib/domain/types";
-import { updateDemoProgress, useDemoProgress } from "@/lib/game/demo-progress";
+import { updateDemoProgress, useDemoProgress } from "@/features/demo/demo-progress";
 import { cn } from "@/lib/utils";
 import { submitQuizAction } from "@/server/game-actions";
 import { ActionErrorMessage, ModeNotice, PointsBurst } from "./feedback";

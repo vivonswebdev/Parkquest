@@ -4,7 +4,7 @@
 > en base et affichées avec un badge **« Démo »** dans l'app. Elles ne doivent **jamais** être
 > présentées comme officielles avant validation **et autorisation écrite** du parc.
 
-Source unique à modifier : `src/content/demo/meise.ts` (puis `npm run db:seed:generate`),
+Source unique à modifier : `src/features/demo/content/meise.ts` (puis `npm run db:seed:generate`),
 ou directement dans l'espace admin une fois le Sprint 2 livré.
 
 ## 1. Autorisations (bloquant avant toute publication)

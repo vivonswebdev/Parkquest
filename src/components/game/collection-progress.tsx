@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Progress } from "@/components/ui/progress";
-import { useDemoProgress } from "@/lib/game/demo-progress";
+import { useDemoProgress } from "@/features/demo/demo-progress";
 import { cn } from "@/lib/utils";
 
 /**

@@ -475,5 +475,32 @@
   "pwa": {
     "install": "Install the app",
     "installBody": "Add ParkQuest to your home screen."
+  },
+  "demo": {
+    "title": "Demo mode",
+    "open": "Open the demo panel",
+    "subtitle": "Local data, no keys or connection required. Nothing is sent over the Internet.",
+    "gps": "Simulated location",
+    "modes": {
+      "near": "Near the spot · precise GPS",
+      "entrance": "At the park entrance",
+      "low-accuracy": "Low accuracy (± 60 m)",
+      "denied": "GPS denied",
+      "unavailable": "GPS unavailable",
+      "real": "Device's real GPS"
+    },
+    "realHint": "Real GPS requires HTTPS on iPhone (tunnel, see README).",
+    "progress": "Simulated progress",
+    "points": "points",
+    "spots": "spots",
+    "badges": "badges",
+    "visits": "visits",
+    "approvePhotos": "Approve my photos (simulated moderator)",
+    "approved": "{count, plural, one {# photo approved} other {# photos approved}}",
+    "noPending": "No pending photos.",
+    "reset": "Reset the demo",
+    "resetDone": "Demo reset.",
+    "badgeUnlocked": "Badge unlocked",
+    "profile": "Sample profile: {name}"
   }
 }

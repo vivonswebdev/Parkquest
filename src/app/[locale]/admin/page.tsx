@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
 import { FEATURED_PARK_SLUG, listSpots, listTrails, repo } from "@/lib/data";
 import { requirePark } from "@/lib/data/loaders";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { isDemoMode } from "@/lib/config/app-mode";
 import { getCurrentUser } from "@/lib/supabase/server";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -23,8 +23,8 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations();
-  const user = isSupabaseConfigured ? await getCurrentUser() : null;
-  if (isSupabaseConfigured && !user) {
+  const user = !isDemoMode ? await getCurrentUser() : null;
+  if (!isDemoMode && !user) {
     return <main className="mx-auto max-w-xl px-4 py-24 text-center text-muted-foreground">{t("admin.restricted")}</main>;
   }
   const park = await requirePark(FEATURED_PARK_SLUG, locale);
@@ -58,7 +58,7 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
             <h1 className="font-display text-3xl font-extrabold">{t("admin.title")}</h1>
             <p className="text-muted-foreground">{t("admin.subtitle")}</p>
           </div>
-          {!isSupabaseConfigured && <Pill tone="muted">{t("admin.demoReadOnly")}</Pill>}
+          {isDemoMode && <Pill tone="muted">{t("admin.demoReadOnly")}</Pill>}
         </header>
         <Card className="p-5 shadow-none">
           <p className="text-sm text-muted-foreground">{t("admin.myPark")}</p>

@@ -1,12 +1,12 @@
 import "server-only";
 import { cache } from "react";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { isDemoMode } from "@/lib/config/app-mode";
 import { demoRepository } from "./demo-repository";
 import type { ContentRepository } from "./repository";
 import { supabaseRepository } from "./supabase-repository";
 
 /** Source de contenu active : Supabase si configuré, sinon données de démo locales. */
-export const repo: ContentRepository = isSupabaseConfigured ? supabaseRepository : demoRepository;
+export const repo: ContentRepository = !isDemoMode ? supabaseRepository : demoRepository;
 
 /** Mémoïsation par requête (évite les doubles chargements layout/page/metadata). */
 export const getPark = cache((slug: string, locale: string) => repo.getPark(slug, locale));

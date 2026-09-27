@@ -1,5 +1,5 @@
 import "server-only";
-import { demoData } from "@/content/demo";
+import { demoData } from "@/features/demo/demo-data";
 import type {
   Article,
   ArticleRecord,

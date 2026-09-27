@@ -6,7 +6,8 @@ import { iconByName } from "@/components/shared/icons";
 import { Card } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
 import type { Badge, Challenge, UserStats } from "@/lib/domain/types";
-import { useDemoProgress } from "@/lib/game/demo-progress";
+import { demoUser } from "@/features/demo/demo-data";
+import { useDemoProgress } from "@/features/demo/demo-progress";
 import { cn } from "@/lib/utils";
 
 export interface LiveProgress {
@@ -26,27 +27,11 @@ export function useUnifiedProgress(live: LiveProgress | null) {
     visits: demo.visits,
     spotsDiscovered: demo.discovered.length,
     distanceM: demo.distanceM,
-    photosApproved: 0,
-    badges: 0,
+    photosApproved: demo.photosApproved,
+    badges: demo.badges.length,
     quizzesPassed,
   };
-  return { mode: "demo" as const, stats, discoveredSpotIds: demo.discovered, badgeKeys: [] as string[], username: "", challenges: demo.challenges };
-}
-
-export function badgeUnlocked(b: Badge, s: UserStats, trailsDone = 0): boolean {
-  const v =
-    b.criteria === "SPOTS_DISCOVERED"
-      ? s.spotsDiscovered
-      : b.criteria === "QUIZZES_PASSED"
-        ? s.quizzesPassed
-        : b.criteria === "PHOTOS_APPROVED"
-          ? s.photosApproved
-          : b.criteria === "DISTANCE_M"
-            ? s.distanceM
-            : b.criteria === "TRAILS_COMPLETED"
-              ? trailsDone
-              : 0;
-  return v >= b.threshold;
+  return { mode: "demo" as const, stats, discoveredSpotIds: demo.discovered, badgeKeys: demo.badges, username: demoUser.displayName, challenges: demo.challenges };
 }
 
 export function BadgeGrid({ badges, live }: { badges: Badge[]; live: LiveProgress | null }) {
@@ -55,7 +40,7 @@ export function BadgeGrid({ badges, live }: { badges: Badge[]; live: LiveProgres
   return (
     <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-4 lg:grid-cols-7">
       {badges.map((b) => {
-        const on = p.mode === "live" ? p.badgeKeys.includes(b.key) : badgeUnlocked(b, p.stats);
+        const on = p.badgeKeys.includes(b.key);
         const Icon = iconByName(b.icon);
         return (
           <div key={b.id} className={cn("flex flex-col items-center gap-2 rounded-[20px] border p-3 text-center", on ? "border-primary/40 bg-primary-soft" : "border-border bg-surface")}>

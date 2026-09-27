@@ -18,9 +18,10 @@ import { useGeolocation } from "@/hooks/use-geolocation";
 import { Link, useRouter } from "@/i18n/navigation";
 import type { ActionError, Challenge, LatLng, PublicQuiz, Trail } from "@/lib/domain/types";
 import { formatDistance } from "@/lib/format";
-import { useDemoProgress } from "@/lib/game/demo-progress";
+import { updateDemoProgress, useDemoProgress } from "@/features/demo/demo-progress";
 import { distanceM, pathLengthM, walkingMinutes } from "@/lib/geo";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { useDemoGeoTarget } from "@/features/demo/demo-geo";
+import { isDemoMode } from "@/lib/config/app-mode";
 import { cn } from "@/lib/utils";
 import { completeVisitAction, startVisitAction, updateVisitAction } from "@/server/game-actions";
 
@@ -57,7 +58,7 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
   const [finishing, startFinish] = useTransition();
 
   const discovered = useMemo(() => {
-    const base = isSupabaseConfigured ? (serverDiscovered ?? []) : demo.discovered;
+    const base = !isDemoMode ? (serverDiscovered ?? []) : demo.discovered;
     return new Set([...base, ...sessionFound]);
   }, [serverDiscovered, demo.discovered, sessionFound]);
 
@@ -65,6 +66,8 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
   const initialIndex = initialSpotSlug ? trail.spots.findIndex((s) => s.slug === initialSpotSlug) : -1;
   const [index, setIndex] = useState(initialIndex >= 0 ? initialIndex : Math.max(0, firstUndiscovered));
   const current = trail.spots[index];
+  // Démo : la position simulée suit le prochain spot du parcours.
+  useDemoGeoTarget(current?.location);
   const foundCount = trail.spots.filter((s) => discovered.has(s.id)).length;
   const allFound = foundCount === trail.spots.length;
 
@@ -73,6 +76,8 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
     let cancelled = false;
     startVisitAction({ parkId: park.id, trailId: trail.id }).then((r) => {
       if (cancelled) return;
+      // Démo : une visite de plus dans l'historique simulé.
+      if (r.ok && r.mode === "demo") updateDemoProgress((p) => ({ ...p, visits: p.visits + 1 }));
       if (r.ok) setVisitId(r.visitId);
       else setStartError(r.error);
     });
@@ -177,6 +182,15 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
     startFinish(async () => {
       geo.stop();
       const r = await completeVisitAction({ visitId, trailId: trail.id, distanceM: Math.round(walked), spotsFound: foundCount });
+      if (r.ok && r.mode === "demo") {
+        // Démo : distance simulée = longueur du parcours (pas de vrai déplacement), points et parcours terminé.
+        updateDemoProgress((p) => ({
+          ...p,
+          distanceM: p.distanceM + Math.max(Math.round(walked), r.trailCompleted ? trail.distanceM : 0),
+          trailsCompleted: p.trailsCompleted + (r.trailCompleted ? 1 : 0),
+          points: p.points + r.pointsAwarded,
+        }));
+      }
       setFinish(r);
     });
 
@@ -210,7 +224,7 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
         {startError === "AUTH_REQUIRED" && (
           <div className="mx-auto mt-2 max-w-xl"><ActionErrorMessage error="AUTH_REQUIRED" className="glass-strong" /></div>
         )}
-        {!isSupabaseConfigured && (
+        {isDemoMode && (
           <p className="glass-strong mx-auto mt-2 w-fit max-w-xl rounded-full px-3 py-1.5 text-center text-[11px] text-gold">{t("common.demoModeNotice")}</p>
         )}
       </div>

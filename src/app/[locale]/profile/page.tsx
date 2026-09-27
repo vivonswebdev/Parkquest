@@ -7,9 +7,10 @@ import { ThemeSwitcher } from "@/components/theme/theme-switcher";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { demoUser } from "@/features/demo/demo-data";
 import { Link } from "@/i18n/navigation";
 import { FEATURED_PARK_SLUG } from "@/lib/data";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { isDemoMode } from "@/lib/config/app-mode";
 import { getServerProgress } from "@/server/progress";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -23,7 +24,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
   setRequestLocale(locale);
   const t = await getTranslations();
   const live = await getServerProgress();
-  const name = live?.username || t("home.guest");
+  const name = live?.username || (isDemoMode ? demoUser.displayName : t("home.guest"));
 
   const sections = [
     { icon: Route, label: t("profile.myTrails"), href: `/parks/${FEATURED_PARK_SLUG}#trails` },
@@ -56,7 +57,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
         {!live && (
           <Card className="border-gold/30 p-5">
             <p className="font-semibold text-gold">{t("profile.demoProfile")}</p>
-            <p className="mt-1 text-sm text-muted-foreground">{isSupabaseConfigured ? t("visit.authRequired") : t("profile.demoProfileBody")}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{!isDemoMode ? t("visit.authRequired") : t("profile.demoProfileBody")}</p>
             <Button asChild className="mt-3" variant="outline"><Link href="/auth/sign-in">{t("profile.signInCta")}</Link></Button>
           </Card>
         )}

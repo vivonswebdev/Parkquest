@@ -1,5 +1,5 @@
 /**
- * Génère supabase/seed.sql à partir du jeu de données de démo (src/content/demo).
+ * Génère supabase/seed.sql à partir du jeu de données de démo (src/features/demo/demo-data.ts).
  * Usage : npm run db:seed:generate
  *
  * Une seule source de vérité : l'app en mode démo et la base Supabase affichent
@@ -7,7 +7,7 @@
  */
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { demoData } from "../src/content/demo";
+import { demoData } from "../src/features/demo/demo-data";
 
 type Val = string | number | boolean | null | undefined | string[] | object;
 
@@ -63,7 +63,7 @@ function translations<T extends object>(
 const d = demoData;
 let sql = `-- ============================================================================
 -- ParkQuest — SEED DE DÉMONSTRATION (généré, ne pas modifier à la main)
--- Source : src/content/demo/*  ·  Générateur : scripts/generate-seed.ts
+-- Source : src/features/demo/*  ·  Générateur : scripts/generate-seed.ts
 --
 -- ⚠️ Toutes ces données sont des DONNÉES DE DÉMONSTRATION (is_demo_data = true).
 -- Elles ne doivent jamais être présentées comme officielles sans validation

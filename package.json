@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:demo": "cross-env NEXT_PUBLIC_DEMO_MODE=true next dev",
+    "dev:lan": "node scripts/dev-lan.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -15,8 +17,10 @@
     "demo:illustrations": "tsx scripts/generate-illustrations.ts",
     "pwa:icons": "tsx scripts/generate-icons.ts",
     "test:e2e": "playwright test",
-    "check": "npm run typecheck && npm run lint && npm run i18n:check",
-    "demo:capture": "node scripts/capture-demo.mjs http://localhost:3000 demo-shots"
+    "demo:capture": "npm run verify && node scripts/capture-demo.mjs",
+    "test": "npm run i18n:check && tsx --test --test-reporter=spec \"tests/unit/**/*.test.ts\"",
+    "verify": "npm run lint && npm run typecheck && npm run test",
+    "check": "npm run verify"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
@@ -43,6 +47,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "cross-env": "^10.1.0",
     "eslint": "^9",
     "eslint-config-next": "16.3.6",
     "playwright": "^1.56.1",

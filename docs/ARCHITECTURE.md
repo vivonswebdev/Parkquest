@@ -10,7 +10,7 @@ migrations, rôles/RLS, comptes nécessaires, décisions, plans des Sprints 0 et
 1. **Next.js 16 (App Router) + TypeScript strict**, Server Components par défaut ; Client Components uniquement pour la carte, le GPS, les formulaires, les quiz/défis et les panneaux interactifs.
 2. **Routes localisées** `/{fr|nl|en|es|de}/…` via **next-intl 4** (`src/proxy.ts`, convention Next 16 qui remplace `middleware.ts`).
 3. **Deux sources de données derrière une même interface** `ContentRepository` : **démo** (fichiers TS locaux) et **Supabase** (RLS appliquée). Bascule automatique selon les variables d'environnement.
-4. **Source unique des données de démo** (`src/content/demo`) → le script `generate-seed.ts` produit `supabase/seed.sql` avec les **mêmes UUID** : l'app démo et la base affichent exactement les mêmes contenus.
+4. **Source unique des données de démo** (`src/features/demo/demo-data.ts`) → le script `generate-seed.ts` produit `supabase/seed.sql` avec les **mêmes UUID** : l'app démo et la base affichent exactement les mêmes contenus.
 5. **Supabase** : PostgreSQL 15+ / **PostGIS** (`geography(Point|LineString|Polygon, 4326)`), Auth (lien magique), Storage (2 buckets), RLS partout.
 6. **Traductions de contenu en tables dédiées** (`*_translations`, jamais de `name_fr`), repli **langue demandée → anglais → langue principale du parc**, en SQL (`nearby_spots`) comme en TS (`pickTranslation`).
 7. **Multi-parcs dès le départ** : tout contenu métier porte `park_id` ; rôles `PARK_ADMIN / EDITOR / MODERATOR` scopés par parc.
@@ -46,7 +46,7 @@ parkquest/
 ├── supabase/
 │   ├── config.toml
 │   ├── migrations/            0100 → 1300 (voir §4)
-│   ├── seed.sql               GÉNÉRÉ depuis src/content/demo
+│   ├── seed.sql               GÉNÉRÉ depuis src/features/demo/demo-data.ts
 │   └── tests/                 supabase_shim.sql · rls_and_game_test.sql
 ├── tests/e2e/                 visit-loop.spec.ts (Playwright)
 └── src/
@@ -75,7 +75,7 @@ parkquest/
     │   ├── visit/     visit-runner
     │   ├── game/      discover-spot-card · quiz-card · challenge-card · progress-dashboard · …
     │   ├── park/ · parks/ · plan/ · content/ · shared/ · auth/ · brand/ · pwa/
-    ├── content/demo/  ids · meise · platform · index   ← SOURCE UNIQUE des données démo
+    ├── ../features/demo/  demo-data.ts (SOURCE UNIQUE) · content/{ids,meise,platform}
     ├── hooks/         use-geolocation
     ├── lib/
     │   ├── domain/types.ts        types métier (records + types résolus)

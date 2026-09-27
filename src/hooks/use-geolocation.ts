@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { simulatedPosition, useDemoGeoMode, useDemoGeoTargetValue } from "@/features/demo/demo-geo";
+import { isDemoMode } from "@/lib/config/app-mode";
 
 export type GeoStatus = "idle" | "locating" | "active" | "denied" | "unavailable";
 
@@ -15,6 +17,9 @@ export interface GeoState {
  * La position reste dans le navigateur ; elle n'est transmise au serveur que
  * ponctuellement, lors d'une découverte explicitement demandée, pour calculer
  * une distance (non stockée).
+ *
+ * En MODE DÉMO, la position peut être simulée (panneau Démo) : même interface,
+ * mêmes états (idle → locating → active | denied | unavailable), aucun écran à adapter.
  */
 export function useGeolocation() {
   const [state, setState] = useState<GeoState>({ status: "idle", position: null });
@@ -52,5 +57,29 @@ export function useGeolocation() {
     if (watchId.current !== null) navigator.geolocation.clearWatch(watchId.current);
   }, []);
 
-  return { ...state, start, stop };
+  // --- Simulation (mode démo) ---
+  const simMode = useDemoGeoMode(isDemoMode);
+  const simTarget = useDemoGeoTargetValue();
+  const [sim, setSim] = useState<"idle" | "locating" | "ready">("idle");
+  const simTimer = useRef<number | null>(null);
+  useEffect(() => () => {
+    if (simTimer.current) window.clearTimeout(simTimer.current);
+  }, []);
+
+  if (simMode !== "real") {
+    const status: GeoStatus =
+      sim === "idle" ? "idle" : sim === "locating" ? "locating" : simMode === "denied" ? "denied" : simMode === "unavailable" ? "unavailable" : "active";
+    return {
+      status,
+      position: status === "active" ? simulatedPosition(simMode, simTarget) : null,
+      simulated: true as const,
+      start: () => {
+        setSim("locating");
+        simTimer.current = window.setTimeout(() => setSim("ready"), 450);
+      },
+      stop: () => setSim("idle"),
+    };
+  }
+
+  return { ...state, simulated: false as const, start, stop };
 }

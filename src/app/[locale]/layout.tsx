@@ -10,6 +10,8 @@ import { NetworkStatus } from "@/components/layout/network-status";
 import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
 import { themeInitScript } from "@/components/theme/theme";
 import { ThemeSync } from "@/components/theme/theme-switcher";
+import { DemoBadgeToaster, DemoPanel } from "@/features/demo/demo-panel";
+import { isDemoMode } from "@/lib/config/app-mode";
 import { routing } from "@/i18n/routing";
 
 const inter = Inter({ subsets: ["latin", "latin-ext"], variable: "--font-inter", display: "swap" });
@@ -59,6 +61,12 @@ export default async function LocaleLayout({ children, params }: { children: Rea
           <BottomNav />
           <ServiceWorkerRegister />
           <ThemeSync />
+          {isDemoMode && (
+            <>
+              <DemoPanel />
+              <DemoBadgeToaster />
+            </>
+          )}
         </NextIntlClientProvider>
       </body>
     </html>

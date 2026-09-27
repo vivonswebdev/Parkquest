@@ -8,8 +8,8 @@ import { useOnline } from "@/components/layout/network-status";
 import { Button } from "@/components/ui/button";
 import { Pill } from "@/components/ui/pill";
 import type { Challenge, ChallengeResult } from "@/lib/domain/types";
-import { updateDemoProgress, useDemoProgress } from "@/lib/game/demo-progress";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { updateDemoProgress, useDemoProgress } from "@/features/demo/demo-progress";
+import { isDemoMode } from "@/lib/config/app-mode";
 import { completeChallengeAction } from "@/server/game-actions";
 import { ActionErrorMessage, ModeNotice, PointsBurst } from "./feedback";
 
@@ -28,7 +28,7 @@ export function ChallengeCard({ challenge, parkId, visitId }: { challenge: Chall
     if (preview) URL.revokeObjectURL(preview);
   }, [preview]);
 
-  const already = isSupabaseConfigured ? undefined : demo.challenges[challenge.id];
+  const already = !isDemoMode ? undefined : demo.challenges[challenge.id];
   const Icon = challenge.type === "PHOTO" ? Camera : challenge.type === "WALK" ? Footprints : Sparkles;
 
   const submit = () => {

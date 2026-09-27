@@ -11,7 +11,7 @@ import { useGeolocation } from "@/hooks/use-geolocation";
 import { Link } from "@/i18n/navigation";
 import type { Facility, LatLng, Park, SpotCategory, SpotSummary, TrailSegment } from "@/lib/domain/types";
 import { formatDistance } from "@/lib/format";
-import { useDemoProgress } from "@/lib/game/demo-progress";
+import { useDemoProgress } from "@/features/demo/demo-progress";
 import { distanceM, walkingMinutes } from "@/lib/geo";
 import { cn } from "@/lib/utils";
 import { hasMapbox, ParkMap } from "./park-map";

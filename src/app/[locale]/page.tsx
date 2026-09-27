@@ -15,6 +15,8 @@ import { SectionHeader } from "@/components/shared/section-header";
 import { Button } from "@/components/ui/button";
 import { Card, GlassCard } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
+import { demoUser } from "@/features/demo/demo-data";
+import { isDemoMode } from "@/lib/config/app-mode";
 import { Link } from "@/i18n/navigation";
 import { FEATURED_PARK_SLUG, getPark, listSpots, listTrails, repo } from "@/lib/data";
 import { distanceM, walkingMinutes } from "@/lib/geo";
@@ -43,7 +45,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     .sort((a, b) => a.d - b.d)
     .slice(0, 4);
   const otherParks = parks.filter((p) => p.id !== park.id);
-  const name = progress?.username || t("home.guest");
+  const name = progress?.username || (isDemoMode ? demoUser.displayName : t("home.guest"));
 
   return (
     <>
