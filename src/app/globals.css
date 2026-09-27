@@ -1,0 +1,219 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/*
+ * ParkQuest — design system « Dark Premium Nature ».
+ * Thème sombre par défaut ; `.theme-light` (ou [data-theme="light"]) pour
+ * les contenus longs (blog, infos pratiques, admin) et les utilisateurs qui le préfèrent.
+ */
+
+:root,
+.theme-dark {
+  /* Palette de marque */
+  --pq-dark-background: #031711;
+  --pq-dark-surface: #08251d;
+  --pq-dark-surface-elevated: #0d3428;
+  --pq-forest: #0b6b4f;
+  --pq-green: #128c63;
+  --pq-mint: #19e6a2;
+  --pq-mint-soft: #8af4c9;
+  --pq-gold: #f4c95d;
+  --pq-earth: #a46d42;
+  --pq-white: #f5fffa;
+  --pq-muted-white: #a9c1b7;
+  --pq-border-dark: rgba(140, 255, 211, 0.18);
+
+  /* Tokens sémantiques */
+  --background: var(--pq-dark-background);
+  --foreground: var(--pq-white);
+  --surface: var(--pq-dark-surface);
+  --surface-elevated: var(--pq-dark-surface-elevated);
+  --glass: rgba(8, 37, 29, 0.72);
+  --glass-strong: rgba(3, 23, 17, 0.86);
+  --muted: rgba(13, 52, 40, 0.6);
+  --muted-foreground: var(--pq-muted-white);
+  --border: var(--pq-border-dark);
+  --primary: var(--pq-mint);
+  --primary-foreground: #03251a;
+  --primary-soft: rgba(25, 230, 162, 0.14);
+  --accent: var(--pq-gold);
+  --accent-foreground: #2b1d00;
+  --success: var(--pq-mint);
+  --danger: #ff7a7a;
+  --ring: rgba(25, 230, 162, 0.55);
+  --topo-opacity: 0.07;
+  --shadow-color: 0 0% 0%;
+  color-scheme: dark;
+}
+
+.theme-light,
+[data-theme="light"] {
+  --pq-gold: #8a5d00; /* or plus foncé : contraste AA sur fond clair */
+  --background: #f3f8f5;
+  --foreground: #06231a;
+  --surface: #ffffff;
+  --surface-elevated: #ffffff;
+  --glass: rgba(255, 255, 255, 0.86);
+  --glass-strong: rgba(255, 255, 255, 0.95);
+  --muted: #e6f0eb;
+  --muted-foreground: #4b665b;
+  --border: rgba(6, 35, 26, 0.12);
+  --primary: #0b6b4f;
+  --primary-foreground: #f5fffa;
+  --primary-soft: rgba(11, 107, 79, 0.1);
+  --accent: #b7862a;
+  --accent-foreground: #ffffff;
+  --success: #0b6b4f;
+  --danger: #c0392b;
+  --ring: rgba(11, 107, 79, 0.45);
+  --topo-opacity: 0.05;
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-glass: var(--glass);
+  --color-glass-strong: var(--glass-strong);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-danger: var(--danger);
+  --color-ring: var(--ring);
+
+  --color-forest: var(--pq-forest);
+  --color-green: var(--pq-green);
+  --color-mint: var(--pq-mint);
+  --color-mint-soft: var(--pq-mint-soft);
+  --color-gold: var(--pq-gold);
+  --color-earth: var(--pq-earth);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-jakarta), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 22px;
+  --radius-button: 16px;
+  --radius-sheet: 28px;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html {
+    -webkit-tap-highlight-color: transparent;
+    text-size-adjust: 100%;
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100dvh;
+  }
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Fond topographique discret (SVG inline, aucune ressource externe) */
+  .topo-bg {
+    position: relative;
+    isolation: isolate;
+  }
+  .topo-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: var(--topo-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600'%3E%3Cg fill='none' stroke='%238AF4C9' stroke-width='1.2'%3E%3Cpath d='M-20 120c80-40 160 30 240-10s150-70 230-20 140 40 170 10'/%3E%3Cpath d='M-20 170c90-40 150 40 250 0s160-60 230-10 120 40 160 10'/%3E%3Cpath d='M-20 230c70-30 170 40 250 5s150-60 240-15 110 30 150 5'/%3E%3Cpath d='M-20 330c100-50 160 20 240-20s170-40 230 0 120 50 170 20'/%3E%3Cpath d='M-20 390c80-30 190 30 260-10s140-50 220-10 120 40 160 15'/%3E%3Cpath d='M-20 470c90-40 170 40 240 0s170-60 240-10 110 30 160 0'/%3E%3Cpath d='M-20 540c100-30 160 30 250-5s150-50 230-5 120 30 160 5'/%3E%3Cellipse cx='420' cy='280' rx='60' ry='36'/%3E%3Cellipse cx='420' cy='280' rx='100' ry='62'/%3E%3Cellipse cx='130' cy='440' rx='44' ry='26'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 600px 600px;
+  }
+
+  /* Glassmorphism modéré */
+  .glass {
+    background: var(--glass);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid var(--border);
+  }
+  .glass-strong {
+    background: var(--glass-strong);
+    backdrop-filter: blur(22px) saturate(150%);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    border: 1px solid var(--border);
+  }
+
+  /* Halo lumineux discret sur les éléments actifs */
+  .glow-mint {
+    box-shadow:
+      0 0 0 1px rgba(25, 230, 162, 0.35),
+      0 8px 32px -8px rgba(25, 230, 162, 0.45);
+  }
+
+  .card-shadow {
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
+      0 18px 40px -20px rgba(0, 0, 0, 0.65);
+  }
+
+  /* Dégradé de lisibilité sur image plein cadre */
+  .image-scrim {
+    background: linear-gradient(180deg, rgba(3, 23, 17, 0) 30%, rgba(3, 23, 17, 0.72) 70%, rgba(3, 23, 17, 0.95) 100%);
+  }
+
+  .safe-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom), 0.75rem);
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Animations sobres, désactivées si l'utilisateur le demande */
+@keyframes pq-pulse-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+.animate-pulse-ring {
+  animation: pq-pulse-ring 2s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
