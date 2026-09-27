@@ -44,7 +44,7 @@ function insert(table: string, rows: Record<string, string>[]): string {
 function translations<T extends object>(
   table: string,
   fk: string,
-  items: { id: string; translations: Record<string, T | undefined> }[],
+  items: readonly { id: string; translations: Partial<Record<string, T>> }[],
   map: (t: T) => Record<string, Val>,
 ): string {
   const rows: Record<string, string>[] = [];
