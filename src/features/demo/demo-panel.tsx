@@ -34,10 +34,10 @@ export function DemoPanel() {
         aria-label={t("open")}
         aria-expanded={open}
         data-testid="demo-panel-button"
-        className="fixed left-0 top-[58%] z-[45] flex items-center gap-1 rounded-r-xl border border-l-0 border-gold/40 bg-background/80 px-1 py-2.5 text-gold backdrop-blur-md [writing-mode:vertical-rl] md:top-1/2"
+        className="fixed left-0 top-[58%] z-[45] flex items-center rounded-r-lg border border-l-0 border-gold/40 bg-background/85 px-px py-2 text-gold backdrop-blur-md [writing-mode:vertical-rl] md:top-1/2"
       >
-        <FlaskConical className="size-3.5 rotate-90" />
-        <span className="text-[10px] font-bold uppercase tracking-[0.14em]">Démo</span>
+        {/* Onglet étroit (≤ 14 px) : tient dans la marge et ne masque pas le contenu */}
+        <span className="text-[9px] font-bold uppercase leading-3 tracking-[0.14em]">Démo</span>
       </button>
 
       {open && (

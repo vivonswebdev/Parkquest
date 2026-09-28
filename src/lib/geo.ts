@@ -34,8 +34,15 @@ export function pathLengthM(path: [number, number][]): number {
 
 /** Règles de validation GPS — identiques à la fonction SQL discover_spot. */
 export const GPS_RULES = {
+  /** Précision « excellente » : découverte proposée dès 25 m du spot. */
+  preciseAccuracyM: 10,
+  preciseDistanceM: 25,
+  /** Au-delà, jamais de validation GPS (confirmation manuelle seulement). */
   maxAccuracyM: 25,
   rejectDistanceM: 250,
   /** Distance à partir de laquelle l'UI propose « Vous semblez proche ». */
   nearHintM: 60,
+  /** « Autour de vous » : rayon de recherche et seuil de recalcul (batterie, réseau). */
+  nearbyRadiusM: 500,
+  significantMoveM: 15,
 } as const;

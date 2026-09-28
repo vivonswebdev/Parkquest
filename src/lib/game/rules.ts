@@ -52,3 +52,20 @@ export function trailCompletionPoints(spotsFound: number, spotsTotal: number, co
   const completed = spotsTotal > 0 && spotsFound >= spotsTotal;
   return { completed, points: completed ? completionPoints : 0 };
 }
+
+/**
+ * Palier de proximité affiché à l'utilisateur (aucune validation automatique) :
+ *  - "precise"   : précision ≤ 10 m et distance ≤ 25 m → « Vous êtes près de … » + [Découvrir]
+ *  - "likely"    : précision ≤ 25 m et distance ≤ rayon → « Vous semblez proche » + confirmation
+ *  - "imprecise" : précision > 25 m mais le lieu est plausible → confirmation manuelle (déclarative)
+ *  - "far"       : trop loin
+ * La validation serveur reste : précision ≤ 25 m ET distance ≤ rayon (evaluateDiscovery).
+ */
+export type ProximityTier = "precise" | "likely" | "imprecise" | "far";
+
+export function proximityTier(distanceToSpotM: number, accuracyM: number, radiusM: number): ProximityTier {
+  if (accuracyM <= GPS_RULES.preciseAccuracyM && distanceToSpotM <= GPS_RULES.preciseDistanceM) return "precise";
+  if (accuracyM <= GPS_RULES.maxAccuracyM && distanceToSpotM <= radiusM) return "likely";
+  if (accuracyM > GPS_RULES.maxAccuracyM && distanceToSpotM <= radiusM + accuracyM) return "imprecise";
+  return "far";
+}

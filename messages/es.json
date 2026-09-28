@@ -77,7 +77,11 @@
     "familyMissionBody": "Encontrad 3 árboles de otro continente y responded juntos a su cuestionario.",
     "familyMissionCta": "Aceptar la misión",
     "planVisit": "Planificar mi visita",
-    "planVisitBody": "Dinos cuánto tiempo tienes y te recomendamos la ruta adecuada."
+    "planVisitBody": "Dinos cuánto tiempo tienes y te recomendamos la ruta adecuada.",
+    "dailyChallenge": "Reto del día",
+    "dailyChallengeCta": "Ver el reto",
+    "parkStats": "{spots} lugares · {trails} rutas · {badges} insignias",
+    "otherChallenges": "Más retos"
   },
   "parks": {
     "title": "Explora los parques del mundo",
@@ -135,6 +139,7 @@
     "challenges": "Retos",
     "trail": "Ruta",
     "fallbackNotice": "Mapa simplificado — el mapa detallado se activa con una clave de Mapbox.",
+    "simplified": "mapa simplificado",
     "positionPrompt": "Tu ubicación solo se usa en tu teléfono para guiarte. Nunca se comparte.",
     "locating": "Localizando…",
     "accuracy": "Precisión ± {count} m",
@@ -142,7 +147,9 @@
     "layerPlan": "Mapa",
     "legend": "Leyenda",
     "spotsCount": "{count} lugares",
-    "walk": "{distance} · {minutes}"
+    "walk": "{distance} · {minutes}",
+    "view3d": "Vista 3D",
+    "view2d": "Vista 2D"
   },
   "gps": {
     "denied": "Ubicación denegada",
@@ -180,7 +187,8 @@
     "start": "Salida",
     "stepOf": "Etapa {current} de {total}",
     "elapsed": "Duración",
-    "nextStop": "Siguiente punto →"
+    "nextStop": "Siguiente punto →",
+    "visitEnded": "Visita terminada"
   },
   "spot": {
     "guideMe": "Guíame",
@@ -487,7 +495,8 @@
       "low-accuracy": "Precisión insuficiente (± 60 m)",
       "denied": "GPS denegado",
       "unavailable": "GPS no disponible",
-      "real": "GPS real del dispositivo"
+      "real": "GPS real del dispositivo",
+      "approximate": "GPS aproximado (± 18 m)"
     },
     "realHint": "El GPS real requiere HTTPS en iPhone (túnel, ver README).",
     "progress": "Progreso simulado",
@@ -502,5 +511,102 @@
     "resetDone": "Demo reiniciada.",
     "badgeUnlocked": "Insignia desbloqueada",
     "profile": "Perfil ficticio: {name}"
+  },
+  "geo": {
+    "consentTitle": "Activa tu ubicación",
+    "consentIntro": "ParkQuest usa tu ubicación solo para:",
+    "consentUse1": "mostrarte en el mapa del parque;",
+    "consentUse2": "guiarte hacia árboles y lugares notables;",
+    "consentUse3": "indicarte la distancia al siguiente punto.",
+    "consentPrivate": "Tu ubicación nunca es visible para otros visitantes.",
+    "consentLater": "Ahora no",
+    "consentAccept": "Activar mi ubicación",
+    "privacyLink": "Privacidad",
+    "declinedNotice": "Sin ubicación, la navegación es menos precisa. Elige un punto de partida o sigue las indicaciones de la ruta.",
+    "nearbyTitle": "A tu alrededor",
+    "expandList": "Ver los {count} lugares",
+    "collapseList": "Reducir la lista",
+    "from": "Desde: {place}",
+    "yourPosition": "tu ubicación",
+    "startPoint": "Punto de partida",
+    "seeOnMap": "Mapa",
+    "seeCard": "Ficha",
+    "guideMe": "Guíame",
+    "guidingTo": "Hacia {name}",
+    "guideHint": "Sigue la flecha. El descubrimiento se confirma en el lugar.",
+    "arrived": "Ya casi estás",
+    "stopGuiding": "Detener la guía",
+    "direction": "Dirección {dir}",
+    "precise": "Estás cerca de: {name}",
+    "estDistance": "Distancia estimada: {distance}",
+    "accuracy": "Precisión GPS: ± {count} m",
+    "likely": "Pareces estar cerca de este lugar",
+    "likelyBody": "Confirma que estás en el lugar.",
+    "imprecise": "Señal GPS imprecisa (± {count} m)",
+    "impreciseBody": "No podemos verificar tu ubicación. Mira la foto y el mapa, y confirma si estás allí.",
+    "confirmHere": "Confirmo, estoy aquí",
+    "status": {
+      "precise": "GPS preciso",
+      "approximate": "GPS aproximado",
+      "imprecise": "GPS impreciso",
+      "off": "GPS desactivado",
+      "denied": "GPS denegado",
+      "locating": "Localizando…"
+    },
+    "openMap": "Abrir el mapa",
+    "endVisit": "Terminar la visita",
+    "service": "Servicio",
+    "accessible": "Accesible",
+    "noResult": "Nada cerca con este filtro.",
+    "filters": {
+      "all": "Todo",
+      "trees": "Árboles",
+      "plants": "Plantas",
+      "history": "Historia",
+      "photo": "Foto",
+      "challenges": "Retos",
+      "services": "Servicios",
+      "pmr": "Accesible"
+    },
+    "dirs": {
+      "N": "norte",
+      "NE": "noreste",
+      "E": "este",
+      "SE": "sureste",
+      "S": "sur",
+      "SW": "suroeste",
+      "W": "oeste",
+      "NW": "noroeste"
+    }
+  },
+  "weather": {
+    "title": "El tiempo durante tu visita",
+    "simulated": "Tiempo simulado (modo demo)",
+    "source": "Datos meteorológicos: Open-Meteo.com",
+    "now": "Ahora",
+    "rainAt": "Lluvia probable hacia las {hour}",
+    "noRain": "No se prevé lluvia",
+    "wind": "Viento {speed} km/h",
+    "uv": "UV {value}",
+    "unavailable": "El tiempo no está disponible ahora.",
+    "advice": {
+      "rain": "Lleva impermeable: los grandes invernaderos son un buen refugio.",
+      "heat": "Hace calor: localiza los puntos de agua y las zonas de sombra.",
+      "cold": "Hace fresco: abrígate, sobre todo los niños.",
+      "wind": "Viento fuerte: evita las zonas boscosas y respeta los posibles cierres del parque.",
+      "uv": "UV alto: sombrero y crema solar.",
+      "nice": "Condiciones ideales para la visita."
+    },
+    "codes": {
+      "clear": "Soleado",
+      "partly": "Parcialmente nublado",
+      "cloudy": "Nublado",
+      "fog": "Niebla",
+      "drizzle": "Llovizna",
+      "rain": "Lluvia",
+      "snow": "Nieve",
+      "showers": "Chubascos",
+      "storm": "Tormenta"
+    }
   }
 }

@@ -1,42 +1,49 @@
 "use client";
 
-import { ArrowLeft, Compass, Crosshair, Layers, LocateFixed, Navigation, SlidersHorizontal, X } from "lucide-react";
+import { ArrowLeft, Compass, Crosshair, Layers, LocateFixed, Navigation, X } from "lucide-react";
+import { GpsStatus } from "@/components/geo/gps-status";
+import { GuidePanel } from "@/components/geo/guide-panel";
+import { LocationConsentSheet } from "@/components/geo/location-consent-sheet";
+import { facilityMatchesFilter, NearbyList, spotMatchesFilter, type NearbyFilter } from "@/components/geo/nearby-list";
+import { DiscoverSpotCard } from "@/components/game/discover-spot-card";
+import { useLocationConsent } from "@/lib/location-consent";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { useMemo, useRef, useState } from "react";
-import { FACILITY_ICON, SPOT_KIND_COLOR, SPOT_KIND_ICON } from "@/components/shared/icons";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { FACILITY_ICON, SPOT_KIND_COLOR } from "@/components/shared/icons";
 import { Button } from "@/components/ui/button";
 import { Pill } from "@/components/ui/pill";
 import { useGeolocation } from "@/hooks/use-geolocation";
 import { Link } from "@/i18n/navigation";
-import type { Facility, LatLng, Park, SpotCategory, SpotSummary, TrailSegment } from "@/lib/domain/types";
+import type { Facility, LatLng, Park, SpotSummary, TrailSegment } from "@/lib/domain/types";
 import { formatDistance } from "@/lib/format";
 import { useDemoProgress } from "@/features/demo/demo-progress";
 import { distanceM, walkingMinutes } from "@/lib/geo";
 import { cn } from "@/lib/utils";
-import { hasMapbox, ParkMap } from "./park-map";
-import type { MapHandle, MapLayer, MapMarker } from "./types";
-
-type Filter = "all" | "services" | "pmr" | "challenges" | string;
+import { satelliteTilesUrl } from "@/lib/map/config";
+import { ParkMap } from "./park-map";
+import type { MapEngine, MapHandle, MapLayer, MapMarker } from "./types";
 
 export function ParkMapExplorer({
   park,
   spots,
   facilities,
-  categories,
   trailSegments,
   entrance,
   challengeSpotIds,
+  photoSpotIds,
   serverDiscovered,
+  initialGuideSlug,
 }: {
   park: Pick<Park, "slug" | "name" | "bounds" | "isDemoData">;
   spots: SpotSummary[];
   facilities: Facility[];
-  categories: SpotCategory[];
   trailSegments: TrailSegment[];
   entrance: LatLng;
   challengeSpotIds: string[];
+  photoSpotIds: string[];
   serverDiscovered: string[] | null;
+  initialGuideSlug?: string;
 }) {
   const t = useTranslations();
   const locale = useLocale();
@@ -44,22 +51,39 @@ export function ParkMapExplorer({
   const geo = useGeolocation();
   const demo = useDemoProgress();
   const discovered = new Set(serverDiscovered ?? demo.discovered);
-  const [filter, setFilter] = useState<Filter>("all");
+  // Un seul jeu de filtres : il pilote à la fois la liste « Autour de vous » et les marqueurs.
+  const [filter, setFilter] = useState<NearbyFilter>("all");
   const [layer, setLayer] = useState<MapLayer>("plan");
   const [selected, setSelected] = useState<string | null>(null);
-  const [showFilters, setShowFilters] = useState(true);
+  const [listExpanded, setListExpanded] = useState(false);
+  const [engine, setEngine] = useState<MapEngine | null>(null);
+  const [view3d, setView3d] = useState(false);
+  const simplified = engine === "fallback";
+  const consent = useLocationConsent();
+  const [askConsent, setAskConsent] = useState(false);
+  const startPoints = useMemo(() => facilities.filter((f) => ["ENTRANCE", "PARKING", "PUBLIC_TRANSPORT", "CAFE"].includes(f.type)), [facilities]);
+  const [startId, setStartId] = useState<string | null>(null);
+  const [guideId, setGuideId] = useState<string | null>(() => spots.find((s) => s.slug === initialGuideSlug)?.id ?? null);
 
-  const origin: LatLng = geo.position ?? entrance;
+  // Dès l'entrée dans la carte : écran d'explication si aucun choix, sinon position si acceptée.
+  const startedOnce = useRef(false);
+  useEffect(() => {
+    if (consent === "granted" && !startedOnce.current) {
+      startedOnce.current = true;
+      geo.start();
+    }
+  }, [consent, geo]);
+  const showConsent = askConsent || consent === "unset";
 
-  const visibleSpots = spots.filter((s) => {
-    if (filter === "all") return true;
-    if (filter === "services" || filter === "pmr") return false;
-    if (filter === "challenges") return challengeSpotIds.includes(s.id);
-    return s.categoryKeys.includes(filter);
-  });
-  const visibleFacilities = facilities.filter((f) =>
-    filter === "services" ? true : filter === "pmr" ? f.isPmrAccessible : false,
-  );
+  // Pas de recentrage automatique : la carte s'ouvre sur tout le parc (vue d'ensemble),
+  // le point bleu indique la position ; « Ma position » recentre à la demande.
+
+  const startPoint = startPoints.find((f) => f.id === startId)?.location;
+  const origin: LatLng = geo.position ?? startPoint ?? entrance;
+  const guideTarget = spots.find((s) => s.id === guideId) ?? facilities.find((f) => f.id === guideId);
+
+  const visibleSpots = spots.filter((s) => spotMatchesFilter(s, filter, challengeSpotIds, photoSpotIds));
+  const visibleFacilities = facilities.filter((f) => facilityMatchesFilter(f, filter));
 
   const markers: MapMarker[] = useMemo(
     () => [
@@ -86,22 +110,32 @@ export function ParkMapExplorer({
     [filter, origin.lat, origin.lng, locale, spots, facilities, serverDiscovered, demo.discovered],
   );
 
-  const paths = useMemo(() => trailSegments.map((s) => ({ id: s.id, coordinates: s.path, variant: "trail" as const })), [trailSegments]);
+  const paths = useMemo(() => {
+    const base = trailSegments.map((s) => ({ id: s.id, coordinates: s.path, variant: "trail" as const }));
+    if (!guideTarget) return base;
+    // Guidage : ligne directe vers la cible (le parc n'est pas une app de navigation routière).
+    const line: [number, number][] = [
+      [origin.lng, origin.lat],
+      [guideTarget.location.lng, guideTarget.location.lat],
+    ];
+    return [...base, { id: "guide", coordinates: line, variant: "active" as const }];
+  }, [trailSegments, guideTarget, origin.lat, origin.lng]);
 
   const selectedSpot = spots.find((s) => s.id === selected);
   const selectedFacility = facilities.find((f) => f.id === selected);
 
-  const chips: { key: Filter; label: string }[] = [
-    { key: "all", label: t("map.all") },
-    ...categories.filter((c) => spots.some((s) => s.categoryKeys.includes(c.key))).map((c) => ({ key: c.key, label: c.name })),
-    { key: "challenges", label: t("map.challenges") },
-    { key: "services", label: t("map.services") },
-    { key: "pmr", label: t("map.pmr") },
-  ];
-
   const locate = () => {
     if (geo.position) mapRef.current?.flyTo(geo.position, 17.5);
+    else if (consent !== "granted") setAskConsent(true);
     else geo.start();
+  };
+
+  const guide = (id: string) => {
+    setSelected(null);
+    setGuideId(id);
+    const target = spots.find((s) => s.id === id) ?? facilities.find((f) => f.id === id);
+    if (target) mapRef.current?.flyTo(target.location);
+    if (consent === "unset") setAskConsent(true);
   };
 
   return (
@@ -115,7 +149,9 @@ export function ParkMapExplorer({
         selectedId={selected}
         onSelect={setSelected}
         layer={layer}
-        paddingBottom={180}
+        paddingBottom={290}
+        view3d={view3d}
+        onEngine={setEngine}
       />
 
       {/* En-tête flottant */}
@@ -126,49 +162,30 @@ export function ParkMapExplorer({
           </Link>
           <div className="glass-strong pointer-events-auto min-w-0 flex-1 rounded-2xl px-4 py-2.5">
             <p className="truncate font-display text-lg font-bold leading-tight">{park.name}</p>
-            <p className="text-xs text-muted-foreground">{t("map.spotsCount", { count: spots.length })}</p>
+            <p className="truncate text-xs text-muted-foreground" title={simplified ? t("map.fallbackNotice") : undefined}>
+              {t("map.spotsCount", { count: spots.length })}
+              {simplified && ` · ${t("map.simplified")}`}
+            </p>
           </div>
-          <button
-            type="button"
-            onClick={() => setShowFilters((v) => !v)}
-            aria-expanded={showFilters}
-            aria-label={t("map.filters")}
-            className={cn("glass-strong pointer-events-auto inline-flex size-12 shrink-0 items-center justify-center rounded-2xl", showFilters && "text-primary")}
-          >
-            <SlidersHorizontal className="size-5" />
-          </button>
         </div>
-        {showFilters && (
-          <div className="no-scrollbar pointer-events-auto -mx-3 flex gap-2 overflow-x-auto px-3" role="toolbar" aria-label={t("map.filters")}>
-            {chips.map((c) => (
-              <button
-                key={c.key}
-                type="button"
-                aria-pressed={filter === c.key}
-                onClick={() => {
-                  setFilter(c.key);
-                  setSelected(null);
-                }}
-                className={cn(
-                  "h-9 shrink-0 rounded-full px-4 text-sm font-medium transition-colors",
-                  filter === c.key ? "bg-primary text-primary-foreground" : "glass-strong text-foreground",
-                )}
-              >
-                {c.label}
-              </button>
-            ))}
-          </div>
-        )}
+        <GpsStatus status={geo.status} accuracy={geo.position?.accuracy} className="pointer-events-auto" />
       </div>
 
-      {/* Contrôles */}
-      <div className="absolute right-3 top-1/2 z-20 flex -translate-y-1/2 flex-col gap-2">
+      {/* Contrôles : sous l'en-tête, jamais masqués par la liste */}
+      <div className="absolute right-3 top-[calc(max(env(safe-area-inset-top),0.75rem)+4.25rem)] z-20 flex flex-col gap-2">
         <MapControl label={t("map.myPosition")} onClick={locate} active={geo.status === "active"}>
           {geo.status === "active" ? <LocateFixed /> : <Navigation />}
         </MapControl>
-        <MapControl label={t("map.layers")} onClick={() => setLayer((l) => (l === "plan" ? "satellite" : "plan"))} active={layer === "satellite"}>
-          <Layers />
-        </MapControl>
+        {engine === "maplibre" && (
+          <MapControl label={view3d ? t("map.view2d") : t("map.view3d")} onClick={() => setView3d((v) => !v)} active={view3d}>
+            <span className="text-xs font-extrabold tracking-tight">{view3d ? "2D" : "3D"}</span>
+          </MapControl>
+        )}
+        {engine === "maplibre" && satelliteTilesUrl && (
+          <MapControl label={t("map.layers")} onClick={() => setLayer((l) => (l === "plan" ? "satellite" : "plan"))} active={layer === "satellite"}>
+            <Layers />
+          </MapControl>
+        )}
         <MapControl label={t("map.orientation")} onClick={() => mapRef.current?.resetNorth()}>
           <Compass />
         </MapControl>
@@ -185,49 +202,66 @@ export function ParkMapExplorer({
             <span className="text-muted-foreground">{geo.status === "denied" ? t("gps.deniedBody") : t("gps.unavailableBody")}</span>
           </p>
         )}
-        {geo.status === "locating" && <p className="glass-strong w-fit rounded-full px-4 py-2 text-sm">{t("map.locating")}</p>}
-        {geo.status === "active" && geo.position && geo.position.accuracy > 25 && (
-          <p className="glass-strong w-fit rounded-full px-4 py-2 text-sm text-gold">{t("gps.lowAccuracy", { count: geo.position.accuracy })}</p>
+        {consent === "declined" && geo.status === "idle" && !guideTarget && (
+          <p className="glass-strong pointer-events-auto rounded-2xl px-4 py-2.5 text-xs text-muted-foreground">{t("geo.declinedNotice")}</p>
         )}
 
-        {selectedSpot ? (
-          <SpotSheet spot={selectedSpot} parkSlug={park.slug} origin={origin} fromUser={Boolean(geo.position)} onClose={() => setSelected(null)} discovered={discovered.has(selectedSpot.id)} />
+        {guideTarget ? (
+          <GuidePanel name={guideTarget.name} target={guideTarget.location} origin={origin} onStop={() => setGuideId(null)}>
+            {"slug" in guideTarget && distanceM(origin, guideTarget.location) <= 60 && (
+              <DiscoverSpotCard spotId={guideTarget.id} spotName={guideTarget.name} spotLocation={guideTarget.location} radiusM={35} geo={geo} serverDiscovered={discovered.has(guideTarget.id)} />
+            )}
+            {"slug" in guideTarget && (
+              <Button asChild variant="secondary" block className="mt-2">
+                <Link href={`/parks/${park.slug}/spots/${guideTarget.slug}`}>{t("map.seeSpot")}</Link>
+              </Button>
+            )}
+          </GuidePanel>
+        ) : selectedSpot ? (
+          <SpotSheet spot={selectedSpot} parkSlug={park.slug} origin={origin} fromUser={Boolean(geo.position)} onClose={() => setSelected(null)} onGuide={() => guide(selectedSpot.id)} discovered={discovered.has(selectedSpot.id)} />
         ) : selectedFacility ? (
           <FacilitySheet facility={selectedFacility} origin={origin} onClose={() => setSelected(null)} />
         ) : (
           <>
-            {!hasMapbox && <p className="glass-strong pointer-events-auto w-fit max-w-full rounded-full px-3 py-1.5 text-[11px] text-muted-foreground">{t("map.fallbackNotice")}</p>}
-            <div className="no-scrollbar pointer-events-auto -mx-3 flex gap-2.5 overflow-x-auto px-3 pb-1">
-              {visibleSpots.map((s) => {
-                const Icon = SPOT_KIND_ICON[s.kind];
-                const d = distanceM(origin, s.location);
-                return (
-                  <button
-                    key={s.id}
-                    type="button"
-                    onClick={() => {
-                      setSelected(s.id);
-                      mapRef.current?.flyTo(s.location);
-                    }}
-                    className="glass-strong flex w-44 shrink-0 flex-col gap-2 rounded-[20px] p-3 text-left"
-                  >
-                    <span className="flex items-center justify-between">
-                      <span className="inline-flex size-9 items-center justify-center rounded-xl bg-inset" style={{ color: SPOT_KIND_COLOR[s.kind] }}>
-                        <Icon className="size-[18px]" />
-                      </span>
-                      {discovered.has(s.id) && <Pill size="sm">✓</Pill>}
-                    </span>
-                    <span className="truncate text-sm font-semibold">{s.name}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {formatDistance(d, locale)} · {walkingMinutes(d)} min
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+            <NearbyList
+              filter={filter}
+              onFilterChange={(f) => {
+                setFilter(f);
+                setSelected(null);
+              }}
+              expanded={listExpanded}
+              onExpandedChange={setListExpanded}
+              parkSlug={park.slug}
+              spots={spots}
+              facilities={facilities}
+              origin={origin}
+              originIsUser={Boolean(geo.position)}
+              startPoints={startPoints}
+              onChooseStart={setStartId}
+              discovered={discovered}
+              challengeSpotIds={challengeSpotIds}
+              photoSpotIds={photoSpotIds}
+              onShowOnMap={(id) => {
+                setSelected(id);
+                const loc = spots.find((x) => x.id === id)?.location ?? facilities.find((x) => x.id === id)?.location;
+                if (loc) mapRef.current?.flyTo(loc);
+              }}
+              onGuide={guide}
+            />
           </>
         )}
       </div>
+
+      {showConsent && (
+        <LocationConsentSheet
+          onAccept={() => {
+            setAskConsent(false);
+            startedOnce.current = true;
+            geo.start();
+          }}
+          onDecline={() => setAskConsent(false)}
+        />
+      )}
     </div>
   );
 }
@@ -246,7 +280,7 @@ function MapControl({ label, onClick, active, children }: { label: string; onCli
   );
 }
 
-function SpotSheet({ spot, parkSlug, origin, fromUser, onClose, discovered }: { spot: SpotSummary; parkSlug: string; origin: LatLng; fromUser: boolean; onClose(): void; discovered: boolean }) {
+function SpotSheet({ spot, parkSlug, origin, fromUser, onClose, onGuide, discovered }: { spot: SpotSummary; parkSlug: string; origin: LatLng; fromUser: boolean; onClose(): void; onGuide(): void; discovered: boolean }) {
   const t = useTranslations();
   const locale = useLocale();
   const d = distanceM(origin, spot.location);
@@ -273,9 +307,14 @@ function SpotSheet({ spot, parkSlug, origin, fromUser, onClose, discovered }: { 
           </div>
         </div>
       </div>
-      <Button asChild block className="mt-3">
-        <Link href={`/parks/${parkSlug}/spots/${spot.slug}`}>{t("map.seeSpot")}</Link>
-      </Button>
+      <div className="mt-3 grid grid-cols-2 gap-2">
+        <Button onClick={onGuide}>
+          <Navigation /> {t("geo.guideMe")}
+        </Button>
+        <Button asChild variant="secondary">
+          <Link href={`/parks/${parkSlug}/spots/${spot.slug}`}>{t("map.seeSpot")}</Link>
+        </Button>
+      </div>
     </div>
   );
 }

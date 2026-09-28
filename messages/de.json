@@ -77,7 +77,11 @@
     "familyMissionBody": "Findet 3 Bäume von einem anderen Kontinent und löst gemeinsam ihr Quiz.",
     "familyMissionCta": "Mission annehmen",
     "planVisit": "Besuch planen",
-    "planVisitBody": "Sag uns, wie viel Zeit du hast – wir empfehlen die passende Route."
+    "planVisitBody": "Sag uns, wie viel Zeit du hast – wir empfehlen die passende Route.",
+    "dailyChallenge": "Challenge des Tages",
+    "dailyChallengeCta": "Challenge ansehen",
+    "parkStats": "{spots} Spots · {trails} Routen · {badges} Abzeichen",
+    "otherChallenges": "Weitere Challenges"
   },
   "parks": {
     "title": "Entdecke die Parks der Welt",
@@ -135,6 +139,7 @@
     "challenges": "Challenges",
     "trail": "Route",
     "fallbackNotice": "Vereinfachte Karte — die Detailkarte wird mit einem Mapbox-Schlüssel aktiviert.",
+    "simplified": "vereinfachte Karte",
     "positionPrompt": "Dein Standort wird nur auf deinem Handy genutzt, um dich zu führen. Er wird nie geteilt.",
     "locating": "Standort wird ermittelt…",
     "accuracy": "Genauigkeit ± {count} m",
@@ -142,7 +147,9 @@
     "layerPlan": "Karte",
     "legend": "Legende",
     "spotsCount": "{count} Orte",
-    "walk": "{distance} · {minutes}"
+    "walk": "{distance} · {minutes}",
+    "view3d": "3D-Ansicht",
+    "view2d": "2D-Ansicht"
   },
   "gps": {
     "denied": "Standort abgelehnt",
@@ -180,7 +187,8 @@
     "start": "Start",
     "stepOf": "Station {current} von {total}",
     "elapsed": "Dauer",
-    "nextStop": "Nächster Spot →"
+    "nextStop": "Nächster Spot →",
+    "visitEnded": "Besuch beendet"
   },
   "spot": {
     "guideMe": "Führe mich",
@@ -487,7 +495,8 @@
       "low-accuracy": "Ungenau (± 60 m)",
       "denied": "GPS abgelehnt",
       "unavailable": "GPS nicht verfügbar",
-      "real": "Echtes GPS des Geräts"
+      "real": "Echtes GPS des Geräts",
+      "approximate": "Ungefähres GPS (± 18 m)"
     },
     "realHint": "Echtes GPS erfordert HTTPS auf dem iPhone (Tunnel, siehe README).",
     "progress": "Simulierter Fortschritt",
@@ -502,5 +511,102 @@
     "resetDone": "Demo zurückgesetzt.",
     "badgeUnlocked": "Abzeichen freigeschaltet",
     "profile": "Beispielprofil: {name}"
+  },
+  "geo": {
+    "consentTitle": "Standort aktivieren",
+    "consentIntro": "ParkQuest nutzt deinen Standort nur, um:",
+    "consentUse1": "dich auf der Parkkarte anzuzeigen;",
+    "consentUse2": "dich zu bemerkenswerten Bäumen und Orten zu führen;",
+    "consentUse3": "dir die Entfernung zum nächsten Spot anzuzeigen.",
+    "consentPrivate": "Dein Standort ist für andere Besucher nie sichtbar.",
+    "consentLater": "Jetzt nicht",
+    "consentAccept": "Standort aktivieren",
+    "privacyLink": "Datenschutz",
+    "declinedNotice": "Ohne Standort ist die Navigation ungenauer. Wähle einen Startpunkt oder folge der Wegbeschreibung.",
+    "nearbyTitle": "In deiner Nähe",
+    "expandList": "Alle {count} Orte anzeigen",
+    "collapseList": "Liste einklappen",
+    "from": "Von: {place}",
+    "yourPosition": "deinem Standort",
+    "startPoint": "Startpunkt",
+    "seeOnMap": "Karte",
+    "seeCard": "Steckbrief",
+    "guideMe": "Führe mich",
+    "guidingTo": "Zu {name}",
+    "guideHint": "Folge dem Pfeil. Die Entdeckung bestätigst du vor Ort.",
+    "arrived": "Du bist fast da",
+    "stopGuiding": "Führung beenden",
+    "direction": "Richtung {dir}",
+    "precise": "Du bist bei: {name}",
+    "estDistance": "Geschätzte Entfernung: {distance}",
+    "accuracy": "GPS-Genauigkeit: ± {count} m",
+    "likely": "Du scheinst in der Nähe dieses Ortes zu sein",
+    "likelyBody": "Bestätige, dass du vor Ort bist.",
+    "imprecise": "Ungenaues GPS-Signal (± {count} m)",
+    "impreciseBody": "Wir können deinen Standort nicht prüfen. Sieh dir Foto und Karte an und bestätige, wenn du dort bist.",
+    "confirmHere": "Ich bestätige, ich bin da",
+    "status": {
+      "precise": "Genaues GPS",
+      "approximate": "Ungefähres GPS",
+      "imprecise": "Ungenaues GPS",
+      "off": "GPS aus",
+      "denied": "GPS abgelehnt",
+      "locating": "Standort wird ermittelt…"
+    },
+    "openMap": "Karte öffnen",
+    "endVisit": "Besuch beenden",
+    "service": "Service",
+    "accessible": "Barrierefrei",
+    "noResult": "Nichts in der Nähe für diesen Filter.",
+    "filters": {
+      "all": "Alle",
+      "trees": "Bäume",
+      "plants": "Pflanzen",
+      "history": "Geschichte",
+      "photo": "Foto",
+      "challenges": "Challenges",
+      "services": "Services",
+      "pmr": "Barrierefrei"
+    },
+    "dirs": {
+      "N": "Norden",
+      "NE": "Nordosten",
+      "E": "Osten",
+      "SE": "Südosten",
+      "S": "Süden",
+      "SW": "Südwesten",
+      "W": "Westen",
+      "NW": "Nordwesten"
+    }
+  },
+  "weather": {
+    "title": "Wetter während deines Besuchs",
+    "simulated": "Simuliertes Wetter (Demomodus)",
+    "source": "Wetterdaten: Open-Meteo.com",
+    "now": "Jetzt",
+    "rainAt": "Regen wahrscheinlich gegen {hour}",
+    "noRain": "Kein Regen erwartet",
+    "wind": "Wind {speed} km/h",
+    "uv": "UV {value}",
+    "unavailable": "Wetter derzeit nicht verfügbar.",
+    "advice": {
+      "rain": "Nimm eine Regenjacke mit: die großen Gewächshäuser bieten Schutz.",
+      "heat": "Es ist heiß: merke dir Trinkwasserstellen und schattige Bereiche.",
+      "cold": "Es ist kühl: zieh dich warm an, besonders die Kinder.",
+      "wind": "Starker Wind: meide Waldbereiche und beachte mögliche Schließungen.",
+      "uv": "Hoher UV-Index: Hut und Sonnencreme.",
+      "nice": "Ideale Bedingungen für deinen Besuch."
+    },
+    "codes": {
+      "clear": "Sonnig",
+      "partly": "Teilweise bewölkt",
+      "cloudy": "Bewölkt",
+      "fog": "Nebel",
+      "drizzle": "Nieselregen",
+      "rain": "Regen",
+      "snow": "Schnee",
+      "showers": "Schauer",
+      "storm": "Gewitter"
+    }
   }
 }

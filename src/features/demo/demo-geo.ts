@@ -7,6 +7,7 @@ import { demoGeo, type DemoGeoMode } from "./demo-data";
 /**
  * Position SIMULÉE du mode démo (choisie dans le panneau Démo).
  *  - near         : à ~8 m du spot ciblé, précision 6 m → découverte validée par GPS
+ *  - approximate  : à ~16 m, précision 18 m → « Vous semblez proche », confirmation
  *  - entrance     : à l'entrée du parc, précision 10 m
  *  - low-accuracy : près du spot mais précision 60 m → pas de validation GPS
  *  - denied       : permission refusée
@@ -16,7 +17,7 @@ import { demoGeo, type DemoGeoMode } from "./demo-data";
  */
 
 export type { DemoGeoMode };
-export const DEMO_GEO_MODES: DemoGeoMode[] = ["near", "entrance", "low-accuracy", "denied", "unavailable", "real"];
+export const DEMO_GEO_MODES: DemoGeoMode[] = ["near", "approximate", "low-accuracy", "entrance", "denied", "unavailable", "real"];
 
 const KEY = "parkquest.demo-geo.v1";
 const listeners = new Set<() => void>();
@@ -80,6 +81,10 @@ export function useDemoGeoTargetValue(): LatLng | null {
 /** Position simulée pour un mode donné. */
 export function simulatedPosition(mode: DemoGeoMode, near: LatLng | null): { lat: number; lng: number; accuracy: number } | null {
   if (mode === "entrance") return { ...demoGeo.entrance, accuracy: demoGeo.entranceAccuracyM };
+  if (mode === "approximate") {
+    const base = near ?? demoGeo.entrance;
+    return { lat: base.lat + demoGeo.approximateOffset.lat, lng: base.lng + demoGeo.approximateOffset.lng, accuracy: demoGeo.approximateAccuracyM };
+  }
   if (mode === "near" || mode === "low-accuracy") {
     const base = near ?? demoGeo.entrance;
     return {

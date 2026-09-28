@@ -213,6 +213,32 @@ export const supabaseRepository: ContentRepository = {
     return (data ?? []).map((r) => mapSpotSummary(r, locale));
   },
 
+  async listNearbySpots(parkId, origin, radiusM, locale) {
+    const { data, error } = await (await db()).rpc("nearby_spots", {
+      p_park_id: parkId,
+      p_latitude: origin.lat,
+      p_longitude: origin.lng,
+      p_radius_m: radiusM,
+      p_locale: locale,
+    });
+    if (error) throw error;
+    return ((data ?? []) as Row[]).map((r) => ({
+      id: r.spot_id,
+      parkId,
+      slug: r.slug,
+      kind: r.kind,
+      isDemoData: false,
+      location: { lat: r.latitude, lng: r.longitude },
+      coverImageUrl: r.cover_image_url ?? "/demo/spots/placeholder.svg",
+      name: r.name ?? r.slug,
+      label: r.label ?? undefined,
+      pointsValue: r.points_value,
+      categoryKeys: r.categories ?? [],
+      contentLocale: locale,
+      distanceM: r.distance_m,
+    }));
+  },
+
   async getSpot(parkId, spotSlug, locale): Promise<Spot | null> {
     const { data: r, error } = await (await db())
       .from("spots")

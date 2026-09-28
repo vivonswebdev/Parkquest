@@ -23,7 +23,7 @@ export function TrailCard({ trail, parkSlug, className, priority }: { trail: Tra
           <Pill tone="dark">{t(`difficulty.${trail.difficulty}`)}</Pill>
           {trail.isDemoData && <DemoBadge />}
         </div>
-        <div className="absolute inset-x-0 bottom-0 p-4">
+        <div className="absolute inset-x-0 bottom-0 p-4 pr-16">
           <h3 className="text-lg font-bold leading-tight text-white">{trail.name}</h3>
           <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-white/80">
             <span className="inline-flex items-center gap-1"><Clock className="size-3.5" />{formatDuration(trail.durationMin)}</span>

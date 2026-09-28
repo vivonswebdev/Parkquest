@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "node scripts/copy-maplibre-worker.mjs",
     "dev": "next dev",
     "dev:demo": "cross-env NEXT_PUBLIC_DEMO_MODE=true next dev",
     "dev:lan": "node scripts/dev-lan.mjs",
@@ -30,7 +31,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^1.48.0",
-    "mapbox-gl": "^3.31.0",
+    "maplibre-gl": "^6.11.2",
     "next": "16.3.6",
     "next-intl": "^4.14.7",
     "react": "19.2.8",

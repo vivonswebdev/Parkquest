@@ -1,4 +1,5 @@
 import type {
+  LatLng,
   Article,
   ArticleSummary,
   Badge,
@@ -25,6 +26,12 @@ export interface ContentRepository {
   getPark(slug: string, locale: string): Promise<Park | null>;
   listCategories(locale: string): Promise<SpotCategory[]>;
   listSpots(parkId: string, locale: string): Promise<SpotSummary[]>;
+  /**
+   * Spots publiés autour d'un point, triés par distance (« Autour de vous »).
+   * Démo : calcul en mémoire. Production : fonction PostGIS nearby_spots (index GIST).
+   * Les coordonnées reçues ne sont jamais stockées.
+   */
+  listNearbySpots(parkId: string, origin: LatLng, radiusM: number, locale: string): Promise<(SpotSummary & { distanceM: number })[]>;
   getSpot(parkId: string, spotSlug: string, locale: string): Promise<Spot | null>;
   listTrails(parkId: string, locale: string): Promise<TrailSummary[]>;
   getTrail(parkId: string, trailSlug: string, locale: string): Promise<Trail | null>;

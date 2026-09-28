@@ -45,3 +45,6 @@ next-env.d.ts
 /test-results/
 /playwright-report/
 /demo-shots/
+/parkquest-*.zip
+/accueil-*.png
+/public/vendor/

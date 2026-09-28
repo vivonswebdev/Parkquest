@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { unlockedBadgeKeys } from "../../src/features/demo/demo-badges";
 import { demoBaselineProgress, demoData, demoGeo } from "../../src/features/demo/demo-data";
+import { pickDaily } from "../../src/lib/daily";
 import { distanceM } from "../../src/lib/geo";
 import { pickTranslation } from "../../src/lib/i18n-content";
 import { recommendTrail } from "../../src/lib/plan";
@@ -67,5 +68,15 @@ describe("Traductions et planification", () => {
     const r = recommendTrail(trails, { minutes: 60, audience: "FAMILY", interests: ["TREES"] });
     assert.equal(r?.trail.slug, "arbres-remarquables");
     assert.ok(r?.fitsTime && r.audienceMatch);
+  });
+});
+
+describe("Défi du jour", () => {
+  it("même choix toute la journée, change le lendemain, null si vide", () => {
+    const items = ["a", "b", "c"];
+    const d1 = pickDaily(items, new Date("2026-09-28T01:00:00Z"));
+    assert.equal(pickDaily(items, new Date("2026-09-28T23:59:00Z")), d1);
+    assert.notEqual(pickDaily(items, new Date("2026-09-29T08:00:00Z")), d1);
+    assert.equal(pickDaily([], new Date()), null);
   });
 });
