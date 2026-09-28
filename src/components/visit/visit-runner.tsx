@@ -16,6 +16,7 @@ import type { MapHandle, MapMarker, MapPath } from "@/components/map/types";
 import { SPOT_KIND_COLOR } from "@/components/shared/icons";
 import { Button } from "@/components/ui/button";
 import { Pill } from "@/components/ui/pill";
+import { DemoBadge } from "@/components/shared/demo-badge";
 import { Progress } from "@/components/ui/progress";
 import { useGeolocation } from "@/hooks/use-geolocation";
 import { Link, useRouter } from "@/i18n/navigation";
@@ -238,12 +239,11 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
         {startError === "AUTH_REQUIRED" && (
           <div className="mx-auto mt-2 max-w-xl"><ActionErrorMessage error="AUTH_REQUIRED" className="glass-strong" /></div>
         )}
-        <div className="mx-auto mt-2 flex max-w-xl justify-center">
+        <div className="mx-auto mt-2 flex max-w-xl items-center justify-center gap-2">
           <GpsStatus status={geo.status} accuracy={geo.position?.accuracy} />
+          {/* Démo : pastille discrète ; le détail est dans le panneau DÉMO et sur chaque résultat */}
+          {isDemoMode && <DemoBadge className="border-transparent bg-black/55 text-[#f4c95d] backdrop-blur" />}
         </div>
-        {isDemoMode && (
-          <p className="glass-strong mx-auto mt-2 w-fit max-w-xl rounded-full px-3 py-1.5 text-center text-[11px] text-gold">{t("common.demoModeNotice")}</p>
-        )}
       </div>
 
       {/* Bouton recentrer */}
