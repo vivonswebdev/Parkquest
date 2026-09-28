@@ -15,6 +15,8 @@ function mapError(e: { message?: string; code?: string } | null): ActionError {
   if (m.includes("AUTH_REQUIRED") || e?.code === "28000" || e?.code === "42501") return "AUTH_REQUIRED";
   if (m.includes("NOT_FOUND") || e?.code === "P0002") return "NOT_FOUND";
   if (m.includes("PHOTO_REQUIRED")) return "PHOTO_REQUIRED";
+  if (m.includes("CONSENT_REQUIRED")) return "CONSENT_REQUIRED";
+  if (m.includes("RATE_LIMITED") || e?.code === "54000") return "RATE_LIMITED";
   return "SERVER_ERROR";
 }
 
@@ -110,5 +112,27 @@ export const supabaseGameService: GameService = {
     if (e) return { ok: false, error: mapError(e) };
     const r = data as { status: "APPROVED" | "PENDING" | "ALREADY_SUBMITTED" | "NOT_REACHED"; points_awarded: number; new_badges: string[] };
     return { ok: true, mode: "live", status: r.status, pointsAwarded: r.points_awarded, newBadges: r.new_badges ?? [] };
+  },
+
+  async submitSpotPhoto(i) {
+    const { supabase, uid, error } = await client();
+    if (!supabase || !uid) return { ok: false, error: error ?? "AUTH_REQUIRED" };
+    // Dossier privé de l'auteur ; publication (copie publique) seulement après modération.
+    const path = `${uid}/spots/${crypto.randomUUID()}.jpg`;
+    const { error: upErr } = await supabase.storage.from("user-photos").upload(path, i.photo, { contentType: "image/jpeg" });
+    if (upErr) return { ok: false, error: "SERVER_ERROR" };
+    const { error: e } = await supabase.rpc("submit_spot_photo", {
+      p_spot_id: i.spotId,
+      p_storage_path: path,
+      p_width: i.width,
+      p_height: i.height,
+      p_alt: i.alt ?? null,
+      p_license_consent: i.licenseConsent,
+    });
+    if (e) {
+      await supabase.storage.from("user-photos").remove([path]);
+      return { ok: false, error: mapError(e) };
+    }
+    return { ok: true, mode: "live", status: "PENDING" };
   },
 };

@@ -608,5 +608,52 @@
       "showers": "Showers",
       "storm": "Thunderstorm"
     }
+  },
+  "photos": {
+    "title": "Photos",
+    "count": "{count, plural, one {# photo} other {# photos}}",
+    "add": "Add a photo",
+    "addShort": "Add",
+    "emptyTitle": "Be the first to photograph this place",
+    "emptyBody": "Your photos will help other visitors recognise {name}.",
+    "sheetTitle": "Photo of {name}",
+    "sheetIntro": "Your photo will be visible once the park team has checked it.",
+    "rules": {
+      "place": "Photograph the place or plant: no recognisable people, never children.",
+      "own": "Only photos you took yourself.",
+      "paths": "Stay on the paths: don't trample or pick anything for the photo.",
+      "privacy": "GPS position and device information are removed automatically."
+    },
+    "choose": "Take or choose a photo",
+    "preparing": "Preparing…",
+    "change": "Change",
+    "altLabel": "Description (optional)",
+    "altPlaceholder": "E.g. the trunk seen from the path",
+    "consent": "I agree to publish this photo under the CC BY-SA 4.0 licence, credited with my username.",
+    "send": "Send photo",
+    "sending": "Sending…",
+    "thanksTitle": "Thank you!",
+    "thanksBody": "Your photo will be published once the park team has checked it (+5 points when approved).",
+    "demoNote": "Demo mode: the photo stays on this device. Approve it from the DEMO panel to see it published.",
+    "pending": "Awaiting review",
+    "you": "You",
+    "community": "ParkQuest community",
+    "official": "Official park photo",
+    "wikimedia": "Wikimedia Commons",
+    "cover": "Cover photo",
+    "open": "View photo {n}",
+    "close": "Close",
+    "prev": "Previous photo",
+    "next": "Next photo",
+    "sourceLink": "View source and licence",
+    "errors": {
+      "TYPE": "Unsupported format (JPEG, PNG, WebP or HEIC).",
+      "TOO_LARGE": "Photo too large (25 MB max).",
+      "EMPTY": "Empty file.",
+      "TOO_SMALL": "Photo too small (480 pixels minimum).",
+      "READ": "This photo can't be read on this device. Try a JPEG.",
+      "CONSENT": "Please accept the licence to publish your photo.",
+      "RATE_LIMITED": "You've suggested many photos today. Please try again tomorrow."
+    }
   }
 }

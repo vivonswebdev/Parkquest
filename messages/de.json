@@ -608,5 +608,52 @@
       "showers": "Schauer",
       "storm": "Gewitter"
     }
+  },
+  "photos": {
+    "title": "Fotos",
+    "count": "{count, plural, one {# Foto} other {# Fotos}}",
+    "add": "Foto hinzufügen",
+    "addShort": "Hinzufügen",
+    "emptyTitle": "Fotografiere diesen Ort als Erste·r",
+    "emptyBody": "Deine Fotos helfen anderen Besuchern, {name} zu erkennen.",
+    "sheetTitle": "Foto von {name}",
+    "sheetIntro": "Dein Foto ist sichtbar, sobald das Parkteam es geprüft hat.",
+    "rules": {
+      "place": "Fotografiere den Ort oder die Pflanze: keine erkennbaren Personen, niemals Kinder.",
+      "own": "Nur Fotos, die du selbst gemacht hast.",
+      "paths": "Bleib auf den Wegen: Für das Foto nichts zertreten oder pflücken.",
+      "privacy": "GPS-Position und Geräteinformationen werden automatisch entfernt."
+    },
+    "choose": "Foto aufnehmen oder auswählen",
+    "preparing": "Wird vorbereitet…",
+    "change": "Ändern",
+    "altLabel": "Beschreibung (optional)",
+    "altPlaceholder": "z. B. der Stamm vom Weg aus",
+    "consent": "Ich stimme der Veröffentlichung unter der Lizenz CC BY-SA 4.0 mit meinem Benutzernamen als Urhebernennung zu.",
+    "send": "Foto senden",
+    "sending": "Wird gesendet…",
+    "thanksTitle": "Danke!",
+    "thanksBody": "Dein Foto wird nach Prüfung durch das Parkteam veröffentlicht (+5 Punkte nach Freigabe).",
+    "demoNote": "Demo-Modus: Das Foto bleibt auf diesem Gerät. Gib es im DEMO-Panel frei, um es veröffentlicht zu sehen.",
+    "pending": "Wird geprüft",
+    "you": "Du",
+    "community": "ParkQuest-Community",
+    "official": "Offizielles Foto des Parks",
+    "wikimedia": "Wikimedia Commons",
+    "cover": "Titelbild",
+    "open": "Foto {n} ansehen",
+    "close": "Schließen",
+    "prev": "Vorheriges Foto",
+    "next": "Nächstes Foto",
+    "sourceLink": "Quelle und Lizenz ansehen",
+    "errors": {
+      "TYPE": "Format nicht unterstützt (JPEG, PNG, WebP oder HEIC).",
+      "TOO_LARGE": "Foto zu groß (max. 25 MB).",
+      "EMPTY": "Leere Datei.",
+      "TOO_SMALL": "Foto zu klein (mindestens 480 Pixel).",
+      "READ": "Dieses Foto kann auf diesem Gerät nicht gelesen werden. Versuche ein JPEG.",
+      "CONSENT": "Bitte akzeptiere die Lizenz, um dein Foto zu veröffentlichen.",
+      "RATE_LIMITED": "Du hast heute viele Fotos vorgeschlagen. Versuche es morgen erneut."
+    }
   }
 }

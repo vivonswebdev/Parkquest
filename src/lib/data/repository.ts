@@ -10,6 +10,7 @@ import type {
   PublicQuiz,
   Spot,
   SpotCategory,
+  SpotPhoto,
   SpotSummary,
   Trail,
   TrailSummary,
@@ -33,6 +34,8 @@ export interface ContentRepository {
    */
   listNearbySpots(parkId: string, origin: LatLng, radiusM: number, locale: string): Promise<(SpotSummary & { distanceM: number })[]>;
   getSpot(parkId: string, spotSlug: string, locale: string): Promise<Spot | null>;
+  /** Photos publiées d'un spot (couverture d'abord). Jamais les photos en attente. */
+  listSpotPhotos(spotId: string): Promise<SpotPhoto[]>;
   listTrails(parkId: string, locale: string): Promise<TrailSummary[]>;
   getTrail(parkId: string, trailSlug: string, locale: string): Promise<Trail | null>;
   listFacilities(parkId: string, locale: string): Promise<Facility[]>;

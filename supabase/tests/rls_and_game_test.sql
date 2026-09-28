@@ -172,6 +172,51 @@ reset role;
 select pg_temp.as_user(null);
 select pg_temp.assert((select count(*) from public.comments) = 0, 'commentaire PENDING invisible au public');
 
+-- 11. Photos de spots (communauté) : consentement, dossier privé, invisibles avant validation
+reset role;
+select pg_temp.as_user('aaaaaaaa-0000-4000-8000-000000000001');
+do $$ begin
+  perform public.submit_spot_photo('00000003-0000-4000-8000-000000000001', 'aaaaaaaa-0000-4000-8000-000000000001/a.jpg', 800, 600, null, false);
+  raise exception 'ÉCHEC: photo sans consentement';
+exception when invalid_parameter_value then raise notice 'ok  photo refusée sans consentement de licence';
+end $$;
+do $$ begin
+  perform public.submit_spot_photo('00000003-0000-4000-8000-000000000001', 'bbbbbbbb-autre/a.jpg', 800, 600, null, true);
+  raise exception 'ÉCHEC: fichier hors du dossier de l''auteur';
+exception when invalid_parameter_value then raise notice 'ok  photo refusée hors du dossier de l''auteur';
+end $$;
+select public.submit_spot_photo('00000003-0000-4000-8000-000000000001', 'aaaaaaaa-0000-4000-8000-000000000001/sequoia.jpg', 1600, 1200, 'Tronc du séquoia', true) as photo_id \gset
+select pg_temp.assert(
+  (select moderation_status::text || ' / ' || license || ' / ' || source::text from public.media where id = :'photo_id') = 'PENDING / CC BY-SA 4.0 / COMMUNITY',
+  'photo proposée : en attente, licence CC BY-SA, source communauté');
+select pg_temp.assert((select author_name is not null and consent_at is not null from public.media where id = :'photo_id'), 'crédit (pseudonyme) et consentement enregistrés');
+do $$ begin
+  insert into public.media (owner_id, park_id, spot_id, storage_path, source, public_url)
+  values ('aaaaaaaa-0000-4000-8000-000000000001', '00000001-0000-4000-8000-000000000001', '00000003-0000-4000-8000-000000000001', 'x', 'OFFICIAL', 'https://exemple.test/x.jpg');
+  raise exception 'ÉCHEC: publication directe par un utilisateur';
+exception when insufficient_privilege then raise notice 'ok  un utilisateur ne peut pas publier une photo directement';
+end $$;
+reset role;
+select pg_temp.as_user(null);
+select pg_temp.assert(not exists (select 1 from public.media where id = :'photo_id'), 'photo en attente invisible au public');
+
+-- 12. Admin Meise : couverture seulement après validation et publication
+reset role;
+select pg_temp.as_user('aaaaaaaa-0000-4000-8000-000000000003');
+do $$ begin
+  perform public.set_spot_cover((select id from public.media where storage_path like '%/sequoia.jpg'));
+  raise exception 'ÉCHEC: couverture avant publication';
+exception when invalid_parameter_value then raise notice 'ok  pas de couverture avant publication';
+end $$;
+select public.moderate_media(:'photo_id', true);
+update public.media set public_url = 'https://cdn.exemple.test/park-media/community/sequoia.jpg' where id = :'photo_id';
+select public.set_spot_cover(:'photo_id');
+reset role;
+select pg_temp.as_user(null);
+select pg_temp.assert(
+  (select is_cover from public.media where id = :'photo_id' and moderation_status = 'APPROVED'),
+  'photo validée, publiée et en couverture : visible du public');
+
 reset role;
 rollback;
 \echo 'Tous les tests RLS & jeu sont passés.'

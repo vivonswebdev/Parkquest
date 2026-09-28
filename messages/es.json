@@ -608,5 +608,52 @@
       "showers": "Chubascos",
       "storm": "Tormenta"
     }
+  },
+  "photos": {
+    "title": "Fotos",
+    "count": "{count, plural, one {# foto} other {# fotos}}",
+    "add": "Añadir una foto",
+    "addShort": "Añadir",
+    "emptyTitle": "Sé la primera persona en fotografiar este lugar",
+    "emptyBody": "Tus fotos ayudarán a otros visitantes a reconocer {name}.",
+    "sheetTitle": "Foto de {name}",
+    "sheetIntro": "Tu foto será visible cuando el equipo del parque la haya revisado.",
+    "rules": {
+      "place": "Fotografía el lugar o la planta: sin personas reconocibles, nunca niños.",
+      "own": "Solo fotos que hayas hecho tú.",
+      "paths": "Quédate en los caminos: no pises ni arranques nada para la foto.",
+      "privacy": "La posición GPS y los datos del dispositivo se eliminan automáticamente."
+    },
+    "choose": "Hacer o elegir una foto",
+    "preparing": "Preparando…",
+    "change": "Cambiar",
+    "altLabel": "Descripción (opcional)",
+    "altPlaceholder": "Ej.: el tronco visto desde el camino",
+    "consent": "Acepto publicar esta foto con licencia CC BY-SA 4.0, con mi seudónimo como crédito.",
+    "send": "Enviar la foto",
+    "sending": "Enviando…",
+    "thanksTitle": "¡Gracias!",
+    "thanksBody": "Tu foto se publicará tras la revisión del equipo del parque (+5 puntos al aprobarse).",
+    "demoNote": "Modo demo: la foto se queda en este dispositivo. Apruébala desde el panel DEMO para verla publicada.",
+    "pending": "Pendiente de revisión",
+    "you": "Tú",
+    "community": "Comunidad ParkQuest",
+    "official": "Foto oficial del parque",
+    "wikimedia": "Wikimedia Commons",
+    "cover": "Foto de portada",
+    "open": "Ver la foto {n}",
+    "close": "Cerrar",
+    "prev": "Foto anterior",
+    "next": "Foto siguiente",
+    "sourceLink": "Ver fuente y licencia",
+    "errors": {
+      "TYPE": "Formato no compatible (JPEG, PNG, WebP o HEIC).",
+      "TOO_LARGE": "Foto demasiado pesada (25 MB máx.).",
+      "EMPTY": "Archivo vacío.",
+      "TOO_SMALL": "Foto demasiado pequeña (mínimo 480 píxeles).",
+      "READ": "No se puede leer esta foto en este dispositivo. Prueba con un JPEG.",
+      "CONSENT": "Acepta la licencia para publicar tu foto.",
+      "RATE_LIMITED": "Has propuesto muchas fotos hoy. Vuelve a intentarlo mañana."
+    }
   }
 }

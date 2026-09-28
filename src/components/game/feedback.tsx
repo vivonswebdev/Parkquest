@@ -49,7 +49,11 @@ export function ActionErrorMessage({ error, className }: { error: ActionError; c
           ? t("challenge.photoRequired")
           : error === "NOT_FOUND"
             ? t("common.notFoundBody")
-            : t("common.errorBody");
+            : error === "CONSENT_REQUIRED"
+              ? t("photos.errors.CONSENT")
+              : error === "RATE_LIMITED"
+                ? t("photos.errors.RATE_LIMITED")
+                : t("common.errorBody");
   return (
     <div role="alert" className={cn("flex items-start gap-2 rounded-2xl bg-danger/10 p-3 text-sm text-danger", className)}>
       <AlertTriangle className="mt-0.5 size-4 shrink-0" />

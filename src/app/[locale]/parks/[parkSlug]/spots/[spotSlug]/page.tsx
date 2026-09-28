@@ -18,6 +18,7 @@ import { requirePark } from "@/lib/data/loaders";
 import { formatDistance, formatNumber } from "@/lib/format";
 import { distanceM, walkingMinutes } from "@/lib/geo";
 import { getServerProgress } from "@/server/progress";
+import { SpotPhotos } from "@/components/spot/spot-photos";
 
 type Params = { params: Promise<{ locale: string; parkSlug: string; spotSlug: string }> };
 
@@ -36,15 +37,17 @@ export default async function SpotPage({ params }: Params) {
   const spot = await repo.getSpot(park.id, spotSlug, locale);
   if (!spot) notFound();
 
-  const [quizzes, challenges, facilities, trails, progress] = await Promise.all([
+  const [quizzes, challenges, facilities, trails, progress, photos] = await Promise.all([
     repo.listQuizzesForSpot(spot.id, locale),
     repo.listChallenges(park.id, locale, spot.id),
     repo.listFacilities(park.id, locale),
     listTrails(park.id, locale),
     getServerProgress(),
+    repo.listSpotPhotos(spot.id),
   ]);
   const entrance = facilities.find((f) => f.type === "ENTRANCE")?.location ?? park.location;
   const fromEntrance = distanceM(entrance, spot.location);
+  const cover = photos.find((p) => p.isCover);
   const trail = trails[0] ? await repo.getTrail(park.id, trails[0].slug, locale) : null;
   const inTrail = trail?.spots.some((s) => s.id === spot.id) ? trail : null;
 
@@ -69,7 +72,13 @@ export default async function SpotPage({ params }: Params) {
         {/* Photo immersive */}
         <div className="relative mx-auto max-w-5xl md:px-6 md:pt-6">
           <div className="relative h-[46vh] min-h-[320px] overflow-hidden md:h-[420px] md:rounded-[28px]">
-            <Image src={spot.coverImageUrl} alt="" fill priority sizes="(max-width: 1024px) 100vw, 1000px" className="object-cover" />
+            {cover ? (
+              // Photo de couverture choisie par le parc parmi les photos publiées
+              // eslint-disable-next-line @next/next/no-img-element -- origine externe (stockage, Wikimedia)
+              <img src={cover.url} alt={cover.alt ?? ""} className="absolute inset-0 size-full object-cover" />
+            ) : (
+              <Image src={spot.coverImageUrl} alt="" fill priority sizes="(max-width: 1024px) 100vw, 1000px" className="object-cover" />
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-background/30" />
             <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4 pt-[max(env(safe-area-inset-top),1rem)]">
               <Link href={`/parks/${park.slug}/map`} aria-label={t("common.back")} className="inline-flex size-12 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur">
@@ -111,6 +120,8 @@ export default async function SpotPage({ params }: Params) {
               ))}
             </div>
           )}
+
+          <SpotPhotos spotId={spot.id} spotName={spot.name} photos={photos} />
 
           {/* Découverte (validation serveur, jamais automatique) */}
           <DiscoverSpotCard

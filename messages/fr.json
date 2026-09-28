@@ -608,5 +608,52 @@
       "showers": "Averses",
       "storm": "Orage"
     }
+  },
+  "photos": {
+    "title": "Photos",
+    "count": "{count, plural, one {# photo} other {# photos}}",
+    "add": "Ajouter une photo",
+    "addShort": "Ajouter",
+    "emptyTitle": "Soyez la première personne à photographier ce lieu",
+    "emptyBody": "Vos photos aideront les autres visiteurs à reconnaître {name}.",
+    "sheetTitle": "Photo de {name}",
+    "sheetIntro": "Votre photo sera visible après vérification par l'équipe du parc.",
+    "rules": {
+      "place": "Photographiez le lieu ou la plante : pas de personne reconnaissable, jamais d'enfants.",
+      "own": "Uniquement une photo que vous avez prise vous-même.",
+      "paths": "Restez sur les chemins : ne piétinez ni ne cueillez rien pour la photo.",
+      "privacy": "La position GPS et les informations de l'appareil sont retirées automatiquement."
+    },
+    "choose": "Prendre ou choisir une photo",
+    "preparing": "Préparation…",
+    "change": "Changer",
+    "altLabel": "Description (facultatif)",
+    "altPlaceholder": "Ex. : le tronc vu depuis l'allée",
+    "consent": "J'accepte de publier cette photo sous licence CC BY-SA 4.0, avec mon pseudonyme comme crédit.",
+    "send": "Envoyer la photo",
+    "sending": "Envoi…",
+    "thanksTitle": "Merci !",
+    "thanksBody": "Votre photo sera publiée après vérification par l'équipe du parc (+5 points une fois validée).",
+    "demoNote": "Mode démo : la photo reste sur cet appareil. Validez-la depuis le panneau DÉMO pour la voir publiée.",
+    "pending": "En attente de vérification",
+    "you": "Vous",
+    "community": "Communauté ParkQuest",
+    "official": "Photo officielle du parc",
+    "wikimedia": "Wikimedia Commons",
+    "cover": "Photo de couverture",
+    "open": "Voir la photo {n}",
+    "close": "Fermer",
+    "prev": "Photo précédente",
+    "next": "Photo suivante",
+    "sourceLink": "Voir la source et la licence",
+    "errors": {
+      "TYPE": "Format non pris en charge (JPEG, PNG, WebP ou HEIC).",
+      "TOO_LARGE": "Photo trop lourde (25 Mo maximum).",
+      "EMPTY": "Fichier vide.",
+      "TOO_SMALL": "Photo trop petite (480 pixels minimum).",
+      "READ": "Impossible de lire cette photo sur cet appareil. Essayez en JPEG.",
+      "CONSENT": "Merci d'accepter la licence pour publier votre photo.",
+      "RATE_LIMITED": "Vous avez proposé beaucoup de photos aujourd'hui. Réessayez demain."
+    }
   }
 }

@@ -165,3 +165,32 @@ test("météo : prévisions pendant la visite (simulées en démo)", async ({ pa
   // En démo, la météo est clairement marquée comme simulée (jamais présentée comme réelle)
   await expect(page.getByText("Météo simulée (mode démo)").first()).toBeVisible();
 });
+
+test("photo d'un spot : proposition, consentement, attente, validation (démo)", async ({ page }) => {
+  const sharp = (await import("sharp")).default;
+  const jpeg = await sharp({ create: { width: 1200, height: 900, channels: 3, background: "#2f7d4f" } }).jpeg().toBuffer();
+  await page.addInitScript(() => {
+    if (!sessionStorage.getItem("init")) {
+      localStorage.clear();
+      sessionStorage.setItem("init", "1");
+    }
+  });
+  await page.goto("/fr/parks/plantentuin-meise/spots/sequoia-geant");
+  await page.getByRole("button", { name: "Ajouter une photo" }).first().click();
+  await expect(page.getByText("La position GPS et les informations de l'appareil sont retirées automatiquement.")).toBeVisible();
+  await page.getByLabel("Prendre ou choisir une photo").setInputFiles({ name: "sequoia.jpg", mimeType: "image/jpeg", buffer: jpeg });
+  const send = page.getByRole("button", { name: "Envoyer la photo" });
+  await expect(send).toBeDisabled();
+  await page.getByText("J'accepte de publier cette photo sous licence CC BY-SA 4.0").click();
+  await send.click();
+  await expect(page.getByText("Merci !")).toBeVisible();
+  await page.getByRole("dialog").getByRole("button", { name: "Fermer" }).last().click();
+  await expect(page.getByText("En attente de vérification").first()).toBeVisible();
+  // Modération simulée depuis le panneau DÉMO
+  await page.getByTestId("demo-panel-button").click();
+  await page.getByRole("button", { name: /Valider mes photos/ }).click();
+  await page.keyboard.press("Escape");
+  await page.reload();
+  await expect(page.getByRole("button", { name: "Voir la photo 1" })).toBeVisible();
+  await expect(page.getByText("En attente de vérification")).toHaveCount(0);
+});
