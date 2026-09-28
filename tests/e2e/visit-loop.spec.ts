@@ -34,7 +34,7 @@ test("boucle de visite : découverte, quiz, défi", async ({ page }) => {
   await page.getByRole("button", { name: "J'y suis" }).click();
   await expect(page.getByText("Découvert !")).toBeVisible();
   await expect(page.getByText(/sans validation GPS/)).toBeVisible();
-  await expect(page.getByText("Mode démo", { exact: false }).first()).toBeVisible();
+  await expect(page.getByText("Données de démonstration :", { exact: false }).first()).toBeVisible();
 
   // Quiz : bonne réponse au premier essai → +10
   await page.getByText("Amérique du Nord").click();
@@ -163,7 +163,7 @@ test("météo : prévisions pendant la visite (simulées en démo)", async ({ pa
   await page.goto("/fr/parks/plantentuin-meise");
   await expect(page.getByRole("list", { name: "Météo pendant votre visite" })).toBeVisible();
   // En démo, la météo est clairement marquée comme simulée (jamais présentée comme réelle)
-  await expect(page.getByText("Météo simulée (mode démo)").first()).toBeVisible();
+  await expect(page.getByText("Météo simulée (données de démonstration)").first()).toBeVisible();
 });
 
 test("photo d'un spot : proposition, consentement, attente, validation (démo)", async ({ page }) => {
@@ -203,4 +203,18 @@ test("visite plein écran : défilement de la page bloqué, restauré à la sort
   await page.getByRole("alertdialog").getByRole("button", { name: "Quitter" }).click();
   await expect(page).toHaveURL(/\/trails\/arbres-remarquables$/);
   await expect(page.locator("html")).not.toHaveClass(/pq-immersive/);
+});
+
+test("interface publique : aucun texte technique (test, mock, debug, prototype, Supabase)", async ({ page }) => {
+  const forbidden = /mode (démo|test)|\btest\b|mock|debug|prototype|supabase/i;
+  for (const path of ["/fr", "/fr/parks/plantentuin-meise", "/fr/parks/plantentuin-meise/trails/arbres-remarquables", "/fr/parks/plantentuin-meise/spots/sequoia-geant", "/fr/profile", "/fr/auth/sign-in", "/en", "/nl"]) {
+    await page.goto(path);
+    // Le panneau d'outils de démonstration (aperçus et local uniquement) est exclu de la vérification.
+    const text = await page.evaluate(() => {
+      const clone = document.body.cloneNode(true) as HTMLElement;
+      clone.querySelectorAll("[data-demo-tools]").forEach((n) => n.remove());
+      return clone.innerText;
+    });
+    expect(text, path).not.toMatch(forbidden);
+  }
 });

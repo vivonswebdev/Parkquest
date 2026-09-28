@@ -11,6 +11,8 @@ import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register"
 import { themeInitScript } from "@/components/theme/theme";
 import { ThemeSync } from "@/components/theme/theme-switcher";
 import { DemoBadgeToaster, DemoPanel } from "@/features/demo/demo-panel";
+import { PreviewBanner } from "@/components/layout/preview-banner";
+import { showDemoTools } from "@/lib/config/deploy-env";
 import { isDemoMode } from "@/lib/config/app-mode";
 import { routing } from "@/i18n/routing";
 
@@ -64,6 +66,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
       </head>
       <body>
         <NextIntlClientProvider>
+          <PreviewBanner />
           <NetworkStatus />
           <DesktopHeader />
           {children}
@@ -72,7 +75,12 @@ export default async function LocaleLayout({ children, params }: { children: Rea
           <ThemeSync />
           {isDemoMode && (
             <>
-              <DemoPanel />
+              {/* Outils de démonstration (position simulée…) : aperçus et local uniquement, jamais en production */}
+              {showDemoTools && (
+                <div data-demo-tools>
+                  <DemoPanel />
+                </div>
+              )}
               <DemoBadgeToaster />
             </>
           )}
