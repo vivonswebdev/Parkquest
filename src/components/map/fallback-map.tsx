@@ -5,7 +5,8 @@ import { useCallback, useImperativeHandle, useLayoutEffect, useMemo, useRef, use
 import type { LatLng } from "@/lib/domain/types";
 import { cn } from "@/lib/utils";
 import { MarkerIcon } from "./marker-icon";
-import type { ParkMapProps } from "./types";
+import { makeGroves, pondRing, scatterTrees } from "@/lib/map/nature";
+import type { MapMarker, MapNature, ParkMapProps } from "./types";
 
 /**
  * Carte de repli intégrée (sans Mapbox) : projection locale équirectangulaire
@@ -14,6 +15,14 @@ import type { ParkMapProps } from "./types";
  */
 
 const VIEW_W = 1000;
+
+/** Décor par défaut : dégager les marqueurs, un étang par spot « eau ». */
+export function defaultNature(markers: MapMarker[]): MapNature {
+  return {
+    clearings: markers.map((m) => m.location),
+    ponds: markers.filter((m) => m.type === "spot" && m.iconKey === "WATER").map((m) => ({ center: m.location, radiusM: 55 })),
+  };
+}
 
 function seeded(seed: string) {
   let h = 2166136261;
@@ -41,7 +50,7 @@ function blob(cx: number, cy: number, r: number, rand: () => number): string {
   return d + "Z";
 }
 
-export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onSelect, layer = "plan", className, paddingBottom = 0, ref }: ParkMapProps) {
+export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onSelect, layer = "plan", className, paddingBottom = 0, nature, focus, ref }: ParkMapProps) {
   const [sw, ne] = bounds;
   const midLat = (sw.lat + ne.lat) / 2;
   const kx = Math.cos((midLat * Math.PI) / 180);
@@ -57,7 +66,15 @@ export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onS
   const containerRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
   const [view, setView] = useState({ scale: 1, tx: 0, ty: 0 });
-  const baseScale = size.w && size.h ? Math.min(size.w / VIEW_W, (size.h - paddingBottom - 120) / VIEW_H) * 1.08 : 1;
+  // Cadrage initial sur la zone utile (lieux + parcours), centrée au-dessus des panneaux.
+  const fa = project(focus ? focus[0] : sw);
+  const fb = project(focus ? focus[1] : ne);
+  const focusW = Math.max(1, Math.abs(fb.x - fa.x));
+  const focusH = Math.max(1, Math.abs(fb.y - fa.y));
+  const fc = { x: (fa.x + fb.x) / 2, y: (fa.y + fb.y) / 2 };
+  const baseScale = size.w && size.h ? Math.min((size.w - 32) / focusW, (size.h - paddingBottom - 150) / focusH) : 1;
+  const originX = (s: number) => size.w / 2 - fc.x * s + view.tx;
+  const originY = (s: number) => (size.h - paddingBottom + 60) / 2 - fc.y * s + view.ty;
 
   useLayoutEffect(() => {
     const el = containerRef.current;
@@ -71,11 +88,10 @@ export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onS
   const toScreen = useCallback(
     (p: { x: number; y: number }) => {
       const s = baseScale * view.scale;
-      const ox = (size.w - VIEW_W * s) / 2 + view.tx;
-      const oy = (size.h - paddingBottom - VIEW_H * s) / 2 + view.ty;
-      return { x: ox + p.x * s, y: oy + p.y * s };
+      return { x: originX(s) + p.x * s, y: originY(s) + p.y * s };
     },
-    [baseScale, view, size, paddingBottom, VIEW_H],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- originX/Y dérivent de ces valeurs
+    [baseScale, view, size, paddingBottom, fc.x, fc.y],
   );
 
   const centerOn = useCallback(
@@ -84,14 +100,14 @@ export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onS
       setView((v) => {
         const sc = scale ?? v.scale;
         const s = baseScale * sc;
-        return { scale: sc, tx: -(target.x - VIEW_W / 2) * s, ty: -(target.y - VIEW_H / 2) * s };
+        return { scale: sc, tx: -(target.x - fc.x) * s, ty: -(target.y - fc.y) * s };
       });
     },
-    [project, baseScale, VIEW_H],
+    [project, baseScale, fc.x, fc.y],
   );
 
   useImperativeHandle(ref, () => ({
-    flyTo: (p, zoom) => centerOn(p, zoom ? Math.min(4, Math.max(1, zoom - 14.6)) : undefined),
+    flyTo: (p, zoom) => centerOn(p, zoom ? Math.min(4, Math.max(1, 2 ** (zoom - 16.6))) : undefined),
     fitBounds: () => setView({ scale: 1, tx: 0, ty: 0 }),
     resetNorth: () => setView({ scale: 1, tx: 0, ty: 0 }),
   }));
@@ -142,24 +158,89 @@ export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onS
     });
   };
 
-  // --- Décor déterministe ---
+  // --- Décor déterministe : pelouses, bois, étangs, arbres illustrés ---
+  const natureSpec = nature ?? defaultNature(markers);
+  const natureKey = JSON.stringify(natureSpec);
+  const trailPaths = paths.filter((p) => p.variant !== "active");
+  const trailKey = JSON.stringify(trailPaths.map((p) => p.coordinates));
   const decor = useMemo(() => {
     const rand = seeded(`${sw.lat}${sw.lng}`);
-    const woods = Array.from({ length: 9 }, () => blob(rand() * VIEW_W, rand() * VIEW_H, 60 + rand() * 110, rand));
+    const spec: MapNature = JSON.parse(natureKey);
+    const groves = makeGroves([sw, ne], `groves${sw.lat}${sw.lng}`);
+    const unitsPerM = VIEW_H / (spanY * 111_320);
+    const woods = groves.map((g) => {
+      const c = project(g.center);
+      return blob(c.x, c.y, g.radiusM * unitsPerM * 0.95, rand);
+    });
     const lawns = Array.from({ length: 6 }, () => blob(rand() * VIEW_W, rand() * VIEW_H, 50 + rand() * 80, rand));
-    const trees = Array.from({ length: 140 }, () => ({ x: rand() * VIEW_W, y: rand() * VIEW_H, r: 3 + rand() * 6 }));
+    const toD = (ring: [number, number][]) =>
+      ring
+        .map(([lng, lat], i) => {
+          const q = project({ lat, lng });
+          return `${i ? "L" : "M"}${q.x.toFixed(1)} ${q.y.toFixed(1)}`;
+        })
+        .join(" ") + "Z";
+    const trees = scatterTrees({
+      bounds: [sw, ne],
+      excludeAreas: spec.ponds.map((p, i) => pondRing(p.center, p.radiusM + 6, `pond${i}`)),
+      paths: JSON.parse(trailKey),
+      points: spec.clearings,
+      groves,
+      spacingM: 17,
+      maxTrees: 1600,
+    }).map((t) => ({ ...t, ...project(t) }));
     const topo = Array.from({ length: 7 }, (_, i) => {
       const y = (VIEW_H / 7) * i + 30;
       return `M-20 ${y} C ${VIEW_W * 0.25} ${y - 40 + rand() * 80}, ${VIEW_W * 0.6} ${y - 40 + rand() * 80}, ${VIEW_W + 20} ${y + rand() * 30}`;
     });
-    return { woods, lawns, trees, topo };
-  }, [sw.lat, sw.lng, VIEW_H]);
+    return {
+      woods,
+      lawns,
+      ponds: spec.ponds.map((p, i) => toD(pondRing(p.center, p.radiusM, `pond${i}`))),
+      trees,
+      mPerUnit: (spanY * 111_320) / VIEW_H,
+      topo,
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- dépendances sérialisées (natureKey, trailKey)
+  }, [natureKey, trailKey, project, VIEW_H, spanY]);
 
-  const water = markers.filter((m) => m.type === "spot" && m.iconKey === "WATER").map((m) => project(m.location));
-  const s = baseScale * view.scale;
-  const ox = (size.w - VIEW_W * s) / 2 + view.tx;
-  const oy = (size.h - paddingBottom - VIEW_H * s) / 2 + view.ty;
   const sat = layer === "satellite";
+  // Couche nature mémorisée : les arbres ne sont pas re-rendus pendant les déplacements.
+  const natureLayer = useMemo(
+    () => (
+      <g>
+        {decor.lawns.map((d, i) => (
+          <path key={`l${i}`} d={d} fill={sat ? "#2f5e33" : "var(--map-lawn)"} opacity={0.9} />
+        ))}
+        {decor.woods.map((d, i) => (
+          <path key={`w${i}`} d={d} fill={sat ? "#173d22" : "var(--map-wood)"} opacity={0.8} />
+        ))}
+        {decor.ponds.map((d, i) => (
+          <g key={`p${i}`}>
+            <path d={d} fill="none" stroke="var(--map-water-rim)" strokeWidth={7} strokeLinejoin="round" />
+            <path d={d} fill={sat ? "#2c5f6e" : "var(--map-water)"} />
+            <path d={d} fill="none" stroke="var(--map-water-light)" strokeWidth={2.5} strokeDasharray="30 22" opacity={0.7} transform="translate(-3 -3)" />
+          </g>
+        ))}
+        {decor.trees.map((t, i) => {
+          // Couronnes légèrement exagérées : lecture « carte illustrée » à l'échelle du parc.
+          const r = (t.radiusM * 1.5) / decor.mPerUnit;
+          const fill = t.kind === "conifer" ? "var(--map-conifer)" : `var(--map-tree-${t.shade + 1})`;
+          return (
+            <g key={`t${i}`}>
+              <ellipse cx={t.x + r * 0.35} cy={t.y + r * 0.45} rx={r} ry={r * 0.75} fill="var(--map-tree-shadow)" />
+              <circle cx={t.x} cy={t.y} r={r} fill={fill} />
+              <circle cx={t.x - r * 0.3} cy={t.y - r * 0.32} r={r * 0.5} fill="var(--map-tree-light)" opacity={t.kind === "conifer" ? 0.35 : 0.55} />
+            </g>
+          );
+        })}
+      </g>
+    ),
+    [decor, sat],
+  );
+  const s = baseScale * view.scale;
+  const ox = originX(s);
+  const oy = originY(s);
 
   return (
     <div
@@ -176,18 +257,7 @@ export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onS
         <svg className="absolute left-0 top-0" width={size.w} height={size.h} aria-hidden>
           <g transform={`translate(${ox} ${oy}) scale(${s})`}>
             <rect x={-400} y={-400} width={VIEW_W + 800} height={VIEW_H + 800} fill={sat ? "#123b26" : "var(--map-base)"} />
-            {decor.lawns.map((d, i) => (
-              <path key={`l${i}`} d={d} fill={sat ? "#2f5e33" : "var(--map-lawn)"} opacity={0.9} />
-            ))}
-            {decor.woods.map((d, i) => (
-              <path key={`w${i}`} d={d} fill={sat ? "#173d22" : "var(--map-wood)"} />
-            ))}
-            {decor.trees.map((t, i) => (
-              <circle key={`t${i}`} cx={t.x} cy={t.y} r={t.r} fill={sat ? "#1f5a2f" : "var(--map-tree)"} opacity={0.9} />
-            ))}
-            {water.map((p, i) => (
-              <path key={`p${i}`} d={blob(p.x, p.y, 45, seeded(`w${i}`))} fill={sat ? "#2c5f6e" : "var(--map-water)"} stroke="#5CC8FF" strokeOpacity={0.35} />
-            ))}
+            {natureLayer}
             {!sat &&
               decor.topo.map((d, i) => <path key={`c${i}`} d={d} fill="none" stroke="var(--map-topo)" strokeWidth={1.5 / s} />)}
             {paths.map((p) => {

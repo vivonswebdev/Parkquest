@@ -28,6 +28,11 @@ export type MapLayer = "plan" | "satellite";
 
 export type MapEngine = "maplibre" | "fallback";
 
+export interface MapNature {
+  clearings: LatLng[];
+  ponds: { center: LatLng; radiusM: number }[];
+}
+
 export interface MapHandle {
   flyTo(p: LatLng, zoom?: number): void;
   fitBounds(): void;
@@ -36,6 +41,8 @@ export interface MapHandle {
 
 export interface ParkMapProps {
   bounds: [LatLng, LatLng];
+  /** Zone à cadrer à l'ouverture (lieux + parcours) ; par défaut, toute l'emprise */
+  focus?: [LatLng, LatLng];
   markers: MapMarker[];
   paths?: MapPath[];
   user?: UserPosition | null;
@@ -47,6 +54,11 @@ export interface ParkMapProps {
   paddingBottom?: number;
   /** Vue 3D : carte inclinée, bâtiments en relief, terrain (moteur MapLibre uniquement) */
   view3d?: boolean;
+  /**
+   * Décor nature : lieux à laisser dégagés (spots, services — liste stable, indépendante
+   * des filtres) et étangs. Par défaut, déduit des marqueurs.
+   */
+  nature?: MapNature;
   /** Moteur réellement utilisé (MapLibre, ou carte simplifiée en repli) */
   onEngine?(engine: MapEngine): void;
   ref?: React.Ref<MapHandle>;
