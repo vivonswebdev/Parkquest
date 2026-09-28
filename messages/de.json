@@ -188,7 +188,28 @@
     "stepOf": "Station {current} von {total}",
     "elapsed": "Dauer",
     "nextStop": "Nächster Spot →",
-    "visitEnded": "Besuch beendet"
+    "visitEnded": "Besuch beendet",
+    "progressTitle": "Fortschritt der Route",
+    "stepStates": {
+      "done": "entdeckt",
+      "current": "aktuelle Etappe",
+      "next": "nächstes Ziel",
+      "future": "folgt noch"
+    },
+    "discoveredCount": "{count} / {total} Spots entdeckt",
+    "remainingDistance": "noch {distance}",
+    "remainingTime": "etwa {minutes} Min.",
+    "pointsLeft": "+{points} Punkte zu gewinnen",
+    "about": "etwa {minutes} Min.",
+    "seeHint": "Hinweis ansehen",
+    "hideHint": "Hinweis ausblenden",
+    "seeCard": "Steckbrief öffnen",
+    "hintTitle": "Hinweis",
+    "hintLook": "Suche: {label}",
+    "mapShort": "Karte",
+    "quitShort": "Beenden",
+    "finalStep": "Ende der Route",
+    "markerLabel": "Etappe {n} · {name}"
   },
   "spot": {
     "guideMe": "Führe mich",

@@ -1,11 +1,12 @@
 "use client";
 
-import { Check } from "lucide-react";
+import { Check, Flag } from "lucide-react";
 import { useCallback, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { LatLng } from "@/lib/domain/types";
 import { cn } from "@/lib/utils";
 import { MarkerIcon } from "./marker-icon";
 import { makeGroves, pondRing, scatterTrees } from "@/lib/map/nature";
+import { PATH_COLORS } from "./path-colors";
 import type { MapMarker, MapNature, ParkMapProps } from "./types";
 
 /**
@@ -265,14 +266,25 @@ export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onS
               const d = pts.map((q, i) => `${i ? "L" : "M"}${q.x.toFixed(1)} ${q.y.toFixed(1)}`).join(" ");
               return (
                 <g key={p.id}>
-                  <path d={d} fill="none" stroke="#000" strokeOpacity={0.35} strokeWidth={9 / s} strokeLinecap="round" strokeLinejoin="round" />
+                  {p.variant === "active" && (
+                    <path d={d} fill="none" stroke={PATH_COLORS.active} strokeOpacity={0.3} strokeWidth={16 / s} strokeLinecap="round" strokeLinejoin="round" />
+                  )}
                   <path
                     d={d}
                     fill="none"
-                    stroke={p.variant === "done" ? "#128C63" : p.variant === "active" ? "#19E6A2" : "#CDB88A"}
-                    strokeOpacity={p.variant === "trail" ? 0.7 : 1}
-                    strokeWidth={(p.variant === "active" ? 5 : 4) / s}
-                    strokeDasharray={p.variant === "trail" ? `${8 / s} ${7 / s}` : undefined}
+                    stroke="#000"
+                    strokeOpacity={p.variant === "done" ? 0.18 : p.variant === "active" ? 0.45 : 0.3}
+                    strokeWidth={(p.variant === "active" ? 10 : 7) / s}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d={d}
+                    fill="none"
+                    stroke={PATH_COLORS[p.variant]}
+                    strokeOpacity={p.variant === "done" ? 0.75 : 1}
+                    strokeWidth={(p.variant === "active" ? 6 : 3.5) / s}
+                    strokeDasharray={p.variant === "trail" ? `${6 / s} ${6 / s}` : undefined}
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
@@ -293,14 +305,14 @@ export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onS
             <button
               key={m.id}
               type="button"
-              aria-label={m.label}
+              aria-label={m.ariaLabel ?? m.label}
               aria-pressed={selected}
               onPointerDown={(e) => e.stopPropagation()}
               onClick={(e) => {
                 e.stopPropagation();
                 onSelect?.(m.id);
               }}
-              className="absolute z-10 -translate-x-1/2 -translate-y-full"
+              className={cn("absolute -translate-x-1/2 -translate-y-full", m.step?.state === "next" ? "z-[13]" : m.step?.state === "current" ? "z-[12]" : "z-10")}
               style={{ left: p.x, top: p.y }}
             >
               <MarkerPin marker={m} selected={selected} small={isFacility} />
@@ -324,6 +336,7 @@ export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onS
 }
 
 export function MarkerPin({ marker: m, selected, small }: { marker: ParkMapProps["markers"][number]; selected?: boolean; small?: boolean }) {
+  if (m.step) return <StepMarkerPin marker={m} step={m.step} selected={selected} />;
   return (
     <span className="relative flex flex-col items-center">
       {(selected || m.highlighted) && !small && (
@@ -349,6 +362,65 @@ export function MarkerPin({ marker: m, selected, small }: { marker: ParkMapProps
         )}
       </span>
       <span className={cn("-mt-0.5 w-0.5 bg-white/80", small ? "h-1.5" : "h-2.5")} />
+      <span className="size-1.5 rounded-full bg-white shadow" />
+    </span>
+  );
+}
+
+/**
+ * Marqueur d'étape de parcours : numéro + icône de catégorie + état.
+ * L'état ne dépend jamais de la couleur seule : forme (coche, pointillés, anneau, pulsation),
+ * taille et libellé accessible.
+ */
+function StepMarkerPin({ marker: m, step, selected }: { marker: ParkMapProps["markers"][number]; step: NonNullable<ParkMapProps["markers"][number]["step"]>; selected?: boolean }) {
+  const { n, state, last } = step;
+  const isNext = state === "next";
+  // Un seul libellé à la fois (le prochain objectif) : évite les chevauchements.
+  const showChip = isNext || (selected && state !== "current");
+  return (
+    <span className={cn("relative flex flex-col items-center", state === "future" && "opacity-70", state === "done" && "opacity-85")}>
+      {showChip && (
+        <span className={cn("mb-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-semibold shadow-lg", isNext ? "bg-[#19E6A2] text-[#031711]" : "glass-strong text-foreground")}>
+          {m.label}
+        </span>
+      )}
+      <span className="relative">
+        {isNext && <span aria-hidden className="animate-pulse-ring absolute inset-0 rounded-full bg-[#19E6A2]/45" />}
+        <span
+          className={cn(
+            "relative flex items-center justify-center rounded-full font-display font-extrabold tabular-nums shadow-[0_6px_18px_-4px_rgba(0,0,0,0.8)] transition-transform",
+            state === "next" && "size-12 border-[3px] border-[#19E6A2] bg-[#031711] text-lg text-white glow-mint",
+            state === "current" && "size-11 border-[3px] border-white bg-[#0b3a2a] text-base text-white",
+            state === "done" && "size-9 border-2 border-[#19E6A2]/70 bg-[#0d2b21] text-sm text-[#bff5de]",
+            state === "future" && "size-9 border-2 border-dashed border-white/60 bg-[#031711]/85 text-sm text-white/80",
+            selected && "scale-110",
+          )}
+        >
+          {n}
+        </span>
+        {/* Icône de catégorie */}
+        <span
+          aria-hidden
+          className="absolute -bottom-1 -right-1.5 flex size-5 items-center justify-center rounded-full border-2 bg-[#031711]"
+          style={{ borderColor: m.color, color: m.color }}
+        >
+          <MarkerIcon type={m.type} iconKey={m.iconKey} className="size-3" />
+        </span>
+        {/* État : coche (terminé), point plein (en cours) */}
+        {state === "done" && (
+          <span aria-hidden className="absolute -left-1 -top-1 flex size-4 items-center justify-center rounded-full bg-[#19E6A2] text-[#031711]">
+            <Check className="size-3" strokeWidth={3} />
+          </span>
+        )}
+        {state === "current" && <span aria-hidden className="absolute -left-0.5 -top-0.5 size-3 rounded-full border-2 border-[#031711] bg-white" />}
+        {/* Fin du parcours : drapeau sobre */}
+        {last && (
+          <span aria-hidden className="absolute -right-1.5 -top-1.5 flex size-5 items-center justify-center rounded-full bg-[#f4c95d] text-[#031711]">
+            <Flag className="size-3" strokeWidth={2.5} />
+          </span>
+        )}
+      </span>
+      <span className={cn("-mt-0.5 w-0.5 bg-white/80", isNext ? "h-3" : "h-2")} />
       <span className="size-1.5 rounded-full bg-white shadow" />
     </span>
   );

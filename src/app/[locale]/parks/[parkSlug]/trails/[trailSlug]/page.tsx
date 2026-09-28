@@ -16,6 +16,8 @@ import { formatDistance, formatDuration } from "@/lib/format";
 import { pathLengthM, walkingMinutes } from "@/lib/geo";
 import { WeatherCard } from "@/components/weather/weather-card";
 import { getVisitWeather } from "@/lib/weather";
+import { getServerProgress } from "@/server/progress";
+import { TrailProgressCard } from "@/components/trail/trail-progress-card";
 
 type Params = { params: Promise<{ locale: string; parkSlug: string; trailSlug: string }> };
 
@@ -36,7 +38,7 @@ export default async function TrailPage({ params }: Params) {
   const park = await requirePark(parkSlug, locale);
   const trail = await repo.getTrail(park.id, trailSlug, locale);
   if (!trail) notFound();
-  const weather = await getVisitWeather(park.location, park.timezone, trail.durationMin);
+  const [weather, progress] = await Promise.all([getVisitWeather(park.location, park.timezone, trail.durationMin), getServerProgress()]);
 
   const stats = [
     { icon: Clock, label: t("trail.duration"), value: formatDuration(trail.durationMin) },
@@ -74,6 +76,14 @@ export default async function TrailPage({ params }: Params) {
               </div>
             ))}
           </dl>
+
+          <TrailProgressCard
+            trailName={trail.name}
+            spots={trail.spots.map((sp) => ({ id: sp.id, pointsValue: sp.pointsValue }))}
+            segments={trail.segments.map((g) => ({ toSpotId: g.toSpotId, path: g.path }))}
+            completionPoints={trail.completionPoints}
+            serverDiscovered={progress?.discoveredSpotIds ?? null}
+          />
 
           <div className="hidden gap-3 md:flex">
             <Button asChild size="lg">
@@ -115,8 +125,11 @@ export default async function TrailPage({ params }: Params) {
                 return (
                   <li key={s.id}>
                     <Link href={`/parks/${park.slug}/spots/${s.slug}`} className="relative flex items-center gap-4 rounded-[var(--radius-card)] pl-1 pr-3 hover:bg-primary-soft">
-                      <span className="z-10 inline-flex size-12 shrink-0 items-center justify-center rounded-full border-2 bg-background" style={{ borderColor: SPOT_KIND_COLOR[s.kind], color: SPOT_KIND_COLOR[s.kind] }}>
+                      <span className="relative z-10 inline-flex size-12 shrink-0 items-center justify-center rounded-full border-2 bg-background" style={{ borderColor: SPOT_KIND_COLOR[s.kind], color: SPOT_KIND_COLOR[s.kind] }}>
                         <Icon className="size-5" />
+                        <span aria-hidden className="absolute -right-1.5 -top-1.5 inline-flex size-5 items-center justify-center rounded-full bg-foreground font-display text-[11px] font-extrabold text-background">
+                          {i + 1}
+                        </span>
                       </span>
                       <span className="relative my-1 size-16 shrink-0 overflow-hidden rounded-2xl">
                         <Image src={s.coverImageUrl} alt="" fill sizes="64px" className="object-cover" />

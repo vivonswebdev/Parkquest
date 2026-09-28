@@ -283,7 +283,7 @@ html[data-theme="light"] .light-serif {
 
 /* MapLibre : crédits (OpenStreetMap, obligatoires) toujours visibles, sous l'indicateur GPS */
 .pq-maplibre .maplibregl-ctrl-bottom-left {
-  top: calc(max(env(safe-area-inset-top), 0.75rem) + 7.25rem);
+  top: calc(max(env(safe-area-inset-top), 0.75rem) + var(--pq-attrib-top, 7.25rem));
   bottom: auto;
 }
 .pq-maplibre .maplibregl-ctrl-attrib {
@@ -293,6 +293,13 @@ html[data-theme="light"] .light-serif {
 }
 .pq-maplibre .maplibregl-ctrl-attrib a {
   color: inherit;
+}
+
+/* Expérience immersive (ExplorationShell) : pas de défilement ni de rebond de la page derrière la carte */
+html.pq-immersive,
+html.pq-immersive body {
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 /* Marque TYLIA : encre du mot-symbole et demi-feuilles, lisibles dans chaque thème. */

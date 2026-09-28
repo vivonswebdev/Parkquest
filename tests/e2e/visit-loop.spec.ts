@@ -28,7 +28,7 @@ test("boucle de visite : découverte, quiz, défi", async ({ page }) => {
   await expect(page.getByText(/Continuez|Depuis l'entrée/).first()).toBeVisible();
 
   // Ouvrir la fiche du prochain spot dans le panneau
-  await page.getByRole("button", { name: "Voir le spot" }).first().click();
+  await page.getByRole("button", { name: "Voir la fiche" }).first().click();
 
   // Découverte sans GPS : geste explicite, validation serveur (mode démo)
   await page.getByRole("button", { name: "J'y suis" }).click();
@@ -106,14 +106,14 @@ test("mode démo : découverte validée par GPS simulé, points et badge", async
   await page.goto("/fr/parks/plantentuin-meise/trails/arbres-remarquables/visit");
   // Pré-autorisation puis suivi GPS actif (simulé à ~2 m, précision 6 m)
   await page.getByRole("dialog").getByRole("button", { name: "Activer ma position" }).click();
-  await page.getByRole("button", { name: "Voir le spot" }).first().click();
+  await page.getByRole("button", { name: "Voir la fiche" }).first().click();
   await expect(page.getByText("Vous êtes près de : Séquoia géant")).toBeVisible();
   await page.getByRole("button", { name: "Découvrir ce spot" }).click();
   await expect(page.getByText("Découverte validée par GPS")).toBeVisible();
   await expect(page.getByText("+10 points").first()).toBeVisible();
   for (let i = 0; i < 5; i++) {
     await page.getByRole("button", { name: /Spot suivant/ }).click();
-    await page.getByRole("button", { name: "Voir le spot" }).first().click();
+    await page.getByRole("button", { name: "Voir la fiche" }).first().click();
     await page.getByRole("button", { name: "Découvrir ce spot" }).click();
     await expect(page.getByText(/Découvert !|Parcours terminé/).first()).toBeVisible();
   }
@@ -193,4 +193,14 @@ test("photo d'un spot : proposition, consentement, attente, validation (démo)",
   await page.reload();
   await expect(page.getByRole("button", { name: "Voir la photo 1" })).toBeVisible();
   await expect(page.getByText("En attente de vérification")).toHaveCount(0);
+});
+
+test("visite plein écran : défilement de la page bloqué, restauré à la sortie", async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("parkquest.location-consent.v1", "declined"));
+  await page.goto("/fr/parks/plantentuin-meise/trails/arbres-remarquables/visit");
+  await expect(page.locator("html")).toHaveClass(/pq-immersive/);
+  await page.getByRole("button", { name: "Quitter" }).first().click();
+  await page.getByRole("alertdialog").getByRole("button", { name: "Quitter" }).click();
+  await expect(page).toHaveURL(/\/trails\/arbres-remarquables$/);
+  await expect(page.locator("html")).not.toHaveClass(/pq-immersive/);
 });
