@@ -86,6 +86,10 @@ Géolocalisation simulée (panneau **DÉMO** à gauche de l'écran) :
 | Refusé / indisponible | l'app reste utilisable, point de départ au choix (entrée, parking, arrêt, café) |
 | Réel | le vrai GPS du téléphone (nécessite HTTPS, voir iPhone ci-dessous) |
 
+Les fiches des arbres affichent de **vraies photos de l'espèce** (iNaturalist, GBIF, Wikimedia Commons, licences
+libres, crédits visibles) et une fiche espèce (nom commun, famille, statut UICN) — Internet requis, sans clé ;
+voir [docs/SPECIES_DATA_SOURCES.md](docs/SPECIES_DATA_SOURCES.md).
+
 La météo pendant la visite (accueil, parc, parcours) est **simulée** en mode démo et affichée comme telle ;
 `WEATHER_LIVE=true` appelle réellement [Open-Meteo](https://open-meteo.com) (sans clé).
 

@@ -40,6 +40,8 @@ Les cases cochées ont été vérifiées lors de l'audit du 28/09/2026 (branche 
 - [ ] Mode visite : « Activez votre position », « Voir le spot », découverte, fin de parcours.
 - [ ] Quiz, défi, progression, badges et profil fonctionnent.
 - [ ] Photo de spot : proposition (reste sur l'appareil en démo) et validation simulée.
+- [ ] Fiche « Séquoia géant » : bandeau « Photos de l'espèce » (iNaturalist/GBIF) avec crédits et badge « près d'ici »,
+      « Fiche espèce » (famille, statut UICN) — appels sans clé, non testables depuis l'environnement de développement.
 - [ ] PWA installable : Safari → Partager → Sur l'écran d'accueil ; ouverture plein écran.
 - [ ] GPS réel testé en HTTPS (panneau DÉMO → « Réel »).
 - [ ] Aucun secret exposé (onglet Réseau : aucun appel à Supabase, Mapbox ou PostHog).
@@ -57,3 +59,5 @@ Les cases cochées ont été vérifiées lors de l'audit du 28/09/2026 (branche 
   l'environnement de développement (réseau filtré) → à contrôler sur l'URL Vercel. Pour du trafic important, prévoir
   un fournisseur dédié (`NEXT_PUBLIC_MAP_STYLE_URL`).
 - **Relief 3D** : tuiles « Terrain Tiles » (AWS Open Data), sans clé.
+- **Photos d'espèces** : iNaturalist, GBIF, Wikimedia Commons (sans clé, licences libres filtrées) ; images chargées
+  directement depuis leurs serveurs. `SPECIES_DATA=off` les désactive. Détails : `docs/SPECIES_DATA_SOURCES.md`.

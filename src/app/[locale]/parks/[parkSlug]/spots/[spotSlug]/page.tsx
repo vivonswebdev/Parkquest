@@ -19,6 +19,8 @@ import { formatDistance, formatNumber } from "@/lib/format";
 import { distanceM, walkingMinutes } from "@/lib/geo";
 import { getServerProgress } from "@/server/progress";
 import { SpotPhotos } from "@/components/spot/spot-photos";
+import { SpeciesCard } from "@/components/spot/species-card";
+import { getSpeciesData } from "@/lib/species";
 
 type Params = { params: Promise<{ locale: string; parkSlug: string; spotSlug: string }> };
 
@@ -29,6 +31,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   return spot ? { title: spot.name, description: spot.summary } : {};
 }
 
+// Photos et fiche d'espèce (sources ouvertes) : rafraîchies chaque jour au plus.
+export const revalidate = 86400;
+
 export default async function SpotPage({ params }: Params) {
   const { locale, parkSlug, spotSlug } = await params;
   setRequestLocale(locale);
@@ -37,17 +42,20 @@ export default async function SpotPage({ params }: Params) {
   const spot = await repo.getSpot(park.id, spotSlug, locale);
   if (!spot) notFound();
 
-  const [quizzes, challenges, facilities, trails, progress, photos] = await Promise.all([
+  const [quizzes, challenges, facilities, trails, progress, photos, species] = await Promise.all([
     repo.listQuizzesForSpot(spot.id, locale),
     repo.listChallenges(park.id, locale, spot.id),
     repo.listFacilities(park.id, locale),
     listTrails(park.id, locale),
     getServerProgress(),
     repo.listSpotPhotos(spot.id),
+    getSpeciesData(spot.scientificName, locale, park.location),
   ]);
   const entrance = facilities.find((f) => f.type === "ENTRANCE")?.location ?? park.location;
   const fromEntrance = distanceM(entrance, spot.location);
   const cover = photos.find((p) => p.isCover);
+  // Sans couverture choisie par le parc : vraie photo de l'espèce (créditée), sinon l'illustration.
+  const speciesHero = !cover ? species?.photos[0] : undefined;
   const trail = trails[0] ? await repo.getTrail(park.id, trails[0].slug, locale) : null;
   const inTrail = trail?.spots.some((s) => s.id === spot.id) ? trail : null;
 
@@ -76,10 +84,23 @@ export default async function SpotPage({ params }: Params) {
               // Photo de couverture choisie par le parc parmi les photos publiées
               // eslint-disable-next-line @next/next/no-img-element -- origine externe (stockage, Wikimedia)
               <img src={cover.url} alt={cover.alt ?? ""} className="absolute inset-0 size-full object-cover" />
+            ) : speciesHero ? (
+              // eslint-disable-next-line @next/next/no-img-element -- photo d'observation (licence libre, créditée)
+              <img src={speciesHero.url} alt="" referrerPolicy="no-referrer" className="absolute inset-0 size-full object-cover" />
             ) : (
               <Image src={spot.coverImageUrl} alt="" fill priority sizes="(max-width: 1024px) 100vw, 1000px" className="object-cover" />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-background/30" />
+            {speciesHero && (
+              <a
+                href={speciesHero.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute bottom-24 right-3 z-10 max-w-[70%] truncate rounded-full bg-black/60 px-2.5 py-1 text-[10px] text-white/90 backdrop-blur md:bottom-3"
+              >
+                {t("photos.heroCredit")} · © {speciesHero.author} · {speciesHero.license}
+              </a>
+            )}
             <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4 pt-[max(env(safe-area-inset-top),1rem)]">
               <Link href={`/parks/${park.slug}/map`} aria-label={t("common.back")} className="inline-flex size-12 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur">
                 <ArrowLeft className="size-5" />
@@ -121,7 +142,7 @@ export default async function SpotPage({ params }: Params) {
             </div>
           )}
 
-          <SpotPhotos spotId={spot.id} spotName={spot.name} photos={photos} />
+          <SpotPhotos spotId={spot.id} spotName={spot.name} photos={photos} speciesPhotos={species?.photos} />
 
           {/* Découverte (validation serveur, jamais automatique) */}
           <DiscoverSpotCard
@@ -134,6 +155,7 @@ export default async function SpotPage({ params }: Params) {
 
           <div className="grid gap-5 lg:grid-cols-2">
             <div className="space-y-5">
+              {species && <SpeciesCard info={species.info} spotName={spot.name} />}
               {spot.about && (
                 <Card className="p-5">
                   <h2 className="text-xl font-bold">{t("spot.about")}</h2>

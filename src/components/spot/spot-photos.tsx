@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, ChevronLeft, ChevronRight, Clock, ExternalLink, ImagePlus, Loader2, ShieldCheck, Star, X } from "lucide-react";
+import { Camera, ChevronLeft, ChevronRight, Clock, ExternalLink, ImagePlus, Loader2, MapPin, ShieldCheck, Star, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRef, useState, useTransition } from "react";
 import { ActionErrorMessage, ModeNotice } from "@/components/game/feedback";
@@ -11,28 +11,36 @@ import { addDemoSpotPhoto, useDemoSpotPhotos } from "@/features/demo/demo-photos
 import { isDemoMode } from "@/lib/config/app-mode";
 import type { ActionError, ActionMode, SpotPhoto } from "@/lib/domain/types";
 import { blobToDataUrl, preparePhoto, validatePhotoFile } from "@/lib/photos/prepare";
+import type { SpeciesPhoto } from "@/lib/species/parse";
 import { cn } from "@/lib/utils";
 import { submitSpotPhotoAction } from "@/server/game-actions";
 
 interface GalleryItem {
   key: string;
   url: string;
+  /** Vignette plus légère pour le bandeau */
+  thumbUrl?: string;
   alt?: string;
   pending: boolean;
   isCover: boolean;
   credit: string;
   sourceUrl?: string;
+  /** Lieu / date / distance (photos d'espèce) */
+  note?: string;
+  near?: boolean;
 }
+
+const SOURCE_NAME: Record<SpeciesPhoto["source"], string> = { INATURALIST: "iNaturalist", GBIF: "GBIF", WIKIMEDIA: "Wikimedia Commons" };
 
 /**
  * Photos d'un spot : photos publiées (communauté validée, officielles, Wikimedia Commons)
  * et proposition d'une photo par les visiteurs, toujours vérifiée avant publication.
  */
-export function SpotPhotos({ spotId, spotName, photos }: { spotId: string; spotName: string; photos: SpotPhoto[] }) {
+export function SpotPhotos({ spotId, spotName, photos, speciesPhotos = [] }: { spotId: string; spotName: string; photos: SpotPhoto[]; speciesPhotos?: SpeciesPhoto[] }) {
   const t = useTranslations("photos");
   const local = useDemoSpotPhotos(spotId);
   const [contributing, setContributing] = useState(false);
-  const [viewer, setViewer] = useState<number | null>(null);
+  const [viewer, setViewer] = useState<{ band: "spot" | "species"; index: number } | null>(null);
 
   const credit = (p: SpotPhoto) =>
     p.source === "OFFICIAL"
@@ -50,6 +58,22 @@ export function SpotPhotos({ spotId, spotName, photos }: { spotId: string; spotN
       : []),
     ...photos.map((p) => ({ key: p.id, url: p.url, alt: p.alt, pending: false, isCover: p.isCover, credit: credit(p), sourceUrl: p.sourceUrl })),
   ];
+
+  const speciesItems: GalleryItem[] = speciesPhotos.map((p) => {
+    const km = p.distanceM !== undefined ? Math.max(1, Math.round(p.distanceM / 1000)) : null;
+    return {
+      key: p.id,
+      url: p.url,
+      thumbUrl: p.thumbUrl,
+      pending: false,
+      isCover: false,
+      credit: `© ${p.author} · ${p.license} · ${SOURCE_NAME[p.source]}`,
+      sourceUrl: p.sourceUrl,
+      near: km !== null && km <= 50,
+      note: [p.place, p.observedOn, km !== null && km <= 50 ? t("km", { km }) : null].filter(Boolean).join(" · ") || undefined,
+    };
+  });
+  const viewerItems = viewer?.band === "species" ? speciesItems : items;
 
   return (
     <section aria-labelledby="spot-photos-title" className="space-y-3">
@@ -83,7 +107,7 @@ export function SpotPhotos({ spotId, spotName, photos }: { spotId: string; spotN
             <li key={it.key} className="snap-start">
               <button
                 type="button"
-                onClick={() => setViewer(i)}
+                onClick={() => setViewer({ band: "spot", index: i })}
                 aria-label={t("open", { n: i + 1 })}
                 className="relative block h-44 w-36 overflow-hidden rounded-2xl bg-inset"
               >
@@ -115,9 +139,34 @@ export function SpotPhotos({ spotId, spotName, photos }: { spotId: string; spotN
         </ul>
       )}
 
+      {speciesItems.length > 0 && (
+        <div className="space-y-2 pt-2">
+          <div>
+            <h3 className="light-serif text-lg font-bold">{t("speciesTitle")}</h3>
+            <p className="text-xs text-muted-foreground">{t("speciesNote")}</p>
+          </div>
+          <ul className="no-scrollbar -mx-4 flex snap-x gap-2.5 overflow-x-auto px-4 pb-1 md:mx-0 md:px-0">
+            {speciesItems.map((it, i) => (
+              <li key={it.key} className="snap-start">
+                <button type="button" onClick={() => setViewer({ band: "species", index: i })} aria-label={t("open", { n: i + 1 })} className="relative block h-44 w-36 overflow-hidden rounded-2xl bg-inset">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- photos d'observations (iNaturalist, GBIF, Wikimedia) */}
+                  <img src={it.thumbUrl ?? it.url} alt="" loading="lazy" referrerPolicy="no-referrer" className="size-full object-cover" />
+                  {it.near && (
+                    <span className="absolute left-1.5 top-1.5 inline-flex items-center gap-1 rounded-full bg-black/65 px-2 py-1 text-[10px] font-semibold text-white">
+                      <MapPin className="size-3" /> {t("nearHere")}
+                    </span>
+                  )}
+                  <span className="absolute inset-x-0 bottom-0 truncate bg-gradient-to-t from-black/75 to-transparent px-2 pb-1.5 pt-5 text-left text-[10px] text-white/90">{it.credit}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {contributing && <ContributeSheet spotId={spotId} spotName={spotName} onClose={() => setContributing(false)} />}
-      {viewer !== null && items[viewer] && (
-        <PhotoViewer items={items} index={viewer} onIndex={setViewer} onClose={() => setViewer(null)} />
+      {viewer !== null && viewerItems[viewer.index] && (
+        <PhotoViewer items={viewerItems} index={viewer.index} onIndex={(index) => setViewer({ ...viewer, index })} onClose={() => setViewer(null)} />
       )}
     </section>
   );
@@ -279,7 +328,7 @@ function PhotoViewer({ items, index, onIndex, onClose }: { items: GalleryItem[];
       </div>
       <div className="relative min-h-0 flex-1" onClick={(e) => e.stopPropagation()}>
         {/* eslint-disable-next-line @next/next/no-img-element -- photos d'origines variées */}
-        <img src={it.url} alt={it.alt ?? ""} className="size-full object-contain" />
+        <img src={it.url} alt={it.alt ?? ""} referrerPolicy="no-referrer" className="size-full object-contain" />
         {index > 0 && (
           <button type="button" onClick={() => onIndex(index - 1)} aria-label={t("prev")} className="absolute left-2 top-1/2 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/50">
             <ChevronLeft className="size-6" />
@@ -293,6 +342,7 @@ function PhotoViewer({ items, index, onIndex, onClose }: { items: GalleryItem[];
       </div>
       <div className="space-y-1 p-4 pb-[max(env(safe-area-inset-bottom),1rem)] text-sm" onClick={(e) => e.stopPropagation()}>
         {it.alt && <p>{it.alt}</p>}
+        {it.note && <p className="text-white/85">{it.note}</p>}
         <p className="text-white/70">
           {it.credit}
           {it.pending && ` · ${t("pending")}`}

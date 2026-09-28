@@ -654,6 +654,30 @@
       "READ": "No se puede leer esta foto en este dispositivo. Prueba con un JPEG.",
       "CONSENT": "Acepta la licencia para publicar tu foto.",
       "RATE_LIMITED": "Has propuesto muchas fotos hoy. Vuelve a intentarlo mañana."
+    },
+    "speciesTitle": "Fotos de la especie",
+    "speciesNote": "Observaciones reales compartidas con licencia libre: es la especie, no necesariamente el árbol del parque.",
+    "nearHere": "cerca de aquí",
+    "km": "a {km} km",
+    "heroCredit": "Foto de la especie"
+  },
+  "species": {
+    "title": "Ficha de la especie",
+    "commonName": "Nombre común",
+    "family": "Familia",
+    "iucn": "Estado UICN",
+    "observations": "Observaciones en el mundo",
+    "learnMore": "Más información",
+    "sources": "Datos: iNaturalist, GBIF, Wikimedia Commons (licencias libres).",
+    "iucnLabels": {
+      "LC": "Preocupación menor",
+      "NT": "Casi amenazada",
+      "VU": "Vulnerable",
+      "EN": "En peligro",
+      "CR": "En peligro crítico",
+      "EW": "Extinta en estado silvestre",
+      "EX": "Extinta",
+      "DD": "Datos insuficientes"
     }
   }
 }

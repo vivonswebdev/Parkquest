@@ -654,6 +654,30 @@
       "READ": "Dieses Foto kann auf diesem Gerät nicht gelesen werden. Versuche ein JPEG.",
       "CONSENT": "Bitte akzeptiere die Lizenz, um dein Foto zu veröffentlichen.",
       "RATE_LIMITED": "Du hast heute viele Fotos vorgeschlagen. Versuche es morgen erneut."
+    },
+    "speciesTitle": "Fotos der Art",
+    "speciesNote": "Echte Beobachtungen unter freier Lizenz: Das ist die Art, nicht unbedingt der Baum im Park.",
+    "nearHere": "in der Nähe",
+    "km": "{km} km entfernt",
+    "heroCredit": "Foto der Art"
+  },
+  "species": {
+    "title": "Artensteckbrief",
+    "commonName": "Name",
+    "family": "Familie",
+    "iucn": "IUCN-Status",
+    "observations": "Beobachtungen weltweit",
+    "learnMore": "Mehr erfahren",
+    "sources": "Daten: iNaturalist, GBIF, Wikimedia Commons (freie Lizenzen).",
+    "iucnLabels": {
+      "LC": "Nicht gefährdet",
+      "NT": "Potenziell gefährdet",
+      "VU": "Gefährdet",
+      "EN": "Stark gefährdet",
+      "CR": "Vom Aussterben bedroht",
+      "EW": "In der Natur ausgestorben",
+      "EX": "Ausgestorben",
+      "DD": "Ungenügende Datengrundlage"
     }
   }
 }
