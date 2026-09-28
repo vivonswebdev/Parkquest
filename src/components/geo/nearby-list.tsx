@@ -1,8 +1,8 @@
 "use client";
 
-import { Accessibility, Check, ChevronRight, Map as MapIcon, Navigation } from "lucide-react";
+import { Accessibility, Check, ChevronDown, ChevronRight, Map as MapIcon, Navigation } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { FACILITY_ICON, SPOT_KIND_COLOR, SPOT_KIND_ICON } from "@/components/shared/icons";
 import { Chip } from "@/components/ui/chip";
 import { Link } from "@/i18n/navigation";
@@ -12,7 +12,7 @@ import { quantize, rankNearby } from "@/lib/nearby";
 import { cn } from "@/lib/utils";
 
 export type NearbyFilter = "all" | "trees" | "plants" | "history" | "photo" | "challenges" | "services" | "pmr";
-const FILTERS: NearbyFilter[] = ["all", "trees", "plants", "history", "photo", "challenges", "services", "pmr"];
+export const NEARBY_FILTERS: NearbyFilter[] = ["all", "trees", "plants", "history", "photo", "challenges", "services", "pmr"];
 
 const KIND_GROUP: Record<SpotKind, NearbyFilter> = {
   TREE: "trees",
@@ -26,6 +26,22 @@ const KIND_GROUP: Record<SpotKind, NearbyFilter> = {
   WATER: "photo",
   OTHER: "all",
 };
+
+/** Filtre partagé par la liste et les marqueurs de la carte. */
+export function spotMatchesFilter(spot: SpotSummary, filter: NearbyFilter, challengeSpotIds: string[], photoSpotIds: string[]): boolean {
+  if (filter === "all") return true;
+  if (filter === "services" || filter === "pmr") return false;
+  if (filter === "challenges") return challengeSpotIds.includes(spot.id);
+  if (filter === "photo") return photoSpotIds.includes(spot.id) || KIND_GROUP[spot.kind] === "photo";
+  return KIND_GROUP[spot.kind] === filter;
+}
+
+export function facilityMatchesFilter(facility: Facility, filter: NearbyFilter): boolean {
+  if (facility.type === "ENTRANCE") return false;
+  if (filter === "services") return true;
+  if (filter === "pmr") return Boolean(facility.isPmrAccessible);
+  return false;
+}
 
 type Row =
   | { kind: "spot"; id: string; location: LatLng; spot: SpotSummary }
@@ -48,6 +64,10 @@ export function NearbyList({
   photoSpotIds,
   onShowOnMap,
   onGuide,
+  filter,
+  onFilterChange,
+  expanded,
+  onExpandedChange,
   className,
 }: {
   parkSlug: string;
@@ -62,12 +82,16 @@ export function NearbyList({
   photoSpotIds: string[];
   onShowOnMap(id: string): void;
   onGuide(id: string): void;
+  filter: NearbyFilter;
+  onFilterChange(f: NearbyFilter): void;
+  /** Replié : titre, filtres et les 2 lieux les plus proches ; la carte reste visible. */
+  expanded: boolean;
+  onExpandedChange(v: boolean): void;
   className?: string;
 }) {
   const t = useTranslations("geo");
   const tf = useTranslations("facility");
   const locale = useLocale();
-  const [filter, setFilter] = useState<NearbyFilter>("all");
 
   // Origine arrondie (~15 m) : la liste n'est recalculée qu'après un vrai déplacement.
   const q = quantize(origin);
@@ -75,23 +99,24 @@ export function NearbyList({
 
   const rows = useMemo(() => {
     const items: Row[] = [
-      ...spots.map((s) => ({ kind: "spot" as const, id: s.id, location: s.location, spot: s })),
-      ...facilities.filter((f) => f.type !== "ENTRANCE").map((f) => ({ kind: "facility" as const, id: f.id, location: f.location, facility: f })),
-    ].filter((r) => {
-      if (filter === "all") return true;
-      if (filter === "services") return r.kind === "facility";
-      if (filter === "pmr") return r.kind === "facility" && Boolean(r.facility.isPmrAccessible);
-      if (r.kind !== "spot") return false;
-      if (filter === "challenges") return challengeSpotIds.includes(r.id);
-      if (filter === "photo") return photoSpotIds.includes(r.id) || KIND_GROUP[r.spot.kind] === "photo";
-      return KIND_GROUP[r.spot.kind] === filter;
-    });
+      ...spots.filter((s) => spotMatchesFilter(s, filter, challengeSpotIds, photoSpotIds)).map((s) => ({ kind: "spot" as const, id: s.id, location: s.location, spot: s })),
+      ...facilities.filter((f) => facilityMatchesFilter(f, filter)).map((f) => ({ kind: "facility" as const, id: f.id, location: f.location, facility: f })),
+    ];
     return rankNearby(items, o);
   }, [spots, facilities, filter, o, challengeSpotIds, photoSpotIds]);
+  const shown = expanded ? rows : rows.slice(0, 2);
 
   return (
     <section aria-labelledby="nearby-title" className={cn("glass-strong pointer-events-auto rounded-[var(--radius-sheet)] p-3 card-shadow", className)}>
-      <div aria-hidden className="mx-auto mb-2 h-1 w-10 rounded-full bg-foreground/20" />
+      <button
+        type="button"
+        onClick={() => onExpandedChange(!expanded)}
+        aria-expanded={expanded}
+        aria-label={expanded ? t("collapseList") : t("expandList", { count: rows.length })}
+        className="-mt-1 mb-1 flex w-full justify-center py-1.5"
+      >
+        <span aria-hidden className="h-1 w-10 rounded-full bg-foreground/25" />
+      </button>
       <div className="flex items-baseline justify-between gap-2 px-1">
         <h2 id="nearby-title" className="font-display text-lg font-extrabold">
           {t("nearbyTitle")}
@@ -117,16 +142,16 @@ export function NearbyList({
       </div>
 
       <div className="no-scrollbar -mx-3 mt-2 flex gap-2 overflow-x-auto px-3 pb-1" role="toolbar" aria-label={t("nearbyTitle")}>
-        {FILTERS.map((f) => (
-          <Chip key={f} active={filter === f} onClick={() => setFilter(f)} className="h-8 px-3 text-xs">
+        {NEARBY_FILTERS.map((f) => (
+          <Chip key={f} active={filter === f} onClick={() => onFilterChange(f)} className="h-8 px-3 text-xs">
             {t(`filters.${f}`)}
           </Chip>
         ))}
       </div>
 
-      <ul className="mt-2 max-h-[34dvh] space-y-1 overflow-y-auto pr-1">
+      <ul className={cn("mt-2 space-y-1 pr-1", expanded && "max-h-[42dvh] overflow-y-auto")}>
         {rows.length === 0 && <li className="px-2 py-4 text-center text-sm text-muted-foreground">{t("noResult")}</li>}
-        {rows.map(({ item, distanceM: d, minutes }) => {
+        {shown.map(({ item, distanceM: d, minutes }) => {
           const isSpot = item.kind === "spot";
           const Icon = isSpot ? SPOT_KIND_ICON[item.spot.kind] : FACILITY_ICON[item.facility.type];
           const color = isSpot ? SPOT_KIND_COLOR[item.spot.kind] : "var(--muted-foreground)";
@@ -169,6 +194,16 @@ export function NearbyList({
           );
         })}
       </ul>
+      {rows.length > 2 && (
+        <button
+          type="button"
+          onClick={() => onExpandedChange(!expanded)}
+          className="mt-1 flex w-full items-center justify-center gap-1 rounded-full py-2 text-sm font-semibold text-primary hover:bg-primary-soft"
+        >
+          {expanded ? t("collapseList") : t("expandList", { count: rows.length })}
+          <ChevronDown className={cn("size-4 transition-transform", !expanded && "rotate-180")} />
+        </button>
+      )}
     </section>
   );
 }

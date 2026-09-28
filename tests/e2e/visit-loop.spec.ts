@@ -74,6 +74,7 @@ test("GPS refusé : l'app reste utilisable", async ({ page }) => {
   await expect(page.getByText(/Position refusée|Position indisponible/).first()).toBeVisible();
   // « Autour de vous » reste disponible depuis un point de départ du parc
   await expect(page.getByRole("heading", { name: "Autour de vous" })).toBeVisible();
+  await page.getByRole("button", { name: /Voir les \d+ lieux/ }).first().click();
   await page.getByRole("button", { name: "Carte · Séquoia géant" }).click();
   await expect(page.getByRole("link", { name: "Voir le spot" })).toBeVisible();
 });
@@ -149,6 +150,10 @@ test("carte : pré-autorisation, « Autour de vous » et guidage", async ({ page
   await page.getByRole("button", { name: "Services", exact: true }).click();
   await expect(page.getByRole("button", { name: /^Carte · Séquoia géant/ })).toHaveCount(0);
   await page.getByRole("button", { name: "Tout", exact: true }).click();
+  // Liste repliée par défaut (la carte reste visible) : on la déplie
+  await expect(page.getByRole("button", { name: /^Me guider · / })).toHaveCount(2);
+  await page.getByRole("button", { name: /Voir les \d+ lieux/ }).first().click();
+  await expect(page.getByRole("button", { name: "Réduire la liste" }).first()).toBeVisible();
   await page.getByRole("button", { name: "Me guider · Séquoia géant" }).click();
   await expect(page.getByText(/Vers Séquoia géant|Séquoia géant/).first()).toBeVisible();
   await expect(page.getByRole("button", { name: "Arrêter le guidage" })).toBeVisible();

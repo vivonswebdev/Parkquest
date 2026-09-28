@@ -18,10 +18,9 @@ export default async function ParkMapPage({ params, searchParams }: Params) {
   const { to } = await searchParams;
   setRequestLocale(locale);
   const park = await requirePark(parkSlug, locale);
-  const [spots, facilities, categories, trails, challenges, progress] = await Promise.all([
+  const [spots, facilities, trails, challenges, progress] = await Promise.all([
     listSpots(park.id, locale),
     repo.listFacilities(park.id, locale),
-    repo.listCategories(locale),
     listTrails(park.id, locale),
     repo.listChallenges(park.id, locale),
     getServerProgress(),
@@ -36,7 +35,6 @@ export default async function ParkMapPage({ params, searchParams }: Params) {
         park={{ slug: park.slug, name: park.name, bounds: park.bounds, isDemoData: park.isDemoData }}
         spots={spots}
         facilities={facilities}
-        categories={categories}
         trailSegments={trail?.segments ?? []}
         entrance={entrance}
         challengeSpotIds={challenges.map((c) => c.spotId).filter((x): x is string => Boolean(x))}

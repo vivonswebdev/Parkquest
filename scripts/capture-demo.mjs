@@ -80,7 +80,9 @@ async function run(theme) {
   await shot("03-consentement-position");
   await page.getByRole("dialog").getByRole("button", { name: "Activer ma position" }).click();
   await page.getByRole("heading", { name: "Autour de vous" }).waitFor();
-  await shot("04-autour-de-vous");
+  await shot("04-carte-autour-de-vous");
+  await page.getByRole("button", { name: /Voir les \d+ lieux/ }).first().click();
+  await shot("04b-autour-de-vous-liste");
   await page.getByRole("button", { name: "Carte · Séquoia géant" }).click();
   await shot("05-carte-spot");
   await go("/fr/parks/plantentuin-meise/map?to=sequoia-geant");
