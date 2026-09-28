@@ -71,8 +71,10 @@ test("GPS refusé : l'app reste utilisable", async ({ page }) => {
   // Mode démo : état GPS simulé « refusé »
   await grantConsent(page, "denied");
   await page.goto("/fr/parks/plantentuin-meise/map");
+  await expect(page.getByText("GPS refusé").first()).toBeVisible();
+  // « Autour de vous » reste disponible depuis un point de départ du parc (panneau réduit par défaut sur téléphone)
+  await page.getByRole("button", { name: "Ouvrir le panneau", exact: true }).first().click();
   await expect(page.getByText(/Position refusée|Position indisponible/).first()).toBeVisible();
-  // « Autour de vous » reste disponible depuis un point de départ du parc
   await expect(page.getByRole("heading", { name: "Autour de vous" })).toBeVisible();
   await page.getByRole("button", { name: /Voir les \d+ lieux/ }).first().click();
   await page.getByRole("button", { name: "Carte · Séquoia géant" }).click();
@@ -145,6 +147,7 @@ test("carte : pré-autorisation, « Autour de vous » et guidage", async ({ page
   await page.goto("/fr/parks/plantentuin-meise/map");
   await expect(page.getByText("Activez votre position")).toBeVisible();
   await page.getByRole("dialog").getByRole("button", { name: "Activer ma position" }).click();
+  await page.getByRole("button", { name: "Ouvrir le panneau", exact: true }).first().click();
   await expect(page.getByRole("heading", { name: "Autour de vous" })).toBeVisible();
   // Filtre « Services » : uniquement les services du parc
   await page.getByRole("button", { name: "Services", exact: true }).click();
@@ -203,4 +206,49 @@ test("visite plein écran : défilement de la page bloqué, restauré à la sort
   await page.getByRole("alertdialog").getByRole("button", { name: "Quitter" }).click();
   await expect(page).toHaveURL(/\/trails\/arbres-remarquables$/);
   await expect(page.locator("html")).not.toHaveClass(/pq-immersive/);
+});
+
+test("carte générale : aucun parc sélectionné d'office, choix explicite d'un parc", async ({ page }) => {
+  await grantConsent(page, "denied");
+  // Menu « Carte » → carte générale des parcs
+  await page.goto("/fr");
+  await page.getByRole("navigation").getByRole("link", { name: "Carte" }).first().click();
+  await expect(page).toHaveURL(/\/fr\/map$/);
+  await expect(page.getByText("Carte des parcs").first()).toBeVisible();
+  // Meise n'est ni sélectionnée ni présentée : pas de titre de parc, pas de « Autour de vous »
+  await expect(page.getByRole("heading", { name: "Autour de vous" })).toHaveCount(0);
+  await expect(page.getByRole("dialog", { name: "Plantentuin Meise" })).toHaveCount(0);
+  // Position refusée : repli annoncé sur la zone de démonstration
+  await page.getByRole("button", { name: "Ouvrir le panneau", exact: true }).first().click();
+  await expect(page.getByRole("heading", { name: "Choisissez un parc" })).toBeVisible();
+  await expect(page.getByText(/zone de démonstration/)).toBeVisible();
+  // Sélection explicite dans la liste → fiche du parc et accès à sa carte
+  await page.getByRole("button", { name: /^Plantentuin Meise Meise/ }).click();
+  const card = page.getByRole("dialog", { name: "Plantentuin Meise" });
+  await expect(card).toBeVisible();
+  await card.getByRole("link", { name: "Carte du parc" }).click();
+  await expect(page).toHaveURL(/\/parks\/plantentuin-meise\/map$/);
+});
+
+test("carte : plein écran (pseudo plein écran CSS ou API native) et panneau réductible", async ({ page }) => {
+  await grantConsent(page, "denied");
+  await page.goto("/fr/parks/plantentuin-meise/map");
+  const html = page.locator("html");
+  // Plein écran : défilement bloqué, navigation recouverte, bouton « Quitter »
+  await page.getByRole("button", { name: "Ouvrir la carte en plein écran" }).click();
+  await expect(html).toHaveClass(/pq-immersive/);
+  await expect(page.getByRole("button", { name: "Quitter le plein écran" })).toBeVisible();
+  // Panneau : réduit → ouvert → réduit → masqué → rappelé
+  await page.getByRole("button", { name: "Ouvrir le panneau", exact: true }).first().click();
+  await expect(page.getByRole("heading", { name: "Autour de vous" })).toBeVisible();
+  await page.getByRole("button", { name: "Réduire le panneau" }).click();
+  await expect(page.getByRole("heading", { name: "Autour de vous" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Masquer le panneau" }).click();
+  await expect(page.getByRole("button", { name: "Ouvrir le panneau", exact: true })).toHaveCount(0);
+  await page.getByRole("button", { name: /Autour de vous · \d+ lieux/ }).click();
+  await expect(page.getByRole("button", { name: "Ouvrir le panneau", exact: true }).first()).toBeVisible();
+  // Sortie du plein écran : page normale
+  await page.getByRole("button", { name: "Quitter le plein écran" }).click();
+  await expect(html).not.toHaveClass(/pq-immersive/);
+  await expect(page.getByRole("button", { name: "Ouvrir la carte en plein écran" })).toBeVisible();
 });
