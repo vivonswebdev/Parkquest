@@ -256,3 +256,11 @@ html[data-theme-pref="default"] .reading-light {
     scroll-behavior: auto !important;
   }
 }
+
+/* Thème clair : titres éditoriaux serif (hors couche, pour primer sur les utilitaires) */
+html[data-theme="light"] .light-serif {
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  text-transform: none;
+}

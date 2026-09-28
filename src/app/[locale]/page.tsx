@@ -1,4 +1,4 @@
-import { ArrowRight, Award, Bell, Camera, ChevronRight, Footprints, Map, MapPin, Play, Route, Sparkles, Trophy, Users } from "lucide-react";
+import { ArrowRight, Bell, Camera, ChevronRight, Footprints, Map, MapPin, Play, Route, Sparkles, Trophy, Users } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
@@ -13,10 +13,12 @@ import { TrailCard } from "@/components/park/trail-card";
 import { DemoBadge, DemoNotice } from "@/components/shared/demo-badge";
 import { SectionHeader } from "@/components/shared/section-header";
 import { Button } from "@/components/ui/button";
-import { Card, GlassCard } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
 import { demoUser } from "@/features/demo/demo-data";
 import { isDemoMode } from "@/lib/config/app-mode";
+import type { Challenge } from "@/lib/domain/types";
+import { pickDaily } from "@/lib/daily";
 import { Link } from "@/i18n/navigation";
 import { FEATURED_PARK_SLUG, getPark, listSpots, listTrails, repo } from "@/lib/data";
 import { distanceM, walkingMinutes } from "@/lib/geo";
@@ -24,7 +26,6 @@ import { formatDistance } from "@/lib/format";
 import { getServerProgress } from "@/server/progress";
 import { WeatherCard } from "@/components/weather/weather-card";
 import { getVisitWeather } from "@/lib/weather";
-
 
 // Météo : page régénérée au plus toutes les 30 minutes.
 export const revalidate = 1800;
@@ -52,6 +53,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     .sort((a, b) => a.d - b.d)
     .slice(0, 4);
   const otherParks = parks.filter((p) => p.id !== park.id);
+  // Défi du jour : rotation déterministe selon la date (même défi pour tous ce jour-là).
+  const daily = pickDaily(challenges);
+  const dailySpot = daily?.spotId ? spots.find((s) => s.id === daily.spotId) : undefined;
+  const otherChallenges = challenges.filter((c) => c.id !== daily?.id).slice(0, 3);
   const name = progress?.username || (isDemoMode ? demoUser.displayName : t("home.guest"));
 
   return (
@@ -75,16 +80,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </div>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-10">
+        <div className="grid gap-5 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-10">
           <section>
-            <h1 className="font-display text-[44px] font-extrabold uppercase leading-[0.95] tracking-tight md:text-7xl">
-              {t("home.heroLine1")}
-              <br />
-              <span className="text-primary">{t("home.heroLine2")}</span>
-              <br />
-              {t("home.heroLine3")}
+            <h1 className="light-serif font-display text-[34px] font-extrabold uppercase leading-[0.98] tracking-tight md:text-7xl">
+              {t("home.heroLine1")} <span className="text-primary">{t("home.heroLine2")}</span>
+              <br className="hidden md:block" /> {t("home.heroLine3")}
             </h1>
-            <p className="mt-4 max-w-md text-base text-muted-foreground md:text-lg">{t("home.heroSubtitle")}</p>
+            <p className="mt-2 max-w-md text-[15px] text-muted-foreground md:mt-4 md:text-lg">{t("home.heroSubtitle")}</p>
             <div className="mt-6 hidden gap-3 lg:flex">
               {mainTrail && (
                 <Button asChild size="lg">
@@ -99,59 +101,51 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             </div>
           </section>
 
-          {/* Carte immersive du parc sélectionné */}
-          <section aria-label={t("home.selectedPark")} className="relative overflow-hidden rounded-[28px] border border-border card-shadow">
-            <div className="absolute inset-0">
+          {/* Parc sélectionné : tout l'essentiel (collection + départ) dans le premier écran */}
+          <section aria-label={t("home.selectedPark")} className="overflow-hidden rounded-[28px] border border-border bg-surface card-shadow">
+            <div className="relative h-44 md:h-64">
               <Image src={park.coverImageUrl} alt="" fill priority sizes="(max-width: 1024px) 100vw, 600px" className="object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/10 to-background/90" />
-            </div>
-            <div className="relative p-5 md:p-6">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="flex items-center gap-2 text-sm font-semibold text-primary">
-                    <span className="size-2.5 rounded-full bg-primary shadow-[0_0_12px_var(--pq-mint)]" />
-                    {t("home.selectedPark")}
-                  </p>
-                  <h2 className="mt-1 font-display text-3xl font-extrabold leading-tight md:text-4xl">{park.name}</h2>
-                  <p className="mt-0.5 flex items-center gap-1 text-sm text-muted-foreground">
-                    <MapPin className="size-3.5" /> {park.city}, {park.countryCode}
-                  </p>
-                </div>
-                <div className="flex flex-col items-end gap-2">
-                  {park.isDemoData && <DemoBadge />}
-                  <Link href={`/parks/${park.slug}/map`} aria-label={t("park.openMap")} className="inline-flex size-11 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:text-primary">
+              <div className="image-scrim absolute inset-0" />
+              <div className="absolute inset-x-0 top-0 flex items-start justify-between p-3">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-black/55 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+                  <span className="size-2 rounded-full bg-[var(--pq-mint)] shadow-[0_0_10px_var(--pq-mint)]" />
+                  {t("home.selectedPark")}
+                </span>
+                <div className="flex items-center gap-2">
+                  {park.isDemoData && <DemoBadge className="border-transparent bg-black/55 text-[#f4c95d] backdrop-blur" />}
+                  <Link href={`/parks/${park.slug}/map`} aria-label={t("park.openMap")} className="inline-flex size-10 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur hover:text-[var(--pq-mint)]">
                     <Map className="size-5" />
                   </Link>
                 </div>
               </div>
-
-              <div className="mt-24 grid grid-cols-3 gap-2 md:mt-32">
-                {[
-                  { icon: MapPin, value: park.spotCount, label: t("home.statSpots") },
-                  { icon: Route, value: park.trailCount, label: t("home.statTrails") },
-                  { icon: Award, value: park.badgeCount, label: t("home.statBadges") },
-                ].map(({ icon: Icon, value, label }) => (
-                  <GlassCard key={label} className="rounded-2xl p-3">
-                    <Icon className="size-4 text-primary" />
-                    <p className="mt-1.5 font-display text-2xl font-extrabold leading-none">{value}</p>
-                    <p className="mt-1 text-[11px] leading-tight text-muted-foreground">{label}</p>
-                  </GlassCard>
-                ))}
+              <div className="absolute inset-x-0 bottom-0 p-4 text-white">
+                <Link href={`/parks/${park.slug}`} className="group inline-flex items-center gap-1">
+                  <h2 className="light-serif font-display text-[28px] font-extrabold leading-tight md:text-4xl">{park.name}</h2>
+                  <ChevronRight className="size-5 opacity-70 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+                <p className="flex flex-wrap items-center gap-x-2 text-sm text-white/80">
+                  <span className="inline-flex items-center gap-1">
+                    <MapPin className="size-3.5" /> {park.city}, {park.countryCode}
+                  </span>
+                  <span aria-hidden>·</span>
+                  <span>{t("home.parkStats", { spots: park.spotCount, trails: park.trailCount, badges: park.badgeCount })}</span>
+                </p>
               </div>
+            </div>
 
-              <GlassCard className="mt-2 rounded-2xl p-3.5">
-                <CollectionProgress parkName={park.name} spotIds={spots.map((s) => s.id)} serverDiscovered={progress?.discoveredSpotIds} compact />
-              </GlassCard>
-
+            <div className="space-y-3 p-4">
+              <CollectionProgress parkName={park.name} spotIds={spots.map((s) => s.id)} serverDiscovered={progress?.discoveredSpotIds} compact />
               {mainTrail && (
-                <div className="mt-3 flex flex-col gap-2 sm:flex-row lg:hidden">
+                <div className="grid grid-cols-[1fr_auto] gap-2 lg:hidden">
                   <Button asChild size="lg" block>
                     <Link href={`/parks/${park.slug}/trails/${mainTrail.slug}/visit`}>
                       <Play className="fill-current" /> {t("common.startVisit")}
                     </Link>
                   </Button>
-                  <Button asChild size="lg" variant="secondary" block>
-                    <Link href={`/parks/${park.slug}#trails`}>{t("common.exploreTrails")}</Link>
+                  <Button asChild size="lg" variant="secondary" className="px-4">
+                    <Link href={`/parks/${park.slug}#trails`}>
+                      <Route /> <span className="sr-only sm:not-sr-only">{t("common.exploreTrails")}</span>
+                    </Link>
                   </Button>
                 </div>
               )}
@@ -159,9 +153,31 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </section>
         </div>
 
-        {park.isDemoData && <DemoNotice className="mt-4" />}
+        <div className="mt-4 grid gap-4 lg:grid-cols-2 lg:items-start">
+          {/* Défi du jour : un seul défi mis en avant (change chaque jour) */}
+          {daily && (
+            <Link
+              href={dailySpot ? `/parks/${park.slug}/spots/${dailySpot.slug}` : "/challenges"}
+              className="group flex items-center gap-3 rounded-[var(--radius-card)] border border-gold/30 bg-gold/10 p-4 transition-colors hover:border-gold/60"
+            >
+              <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-2xl bg-gold text-[#1a2e24]">
+                <ChallengeIcon type={daily.type} />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-gold">{t("home.dailyChallenge")}</span>
+                <span className="block font-semibold leading-snug">{daily.title}</span>
+                {dailySpot && <span className="block truncate text-xs text-muted-foreground">{dailySpot.name}</span>}
+              </span>
+              <span className="flex shrink-0 flex-col items-end gap-1">
+                <Pill tone="gold" size="sm">+{daily.pointsValue}</Pill>
+                <ChevronRight className="size-5 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+              </span>
+            </Link>
+          )}
+          <WeatherCard weather={weather} />
+        </div>
 
-        <WeatherCard weather={weather} className="mt-4" />
+        {park.isDemoData && <DemoNotice className="mt-4" />}
 
         {/* Parcours populaires */}
         <section className="mt-10">
@@ -196,12 +212,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         {/* Défis du jour + mission famille */}
         <section className="mt-10 grid gap-4 lg:grid-cols-[1.4fr_1fr]">
           <Card className="p-5">
-            <SectionHeader title={t("home.dailyChallenges")} href="/challenges" linkLabel={t("common.seeAll")} icon={<Trophy className="size-5 text-gold" />} />
+            <SectionHeader title={t("home.otherChallenges")} href="/challenges" linkLabel={t("common.seeAll")} icon={<Trophy className="size-5 text-gold" />} />
             <ul className="divide-y divide-border">
-              {challenges.slice(0, 4).map((c) => (
+              {otherChallenges.map((c) => (
                 <li key={c.id} className="flex items-center gap-3 py-3">
                   <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-2xl bg-primary-soft text-primary">
-                    {c.type === "PHOTO" ? <Camera className="size-5" /> : c.type === "WALK" ? <Footprints className="size-5" /> : <Sparkles className="size-5" />}
+                    <ChallengeIcon type={c.type} />
                   </span>
                   <p className="flex-1 text-sm font-medium">{c.title}</p>
                   <Pill tone="gold" size="sm">+{c.pointsValue}</Pill>
@@ -237,4 +253,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <SiteFooter />
     </>
   );
+}
+
+function ChallengeIcon({ type }: { type: Challenge["type"] }) {
+  return type === "PHOTO" ? <Camera className="size-5" /> : type === "WALK" ? <Footprints className="size-5" /> : <Sparkles className="size-5" />;
 }

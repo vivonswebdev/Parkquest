@@ -77,7 +77,11 @@
     "familyMissionBody": "Trouvez 3 arbres venus d'un autre continent et répondez à leur quiz ensemble.",
     "familyMissionCta": "Relever la mission",
     "planVisit": "Planifier ma visite",
-    "planVisitBody": "Dites-nous combien de temps vous avez, on vous conseille le bon parcours."
+    "planVisitBody": "Dites-nous combien de temps vous avez, on vous conseille le bon parcours.",
+    "dailyChallenge": "Défi du jour",
+    "dailyChallengeCta": "Voir le défi",
+    "parkStats": "{spots} spots · {trails} parcours · {badges} badges",
+    "otherChallenges": "Autres défis"
   },
   "parks": {
     "title": "Explorer les parcs du monde",

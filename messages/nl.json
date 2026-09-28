@@ -77,7 +77,11 @@
     "familyMissionBody": "Zoek 3 bomen van een ander continent en beantwoord samen hun quiz.",
     "familyMissionCta": "Missie aannemen",
     "planVisit": "Mijn bezoek plannen",
-    "planVisitBody": "Vertel ons hoeveel tijd je hebt, wij raden de juiste route aan."
+    "planVisitBody": "Vertel ons hoeveel tijd je hebt, wij raden de juiste route aan.",
+    "dailyChallenge": "Uitdaging van de dag",
+    "dailyChallengeCta": "Bekijk de uitdaging",
+    "parkStats": "{spots} spots · {trails} routes · {badges} badges",
+    "otherChallenges": "Meer uitdagingen"
   },
   "parks": {
     "title": "Verken de parken van de wereld",

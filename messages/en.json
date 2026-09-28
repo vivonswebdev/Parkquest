@@ -77,7 +77,11 @@
     "familyMissionBody": "Find 3 trees from another continent and answer their quiz together.",
     "familyMissionCta": "Take the mission",
     "planVisit": "Plan my visit",
-    "planVisitBody": "Tell us how much time you have, we'll suggest the right trail."
+    "planVisitBody": "Tell us how much time you have, we'll suggest the right trail.",
+    "dailyChallenge": "Today's challenge",
+    "dailyChallengeCta": "See the challenge",
+    "parkStats": "{spots} spots · {trails} trails · {badges} badges",
+    "otherChallenges": "More challenges"
   },
   "parks": {
     "title": "Explore the world's parks",

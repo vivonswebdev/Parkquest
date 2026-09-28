@@ -77,7 +77,11 @@
     "familyMissionBody": "Encontrad 3 árboles de otro continente y responded juntos a su cuestionario.",
     "familyMissionCta": "Aceptar la misión",
     "planVisit": "Planificar mi visita",
-    "planVisitBody": "Dinos cuánto tiempo tienes y te recomendamos la ruta adecuada."
+    "planVisitBody": "Dinos cuánto tiempo tienes y te recomendamos la ruta adecuada.",
+    "dailyChallenge": "Reto del día",
+    "dailyChallengeCta": "Ver el reto",
+    "parkStats": "{spots} lugares · {trails} rutas · {badges} insignias",
+    "otherChallenges": "Más retos"
   },
   "parks": {
     "title": "Explora los parques del mundo",
