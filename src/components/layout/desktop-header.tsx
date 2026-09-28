@@ -12,7 +12,7 @@ export async function DesktopHeader() {
   const links = [
     { href: "/parks", label: t("parks") },
     { href: `/parks/${FEATURED_PARK_SLUG_PUBLIC}#trails`, label: t("trails") },
-    { href: `/parks/${FEATURED_PARK_SLUG_PUBLIC}/map`, label: t("map") },
+    { href: "/map", label: t("map") },
     { href: "/blog", label: t("tips") },
     { href: "/community", label: t("community") },
   ];

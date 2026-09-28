@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Compass, Crosshair, Layers, LocateFixed, Navigation, X } from "lucide-react";
+import { ArrowLeft, Compass, Crosshair, Layers, LocateFixed, Maximize2, Minimize2, Navigation, X } from "lucide-react";
 import { GpsStatus } from "@/components/geo/gps-status";
 import { GuidePanel } from "@/components/geo/guide-panel";
 import { LocationConsentSheet } from "@/components/geo/location-consent-sheet";
@@ -13,6 +13,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { FACILITY_ICON, SPOT_KIND_COLOR } from "@/components/shared/icons";
 import { Button } from "@/components/ui/button";
 import { Pill } from "@/components/ui/pill";
+import { useFullscreenMode } from "@/hooks/use-fullscreen-mode";
 import { useGeolocation } from "@/hooks/use-geolocation";
 import { Link } from "@/i18n/navigation";
 import type { Facility, LatLng, Park, SpotSummary, TrailSegment } from "@/lib/domain/types";
@@ -21,6 +22,7 @@ import { useDemoProgress } from "@/features/demo/demo-progress";
 import { distanceM, walkingMinutes } from "@/lib/geo";
 import { cn } from "@/lib/utils";
 import { satelliteTilesUrl } from "@/lib/map/config";
+import { MapPanel, PanelCollapseButton, useDefaultPanelMode, type PanelMode } from "./map-panel";
 import { ParkMap } from "./park-map";
 import type { MapEngine, MapHandle, MapLayer, MapMarker, MapNature } from "./types";
 
@@ -64,6 +66,10 @@ export function ParkMapExplorer({
   const startPoints = useMemo(() => facilities.filter((f) => ["ENTRANCE", "PARKING", "PUBLIC_TRANSPORT", "CAFE"].includes(f.type)), [facilities]);
   const [startId, setStartId] = useState<string | null>(null);
   const [guideId, setGuideId] = useState<string | null>(() => spots.find((s) => s.slug === initialGuideSlug)?.id ?? null);
+  const fullscreen = useFullscreenMode();
+  // Panneau « Autour de vous » : ouvert, réduit (petite barre) ou masqué (carte maximale).
+  const [chosenPanel, setPanel] = useState<PanelMode | null>(null);
+  const panel = useDefaultPanelMode(chosenPanel);
 
   // Dès l'entrée dans la carte : écran d'explication si aucun choix, sinon position si acceptée.
   const startedOnce = useRef(false);
@@ -162,7 +168,11 @@ export function ParkMapExplorer({
   };
 
   return (
-    <div className="fixed inset-0 z-0 md:static md:h-[calc(100dvh-4rem)]">
+    <div
+      className={cn(
+        fullscreen.active ? "fixed inset-0 z-[46] h-[100dvh] bg-background" : "fixed inset-0 z-0 md:static md:h-[calc(100dvh-4rem)]",
+      )}
+    >
       <ParkMap
         ref={mapRef}
         bounds={park.bounds}
@@ -198,6 +208,9 @@ export function ParkMapExplorer({
 
       {/* Contrôles : sous l'en-tête, jamais masqués par la liste */}
       <div className="absolute right-3 top-[calc(max(env(safe-area-inset-top),0.75rem)+4.25rem)] z-20 flex flex-col gap-2">
+        <MapControl label={fullscreen.active ? t("map.fullscreenExit") : t("map.fullscreenEnter")} onClick={fullscreen.toggle} active={fullscreen.active}>
+          {fullscreen.active ? <Minimize2 /> : <Maximize2 />}
+        </MapControl>
         <MapControl label={t("map.myPosition")} onClick={locate} active={geo.status === "active"}>
           {geo.status === "active" ? <LocateFixed /> : <Navigation />}
         </MapControl>
@@ -220,14 +233,21 @@ export function ParkMapExplorer({
       </div>
 
       {/* États GPS / carte de repli */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-[calc(env(safe-area-inset-bottom)+6.5rem)] z-20 space-y-2 px-3 md:bottom-4">
-        {(geo.status === "denied" || geo.status === "unavailable") && (
+      <div
+        className={cn(
+          "pointer-events-none absolute inset-x-0 z-20 space-y-2 px-3",
+          // Plein écran : la navigation du site est recouverte, le panneau descend au bord (zone sûre).
+          fullscreen.active ? "bottom-[calc(env(safe-area-inset-bottom)+0.75rem)]" : "bottom-[calc(env(safe-area-inset-bottom)+6.5rem)] md:bottom-4",
+        )}
+      >
+        {/* Message détaillé seulement panneau ouvert : l'étiquette GPS en haut suffit sinon (carte maximale) */}
+        {(geo.status === "denied" || geo.status === "unavailable") && panel === "expanded" && !guideTarget && !selected && (
           <p role="status" className="glass-strong pointer-events-auto rounded-2xl px-4 py-3 text-sm">
             <span className="font-semibold text-gold">{geo.status === "denied" ? t("gps.denied") : t("gps.unavailable")}</span>{" "}
             <span className="text-muted-foreground">{geo.status === "denied" ? t("gps.deniedBody") : t("gps.unavailableBody")}</span>
           </p>
         )}
-        {consent === "declined" && geo.status === "idle" && !guideTarget && (
+        {consent === "declined" && geo.status === "idle" && !guideTarget && panel === "expanded" && (
           <p className="glass-strong pointer-events-auto rounded-2xl px-4 py-2.5 text-xs text-muted-foreground">{t("geo.declinedNotice")}</p>
         )}
 
@@ -247,8 +267,14 @@ export function ParkMapExplorer({
         ) : selectedFacility ? (
           <FacilitySheet facility={selectedFacility} origin={origin} onClose={() => setSelected(null)} />
         ) : (
-          <>
+          <MapPanel
+            mode={panel}
+            onModeChange={setPanel}
+            title={t("map.nearbyShort")}
+            count={t("map.placesCount", { count: visibleSpots.length + visibleFacilities.length })}
+          >
             <NearbyList
+              headerAction={<PanelCollapseButton onClick={() => setPanel("collapsed")} />}
               filter={filter}
               onFilterChange={(f) => {
                 setFilter(f);
@@ -273,7 +299,7 @@ export function ParkMapExplorer({
               }}
               onGuide={guide}
             />
-          </>
+          </MapPanel>
         )}
       </div>
 
