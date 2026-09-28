@@ -1,4 +1,5 @@
 import type { LatLng } from "@/lib/domain/types";
+import type { StepState } from "@/lib/game/trail-progress";
 
 export interface MapMarker {
   id: string;
@@ -12,6 +13,10 @@ export interface MapMarker {
   discovered?: boolean;
   /** Mise en avant (prochain spot du parcours) */
   highlighted?: boolean;
+  /** Étape d'un parcours actif : numéro et état (✓ ● ◉ ○) ; absent pour les spots hors parcours */
+  step?: { n: number; state: StepState; last?: boolean };
+  /** Libellé lu par les lecteurs d'écran (par défaut : label) */
+  ariaLabel?: string;
 }
 
 export interface MapPath {
@@ -52,6 +57,8 @@ export interface ParkMapProps {
   className?: string;
   /** Marge (px) à laisser pour les panneaux flottants (bas) */
   paddingBottom?: number;
+  /** Position verticale (px sous la zone sûre) des crédits de carte, sous les en-têtes flottants */
+  attributionTop?: number;
   /** Vue 3D : carte inclinée, bâtiments en relief, terrain (moteur MapLibre uniquement) */
   view3d?: boolean;
   /**

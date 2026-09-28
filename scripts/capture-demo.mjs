@@ -102,7 +102,7 @@ async function run(theme) {
   await setGeo("near");
   await go("/fr/parks/plantentuin-meise/trails/arbres-remarquables/visit");
   await shot("09-visite");
-  await page.getByRole("button", { name: "Voir le spot" }).first().click();
+  await page.getByRole("button", { name: "Voir la fiche" }).first().click();
   await page.getByText("Vous êtes près de : Séquoia géant").waitFor();
   await shot("10-gps-pres");
   await page.getByRole("button", { name: "Découvrir ce spot" }).click();
@@ -118,7 +118,7 @@ async function run(theme) {
   // Parcours complet : les 5 spots suivants, puis fin de visite (badge « Boucle bouclée »)
   for (let i = 0; i < 5; i++) {
     await page.getByRole("button", { name: /Spot suivant/ }).click();
-    await page.getByRole("button", { name: "Voir le spot" }).first().click();
+    await page.getByRole("button", { name: "Voir la fiche" }).first().click();
     await page.getByRole("button", { name: "Découvrir ce spot" }).click();
     // Au dernier spot, l'écran passe directement à « Parcours terminé ! ».
     await page.getByText(/Découvert !|Parcours terminé/).first().waitFor();
