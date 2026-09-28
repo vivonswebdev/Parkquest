@@ -17,7 +17,8 @@ Architecture, décisions et plan : [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md
 ## Lancer la démo locale
 
 Le **mode démo** est la source de test pour le design, l'UX et le parcours visiteur.
-Il ne dépend ni de Supabase, ni de Mapbox, ni de Vercel, ni d'aucune clé.
+Il ne dépend ni de Supabase, ni de Mapbox, ni de Vercel, ni d'aucune clé (le fond de carte
+OpenStreetMap se charge sans clé ; hors ligne, la carte simplifiée prend le relais).
 
 ### 1. Installation (une seule fois)
 
@@ -49,7 +50,7 @@ En mode démo :
 | Élément | Comportement |
 |---|---|
 | Données | exclusivement `src/features/demo/demo-data.ts` (parc Meise, parcours, spots, services, quiz, défis, badges, profil fictif « Lina », statistiques, collection, infos pratiques) |
-| Carte | carte immersive intégrée (Mapbox seulement si `NEXT_PUBLIC_MAPBOX_TOKEN` est renseigné) |
+| Carte | vraie carte OpenStreetMap (MapLibre GL, vue 3D, sans clé ; Internet requis) ; hors ligne → carte simplifiée intégrée |
 | Position | **simulée** — onglet **DÉMO** à gauche de l'écran : près du spot (GPS précis), entrée du parc, précision insuffisante (± 60 m), GPS refusé, GPS indisponible, ou vrai GPS |
 | Points, progression, badges | simulés sur l'appareil (localStorage), avec les **mêmes règles** que le serveur ; notification « Badge débloqué » |
 | Défi photo | la photo reste sur l'appareil ; bouton « Valider mes photos (modérateur simulé) » dans le panneau DÉMO |
@@ -170,7 +171,7 @@ Les écrans ne connaissent **que des interfaces** ; le mode choisit l'implément
 | Jeu (découverte, quiz, défis, visites) | `GameService` (`src/lib/game/game-service.ts`) | `demo-game-service.ts` | `supabase-game-service.ts` (fonctions SQL) |
 | Règles (GPS, points) | `src/lib/game/rules.ts` (pures, testées) | ✔ | miroir des fonctions SQL |
 | Position | `useGeolocation()` | simulée (`src/features/demo/demo-geo.ts`) | `navigator.geolocation` |
-| Carte | `ParkMap` | carte intégrée | Mapbox si token |
+| Carte | `ParkMap` | MapLibre + OpenStreetMap (repli : carte intégrée) | idem, satellite Mapbox si token |
 | Interrupteur | `src/lib/config/app-mode.ts` → `isDemoMode` | `NEXT_PUBLIC_DEMO_MODE=true` | `false` + clés Supabase |
 
 ## Configuration
@@ -184,7 +185,8 @@ Copiez `.env.example` en `.env.local` (jamais commité) :
 | `NEXT_PUBLIC_SUPABASE_URL` | public | URL du projet Supabase |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | public | clé anonyme (protégée par la RLS) |
 | `SUPABASE_SERVICE_ROLE_KEY` | **serveur uniquement** | contourne la RLS — jamais préfixée `NEXT_PUBLIC_`, importée seulement via `src/lib/supabase/admin.ts` (`server-only`) |
-| `NEXT_PUBLIC_MAPBOX_TOKEN` | public | token `pk.…` restreint à vos domaines ; absent → carte de repli |
+| `NEXT_PUBLIC_MAPBOX_TOKEN` | public | optionnel, vue satellite ; token `pk.…` restreint à vos domaines |
+| `NEXT_PUBLIC_MAP_STYLE_URL` · `NEXT_PUBLIC_MAP_ENGINE` | public | autre fond OpenMapTiles · `fallback` pour forcer la carte simplifiée |
 | `NEXT_PUBLIC_POSTHOG_*` | public | optionnel, non utilisé au MVP |
 
 ### Supabase
@@ -210,10 +212,20 @@ Puis dans le tableau de bord Supabase :
    values ('<uuid>', 'PARK_ADMIN', '00000001-0000-4000-8000-000000000001'); -- Meise
    ```
 
-### Mapbox
+### Cartes (MapLibre GL + OpenStreetMap, 3D)
 
-Créez un token public, restreignez-le à vos URL, renseignez `NEXT_PUBLIC_MAPBOX_TOKEN`.
-Styles utilisés : `dark-v11` (plan) et `satellite-streets-v12` (calque satellite).
+- **Moteur** : [MapLibre GL JS](https://maplibre.org) (open source, sans clé). Le worker est copié
+  dans `public/vendor/maplibre/` par `npm install` (script `postinstall`).
+- **Fond** : OpenStreetMap vectoriel via [OpenFreeMap](https://openfreemap.org) (gratuit, sans clé),
+  habillé aux couleurs ParkQuest en sombre et en clair (`src/lib/map/theme.ts`).
+  Autre fournisseur compatible OpenMapTiles : `NEXT_PUBLIC_MAP_STYLE_URL`.
+- **Vue 3D** (bouton « 3D ») : carte inclinée, bâtiments en relief (données OSM), relief du terrain
+  ([Terrain Tiles](https://registry.opendata.aws/terrain-tiles/), AWS Open Data) et ciel.
+- **Satellite** (optionnel) : bouton « Calques » visible si `NEXT_PUBLIC_MAPBOX_TOKEN` (token public
+  `pk.…` restreint à vos domaines) ou `NEXT_PUBLIC_SATELLITE_TILES_URL` est renseigné.
+- **Repli automatique** sur la carte simplifiée intégrée si WebGL est absent ou si le fond ne charge
+  pas (hors ligne, réseau filtré) ; `NEXT_PUBLIC_MAP_ENGINE=fallback` la force.
+- Les crédits (© OpenStreetMap, obligatoires) restent toujours visibles sur la carte.
 
 ### Déploiement Vercel
 
@@ -226,7 +238,7 @@ spécifique (Node ≥ 20.9).
 - Préférence stockée dans le navigateur (`localStorage`), appliquée avant l'affichage (pas de flash).
 - Thème clair « papier crème » (fond `#f7f4ec`, titres serif Fraunces, ombres douces).
 - Sans choix explicite : app sombre (identité ParkQuest) et pages de lecture (blog, infos pratiques, légal, admin) en clair.
-- Les cartes suivent le thème (fond de repli clair/sombre, style Mapbox `light-v11` / `dark-v11`).
+- Les cartes suivent le thème (fond OpenStreetMap recoloré, carte simplifiée claire/sombre).
 
 ## Sécurité et confidentialité (résumé)
 

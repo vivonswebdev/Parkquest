@@ -147,7 +147,9 @@
     "layerPlan": "Karte",
     "legend": "Legende",
     "spotsCount": "{count} Orte",
-    "walk": "{distance} · {minutes}"
+    "walk": "{distance} · {minutes}",
+    "view3d": "3D-Ansicht",
+    "view2d": "2D-Ansicht"
   },
   "gps": {
     "denied": "Standort abgelehnt",

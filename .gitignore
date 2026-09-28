@@ -47,3 +47,4 @@ next-env.d.ts
 /demo-shots/
 /parkquest-*.zip
 /accueil-*.png
+/public/vendor/

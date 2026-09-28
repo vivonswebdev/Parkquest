@@ -21,7 +21,7 @@ migrations, rôles/RLS, comptes nécessaires, décisions, plans des Sprints 0 et
 12. **Confidentialité** : aucune coordonnée brute stockée (seulement distance + précision), aucune position visible par un tiers, pseudonyme généré par défaut, profil public minimal via une vue dédiée.
 13. **La bonne réponse d'un quiz ne quitte jamais le serveur** (privilèges de colonnes sur `quiz_answers.is_correct` + test e2e).
 14. **Server Actions validées par Zod** pour toutes les mutations ; la clé `service_role` n'est importable que côté serveur (`server-only`).
-15. **Carte** : Mapbox GL JS si `NEXT_PUBLIC_MAPBOX_TOKEN` est défini (chargé dynamiquement), sinon **carte de repli intégrée** (même API `MapHandle`) : l'app fonctionne sans aucune clé.
+15. **Carte** : MapLibre GL JS (chargé dynamiquement) sur fond OpenStreetMap (OpenFreeMap, sans clé) habillé au thème, vue 3D (bâtiments, relief Terrain Tiles, ciel), satellite Mapbox optionnel ; **carte de repli intégrée** (même API `MapHandle`) si WebGL absent ou fond injoignable.
 16. **Design system** Tailwind v4 + tokens CSS (thème sombre premium par défaut, **thème clair** pour blog / infos pratiques / admin), composants façon shadcn/ui, icônes lucide-react.
 17. **PWA** : manifest, icônes, service worker (réseau d'abord pour les pages, cache pour les statiques, page hors ligne) ; les actions serveur ne sont **jamais** mises en cache ni rejouées.
 18. **Mode démo honnête** : sans base, les règles de jeu s'exécutent côté serveur mais rien n'est enregistré ; l'UI affiche « Mode démo » et un badge « Démo » sur chaque contenu non validé.
@@ -71,7 +71,7 @@ parkquest/
     ├── components/
     │   ├── ui/        button · card · pill · progress · skeleton
     │   ├── layout/    bottom-nav · desktop-header · locale-switcher · network-status · footer
-    │   ├── map/       park-map (switch) · mapbox-map · fallback-map · park-map-explorer
+    │   ├── map/       park-map (switch) · maplibre-map · fallback-map · park-map-explorer
     │   ├── visit/     visit-runner
     │   ├── game/      discover-spot-card · quiz-card · challenge-card · progress-dashboard · …
     │   ├── park/ · parks/ · plan/ · content/ · shared/ · auth/ · brand/ · pwa/
@@ -91,7 +91,7 @@ parkquest/
 ## 3. Dépendances npm
 
 **Runtime** : `next` 16 · `react` 19 · `next-intl` 4 · `@supabase/supabase-js` · `@supabase/ssr` ·
-`mapbox-gl` 3 · `react-hook-form` · `zod` 4 · `@hookform/resolvers` · `lucide-react` ·
+`maplibre-gl` 6 · `react-hook-form` · `zod` 4 · `@hookform/resolvers` · `lucide-react` ·
 `class-variance-authority` · `clsx` · `tailwind-merge` · `@radix-ui/react-slot` · `server-only`.
 
 **Dev** : `typescript` · `tailwindcss` 4 · `@tailwindcss/postcss` · `tw-animate-css` · `eslint` +
@@ -146,7 +146,8 @@ Principes :
 |---|---|---|
 | **GitHub** | dépôt du code | créer un dépôt (ex. `parkquest`) et donner l'accès à Claude, ou indiquer lequel utiliser |
 | **Supabase** | base, auth, stockage | créer un projet (région UE, ex. Francfort) → `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` (serveur uniquement) ; activer l'auth e-mail (lien magique) et configurer l'URL de redirection `…/api/auth/callback` |
-| **Mapbox** | fond de carte détaillé | compte gratuit → token public `pk.…` restreint aux domaines de l'app → `NEXT_PUBLIC_MAPBOX_TOKEN` |
+| **Mapbox** (optionnel) | vue satellite | compte gratuit → token public `pk.…` restreint aux domaines de l'app → `NEXT_PUBLIC_MAPBOX_TOKEN` |
+| **OpenFreeMap** | fond OpenStreetMap | aucun compte ; pour du trafic important, envisager un fournisseur payant ou l'auto-hébergement (`NEXT_PUBLIC_MAP_STYLE_URL`) |
 | **Vercel** | hébergement | importer le dépôt, renseigner les variables d'environnement, `NEXT_PUBLIC_APP_URL` = domaine final |
 | PostHog (optionnel) | analytics | plus tard |
 

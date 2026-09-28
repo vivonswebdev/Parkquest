@@ -20,8 +20,9 @@ import { formatDistance } from "@/lib/format";
 import { useDemoProgress } from "@/features/demo/demo-progress";
 import { distanceM, walkingMinutes } from "@/lib/geo";
 import { cn } from "@/lib/utils";
-import { hasMapbox, ParkMap } from "./park-map";
-import type { MapHandle, MapLayer, MapMarker } from "./types";
+import { satelliteTilesUrl } from "@/lib/map/config";
+import { ParkMap } from "./park-map";
+import type { MapEngine, MapHandle, MapLayer, MapMarker } from "./types";
 
 export function ParkMapExplorer({
   park,
@@ -55,6 +56,9 @@ export function ParkMapExplorer({
   const [layer, setLayer] = useState<MapLayer>("plan");
   const [selected, setSelected] = useState<string | null>(null);
   const [listExpanded, setListExpanded] = useState(false);
+  const [engine, setEngine] = useState<MapEngine | null>(null);
+  const [view3d, setView3d] = useState(false);
+  const simplified = engine === "fallback";
   const consent = useLocationConsent();
   const [askConsent, setAskConsent] = useState(false);
   const startPoints = useMemo(() => facilities.filter((f) => ["ENTRANCE", "PARKING", "PUBLIC_TRANSPORT", "CAFE"].includes(f.type)), [facilities]);
@@ -71,14 +75,8 @@ export function ParkMapExplorer({
   }, [consent, geo]);
   const showConsent = askConsent || consent === "unset";
 
-  // Centrage automatique sur l'utilisateur à la première position.
-  const centered = useRef(false);
-  useEffect(() => {
-    if (geo.position && !centered.current) {
-      centered.current = true;
-      mapRef.current?.flyTo(geo.position, 17);
-    }
-  }, [geo.position]);
+  // Pas de recentrage automatique : la carte s'ouvre sur tout le parc (vue d'ensemble),
+  // le point bleu indique la position ; « Ma position » recentre à la demande.
 
   const startPoint = startPoints.find((f) => f.id === startId)?.location;
   const origin: LatLng = geo.position ?? startPoint ?? entrance;
@@ -151,7 +149,9 @@ export function ParkMapExplorer({
         selectedId={selected}
         onSelect={setSelected}
         layer={layer}
-        paddingBottom={180}
+        paddingBottom={290}
+        view3d={view3d}
+        onEngine={setEngine}
       />
 
       {/* En-tête flottant */}
@@ -162,9 +162,9 @@ export function ParkMapExplorer({
           </Link>
           <div className="glass-strong pointer-events-auto min-w-0 flex-1 rounded-2xl px-4 py-2.5">
             <p className="truncate font-display text-lg font-bold leading-tight">{park.name}</p>
-            <p className="truncate text-xs text-muted-foreground" title={hasMapbox ? undefined : t("map.fallbackNotice")}>
+            <p className="truncate text-xs text-muted-foreground" title={simplified ? t("map.fallbackNotice") : undefined}>
               {t("map.spotsCount", { count: spots.length })}
-              {!hasMapbox && ` · ${t("map.simplified")}`}
+              {simplified && ` · ${t("map.simplified")}`}
             </p>
           </div>
         </div>
@@ -176,9 +176,16 @@ export function ParkMapExplorer({
         <MapControl label={t("map.myPosition")} onClick={locate} active={geo.status === "active"}>
           {geo.status === "active" ? <LocateFixed /> : <Navigation />}
         </MapControl>
-        <MapControl label={t("map.layers")} onClick={() => setLayer((l) => (l === "plan" ? "satellite" : "plan"))} active={layer === "satellite"}>
-          <Layers />
-        </MapControl>
+        {engine === "maplibre" && (
+          <MapControl label={view3d ? t("map.view2d") : t("map.view3d")} onClick={() => setView3d((v) => !v)} active={view3d}>
+            <span className="text-xs font-extrabold tracking-tight">{view3d ? "2D" : "3D"}</span>
+          </MapControl>
+        )}
+        {engine === "maplibre" && satelliteTilesUrl && (
+          <MapControl label={t("map.layers")} onClick={() => setLayer((l) => (l === "plan" ? "satellite" : "plan"))} active={layer === "satellite"}>
+            <Layers />
+          </MapControl>
+        )}
         <MapControl label={t("map.orientation")} onClick={() => mapRef.current?.resetNorth()}>
           <Compass />
         </MapControl>

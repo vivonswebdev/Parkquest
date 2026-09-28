@@ -147,7 +147,9 @@
     "layerPlan": "Map",
     "legend": "Legend",
     "spotsCount": "{count} places",
-    "walk": "{distance} · {minutes}"
+    "walk": "{distance} · {minutes}",
+    "view3d": "3D view",
+    "view2d": "2D view"
   },
   "gps": {
     "denied": "Location denied",

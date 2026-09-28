@@ -264,3 +264,17 @@ html[data-theme="light"] .light-serif {
   font-weight: 700;
   text-transform: none;
 }
+
+/* MapLibre : crédits (OpenStreetMap, obligatoires) toujours visibles, sous l'indicateur GPS */
+.pq-maplibre .maplibregl-ctrl-bottom-left {
+  top: calc(max(env(safe-area-inset-top), 0.75rem) + 7.25rem);
+  bottom: auto;
+}
+.pq-maplibre .maplibregl-ctrl-attrib {
+  background: color-mix(in oklab, var(--surface) 85%, transparent);
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+.pq-maplibre .maplibregl-ctrl-attrib a {
+  color: inherit;
+}

@@ -26,6 +26,8 @@ export interface UserPosition extends LatLng {
 
 export type MapLayer = "plan" | "satellite";
 
+export type MapEngine = "maplibre" | "fallback";
+
 export interface MapHandle {
   flyTo(p: LatLng, zoom?: number): void;
   fitBounds(): void;
@@ -43,5 +45,9 @@ export interface ParkMapProps {
   className?: string;
   /** Marge (px) à laisser pour les panneaux flottants (bas) */
   paddingBottom?: number;
+  /** Vue 3D : carte inclinée, bâtiments en relief, terrain (moteur MapLibre uniquement) */
+  view3d?: boolean;
+  /** Moteur réellement utilisé (MapLibre, ou carte simplifiée en repli) */
+  onEngine?(engine: MapEngine): void;
   ref?: React.Ref<MapHandle>;
 }
