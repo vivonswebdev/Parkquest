@@ -25,7 +25,7 @@ OpenStreetMap se charge sans clé ; hors ligne, la carte simplifiée prend le re
 ```bash
 git clone https://github.com/vivonswebdev/parkquest.git
 cd parkquest
-git checkout feature/parkquest-dark-visitor-experience   # branche de travail (main n'est pas modifiée)
+git checkout feature/parkquest-premium-design-integration   # branche de travail (main n'est pas modifiée)
 npm install
 cp .env.example .env.local        # Windows (PowerShell) : Copy-Item .env.example .env.local
 npm run dev
@@ -145,6 +145,63 @@ puis fermer (Ctrl+C). Toute personne ayant l'URL peut ouvrir la démo pendant ce
   2. `.env.local` : `PQ_ALLOWED_DEV_ORIGINS=*.ngrok-free.app` puis `npm run dev:demo` ;
   3. `ngrok http 3000`, puis ouvrir l'URL `https://….ngrok-free.app/fr`.
 
+## Déployer la démo ParkQuest sur Vercel
+
+La démo en ligne fonctionne **sans Supabase, sans Mapbox et sans aucune clé** (`NEXT_PUBLIC_DEMO_MODE=true`).
+Le lien HTTPS permet de l'ouvrir sur iPhone, de l'ajouter à l'écran d'accueil et, plus tard, de tester le vrai GPS
+(les navigateurs n'autorisent la géolocalisation qu'en HTTPS).
+
+1. Créer un compte sur [vercel.com](https://vercel.com) avec **Continue with GitHub**.
+2. Cliquer **Add New… → Project**.
+3. Sélectionner le dépôt **vivonswebdev/Parkquest** (bouton **Import**).
+   Si le dépôt n'apparaît pas : **Adjust GitHub App Permissions** et autoriser ce dépôt.
+4. Vérifier que **Framework Preset = Next.js** est détecté.
+
+   > **Branche publiée.** Vercel publie en production la branche **`main`**. La version la plus récente de la démo est
+   > sur **`feature/parkquest-premium-design-integration`**. Deux possibilités :
+   > - **recommandé** : fusionner cette branche dans `main` (pull request validée), puis déployer ;
+   > - **temporaire** : après l'import, **Settings → Git → Production Branch** = `feature/parkquest-premium-design-integration`,
+   >   puis **Deployments → Redeploy**.
+5. **Ne pas modifier** Build Command, Output Directory ni Install Command (valeurs par défaut).
+   Le worker MapLibre est copié automatiquement (`postinstall` et `prebuild`).
+6. Ouvrir **Environment Variables** et ajouter :
+
+   | Nom | Valeur |
+   |---|---|
+   | `NEXT_PUBLIC_DEMO_MODE` | `true` |
+   | `NEXT_PUBLIC_MAP_ENGINE` | `maplibre` |
+   | `NEXT_PUBLIC_APP_URL` | `https://VOTRE-NOM-DE-PROJET.vercel.app` |
+
+   Aucune autre variable n'est nécessaire (laisser Supabase, Mapbox et PostHog **vides**).
+7. Cliquer **Deploy** (2 à 3 minutes).
+   Si l'adresse finale diffère de `NEXT_PUBLIC_APP_URL` : corriger la variable puis **Deployments → ⋯ → Redeploy**
+   (les variables `NEXT_PUBLIC_*` sont intégrées au moment du build).
+8. Ouvrir l'URL HTTPS de **production** (`https://VOTRE-NOM-DE-PROJET.vercel.app`) sur iPhone, dans **Safari**.
+9. Safari → **Partager** → **Sur l'écran d'accueil** → **Ajouter**. ParkQuest s'ouvre alors en plein écran.
+10. Tester les pages :
+    - `/fr`
+    - `/fr/parks/plantentuin-meise`
+    - `/fr/parks/plantentuin-meise/map`
+    - `/fr/parks/plantentuin-meise/trails/arbres-remarquables/visit`
+    - `/fr/profile`
+
+Pour partager avec des proches : envoyer l'adresse **de production** ci-dessus. Les adresses de **prévisualisation**
+(une par branche ou commit) sont protégées par défaut et demandent un compte Vercel.
+
+## Dépannage Vercel
+
+| Symptôme | Cause probable | Solution |
+|---|---|---|
+| La carte affiche « carte simplifiée » | WebGL indisponible (ancien appareil, mode économie d'énergie) ou fond OpenStreetMap injoignable (réseau filtré, hors ligne) | Comportement prévu : la carte simplifiée prend le relais. Tester sur un autre réseau ; vérifier que `tiles.openfreemap.org` répond. Forcer la carte simplifiée : `NEXT_PUBLIC_MAP_ENGINE=fallback`. |
+| Carte grise / vide, sans repli | Worker MapLibre absent (`/vendor/maplibre/maplibre-gl-worker.mjs` en 404) | Vérifier dans les logs de build la ligne « Worker MapLibre copié… » ; relancer **Redeploy** sans le cache de build. |
+| Ancienne version affichée après un déploiement | Cache du service worker (PWA) | Fermer complètement l'app puis la rouvrir ; sinon supprimer l'icône de l'écran d'accueil et la rajouter, ou Réglages → Safari → Avancé → Données des sites web → supprimer le site. |
+| Service worker ancien persistant | Fichier `sw.js` mis en cache par l'appareil | `sw.js` est servi sans cache ; pour forcer une purge, incrémenter `VERSION` dans `public/sw.js` et redéployer. |
+| Liens ou retours vers une mauvaise adresse | `NEXT_PUBLIC_APP_URL` non mise à jour | Corriger la variable avec l'URL réelle, puis **Redeploy**. |
+| Bandeau ou données « démo » absents, erreurs de connexion | `NEXT_PUBLIC_DEMO_MODE` absente ou différente de `true` | Ajouter `NEXT_PUBLIC_DEMO_MODE=true` (Production **et** Preview), puis **Redeploy**. (Sans Supabase configuré, la démo s'active de toute façon.) |
+| Build échoué | Dépendances ou version de Node | Lire les logs de build ; Node ≥ 20.9 requis (**Settings → General → Node.js Version** : 22.x) ; reproduire en local avec `npm ci && npm run build`. |
+| Page « introuvable » sur `/` ou `/parks` | URL sans langue | Les pages sont localisées : utiliser `/fr/...` (la racine `/` redirige vers `/fr`). |
+| Position GPS refusée sur iPhone | Autorisation Safari | Réglages → Confidentialité → Service de localisation → Sites web Safari → « Lorsque l'app est active ». Le GPS réel fonctionne uniquement en HTTPS. |
+
 ## Scripts
 
 | Commande | Rôle |
@@ -229,8 +286,8 @@ Puis dans le tableau de bord Supabase :
 
 ### Déploiement Vercel
 
-Importer le dépôt, renseigner les variables d'environnement, déployer. Aucune configuration
-spécifique (Node ≥ 20.9).
+Voir [Déployer la démo ParkQuest sur Vercel](#déployer-la-démo-parkquest-sur-vercel) et
+[docs/VERCEL_DEPLOYMENT_CHECKLIST.md](docs/VERCEL_DEPLOYMENT_CHECKLIST.md).
 
 ## Thème sombre / clair
 
