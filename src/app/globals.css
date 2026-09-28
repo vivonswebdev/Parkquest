@@ -294,3 +294,10 @@ html[data-theme="light"] .light-serif {
 .pq-maplibre .maplibregl-ctrl-attrib a {
   color: inherit;
 }
+
+/* Expérience immersive (ExplorationShell) : pas de défilement ni de rebond de la page derrière la carte */
+html.pq-immersive,
+html.pq-immersive body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}

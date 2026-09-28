@@ -194,3 +194,13 @@ test("photo d'un spot : proposition, consentement, attente, validation (démo)",
   await expect(page.getByRole("button", { name: "Voir la photo 1" })).toBeVisible();
   await expect(page.getByText("En attente de vérification")).toHaveCount(0);
 });
+
+test("visite plein écran : défilement de la page bloqué, restauré à la sortie", async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("parkquest.location-consent.v1", "declined"));
+  await page.goto("/fr/parks/plantentuin-meise/trails/arbres-remarquables/visit");
+  await expect(page.locator("html")).toHaveClass(/pq-immersive/);
+  await page.getByRole("button", { name: "Quitter" }).first().click();
+  await page.getByRole("alertdialog").getByRole("button", { name: "Quitter" }).click();
+  await expect(page).toHaveURL(/\/trails\/arbres-remarquables$/);
+  await expect(page.locator("html")).not.toHaveClass(/pq-immersive/);
+});
