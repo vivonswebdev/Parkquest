@@ -42,7 +42,7 @@ la bannière et le panneau ne sont pas présents dans le HTML du tout.
 | **Exploration E3** | #10 · `feature/exploration-e3` (basée sur #8) | `75fd817` | Preview | https://parkquest-git-feature-exploration-e3-vivonswebdevs-projects.vercel.app | Quête « Le secret du Séquoia », activités, trésor (œuf de démonstration) | Quête complète sur mobile |
 | Créatures (document) | #9 · `feature/creatures-design` | `948da44` | Brouillon | https://parkquest-git-feature-creatures-design-vivonswebdevs-projects.vercel.app | Documentation seulement (application identique à `main`) | — |
 | Rôles (document) | #11 · `feature/roles-permissions-design` | `db1f79e` | Brouillon | https://parkquest-git-feature-roles-permi-a1887f-vivonswebdevs-projects.vercel.app | Documentation seulement | — |
-| Statut produit et versions | cette PR · `feature/release-hygiene` | — | Preview | alias créé par Vercel à l'ouverture (voir le commentaire Vercel de la PR) | Textes publics nettoyés, bannière d'aperçu, outils de démo masqués en production, ce document | Bannière visible en aperçu ; aucun texte technique |
+| Statut produit et versions | #12 · `feature/release-hygiene` | `1178f36` | Preview | https://parkquest-git-feature-release-hygiene-vivonswebdevs-projects.vercel.app | Textes publics nettoyés, bannière d'aperçu, outils de démo masqués en production, ce document | Bannière visible en aperçu ; aucun texte technique |
 
 Accès rapides :
 
