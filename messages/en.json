@@ -707,11 +707,46 @@
     "cardBody": "A guided adventure, only on the park's paths.",
     "cardCta": "Start the adventure",
     "demoData": "Demo data, to be validated with the park.",
-    "objective": "Objective",
     "quests": {
       "secretSequoia": {
         "title": "The Secret of the Sequoia",
-        "intro": "Head to the giant sequoia: the first riddle is waiting there."
+        "intro": "Head to the giant sequoia: the first riddle is waiting there.",
+        "steps": {
+          "s1": {
+            "title": "The giant's riddle",
+            "body": "You're at the foot of the tallest tree on this trail. Here is its riddle:\n“Look for a tree whose leaves have rounded lobes. Its fruits wear a little cap. It's waiting further along the path.”",
+            "fact": "In their native California, giant sequoias are among the largest and oldest living things: some are over 3,000 years old."
+          },
+          "s2": {
+            "title": "The oak with little caps",
+            "body": "Well found! Look at its leaves and bark without leaving the path, then answer the question.",
+            "fact": "A single oak can host hundreds of species of insects, birds, lichens and fungi."
+          },
+          "s3": {
+            "title": "The forest of stems",
+            "body": "Get closer to the bamboo grove while staying on the path, without going into the planting. Look at the stems: can you see the regular nodes that divide them into segments?",
+            "fact": "Some bamboos are among the fastest-growing plants in the world: several tens of centimetres in a single day."
+          },
+          "s4": {
+            "title": "The cedar's whisper",
+            "body": "Listen to the cedar's hint, or read it:\n“My branches spread in wide tiers. I come from the mountains of Lebanon. Next, go where you can see far.”",
+            "fact": "The cedar of Lebanon appears on that country's flag. Its fragrant wood was already prized in Antiquity."
+          },
+          "s5": {
+            "title": "The walker's view",
+            "body": "Take time to look at the landscape. If you like, take a photo with your phone's camera. This step is optional.",
+            "fact": "In historic gardens, viewpoints were often designed to showcase a tree, a building or a vista."
+          },
+          "s6": {
+            "title": "The Secret of the Sequoia",
+            "body": "You've followed every clue. Go back to the foot of the giant sequoia: its secret is ready to be revealed.",
+            "fact": "The giant sequoia's thick, fibrous bark protects it from forest fires."
+          }
+        },
+        "reward": {
+          "name": "Sequoia Egg",
+          "body": "A special demo egg, earned for uncovering the Secret of the Sequoia. It may hatch later, when the collection's creatures arrive."
+        }
       }
     },
     "safety": {
@@ -762,10 +797,54 @@
     "resume": "Resume",
     "quit": "Quit",
     "quitTitle": "Quit the adventure?",
-    "quitBody": "You can start it again later.",
+    "quitBody": "Your progress stays saved on this phone.",
     "continue": "Continue",
-    "announceStart": "Adventure started. Objective: {name}, {distance} away.",
     "announceResumed": "Adventure resumed.",
-    "announceObjective": "New objective: {name}."
+    "announceStep": "Step {n}: {title}. Head to: {spot}.",
+    "arrivedVia": {
+      "gps": "Arrival confirmed by GPS: {spot}.",
+      "qr": "Arrival confirmed by QR code: {spot}.",
+      "manual": "Arrival confirmed: {spot}."
+    },
+    "step": {
+      "progress": "{done} of {total} steps done",
+      "optional": "Optional",
+      "goTo": "Head to: {spot}",
+      "here": "You're at: {spot}",
+      "arrived": "I'm here",
+      "skip": "Skip this step",
+      "gpsFallback": "No problem: you can confirm your arrival yourself at each step.",
+      "confirmTitle": "Are you at: {spot}?",
+      "confirmBody": "Your GPS can't check this precisely. Just confirm your arrival (the park's QR codes will come later).",
+      "confirmYes": "I confirm"
+    },
+    "activity": {
+      "kind": {
+        "riddle": "Riddle",
+        "quiz": "Quiz",
+        "observe": "Observation",
+        "audioHint": "Audio hint",
+        "photo": "Photo",
+        "reward": "Treasure"
+      },
+      "riddleDone": "I've read the riddle",
+      "observeDone": "I've observed",
+      "didYouKnow": "Did you know?",
+      "audioListen": "Listen to the hint",
+      "audioStop": "Stop",
+      "audioUnavailable": "Audio isn't available on this device: the hint is written below.",
+      "transcript": "Transcript",
+      "audioDone": "I understood the hint",
+      "photoNote": "Nothing is sent: your photo stays on your phone.",
+      "photoDone": "Done",
+      "openTreasure": "Reveal the secret"
+    },
+    "reward": {
+      "title": "Treasure found!",
+      "rules": "Demo egg · not tradable · not for sale · no random draw",
+      "replay": "Play again",
+      "back": "Back to the trail",
+      "announce": "Treasure found: the Sequoia Egg."
+    }
   }
 }

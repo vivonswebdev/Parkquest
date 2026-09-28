@@ -707,11 +707,46 @@
     "cardBody": "Une aventure guidée, uniquement sur les chemins du parc.",
     "cardCta": "Commencer l'aventure",
     "demoData": "Donnée de démonstration à valider avec le parc.",
-    "objective": "Objectif",
     "quests": {
       "secretSequoia": {
         "title": "Le secret du Séquoia",
-        "intro": "Rejoins le Séquoia géant : la première énigme t'y attend."
+        "intro": "Rejoins le Séquoia géant : la première énigme t'y attend.",
+        "steps": {
+          "s1": {
+            "title": "L'énigme du géant",
+            "body": "Tu es au pied du plus grand arbre de ce parcours. Voici son énigme :\n« Cherche un arbre aux feuilles découpées en lobes arrondis. Ses fruits portent un petit chapeau. Il t'attend plus loin sur le chemin. »",
+            "fact": "Dans leur Californie natale, les séquoias géants comptent parmi les plus grands et les plus anciens êtres vivants : certains ont plus de 3 000 ans."
+          },
+          "s2": {
+            "title": "Le chêne aux petits chapeaux",
+            "body": "Bien trouvé ! Observe ses feuilles et son écorce sans quitter le chemin, puis réponds à la question.",
+            "fact": "Un seul chêne peut accueillir des centaines d'espèces d'insectes, d'oiseaux, de lichens et de champignons."
+          },
+          "s3": {
+            "title": "La forêt de tiges",
+            "body": "Approche-toi de la bambouseraie en restant sur le chemin, sans entrer dans les massifs. Observe les tiges : vois-tu les nœuds réguliers qui les divisent en segments ?",
+            "fact": "Certains bambous comptent parmi les plantes qui poussent le plus vite au monde : plusieurs dizaines de centimètres en une journée."
+          },
+          "s4": {
+            "title": "Le murmure du cèdre",
+            "body": "Écoute l'indice du cèdre, ou lis-le :\n« Mes branches s'étalent en larges étages. Je viens des montagnes du Liban. Pour la suite, va là où le regard porte loin. »",
+            "fact": "Le cèdre du Liban figure sur le drapeau de ce pays. Son bois parfumé était déjà recherché dans l'Antiquité."
+          },
+          "s5": {
+            "title": "Le regard du promeneur",
+            "body": "Prends le temps de regarder le paysage. Si tu le souhaites, prends une photo avec l'appareil photo de ton téléphone. Cette étape est facultative.",
+            "fact": "Dans les jardins historiques, les points de vue étaient souvent dessinés pour mettre en scène un arbre, un bâtiment ou une perspective."
+          },
+          "s6": {
+            "title": "Le secret du Séquoia",
+            "body": "Tu as suivi toutes les pistes. Retourne au pied du Séquoia géant : son secret est prêt à être révélé.",
+            "fact": "L'écorce épaisse et fibreuse du séquoia géant le protège des incendies de forêt."
+          }
+        },
+        "reward": {
+          "name": "Œuf du Séquoia",
+          "body": "Un œuf spécial de démonstration, offert pour avoir percé le secret du Séquoia. Il pourra éclore plus tard, quand les créatures de la collection arriveront."
+        }
       }
     },
     "safety": {
@@ -762,10 +797,54 @@
     "resume": "Reprendre",
     "quit": "Quitter",
     "quitTitle": "Quitter l'aventure ?",
-    "quitBody": "Tu pourras la recommencer plus tard.",
+    "quitBody": "Ta progression reste enregistrée sur ce téléphone.",
     "continue": "Continuer",
-    "announceStart": "Aventure commencée. Objectif : {name}, à {distance}.",
     "announceResumed": "Aventure reprise.",
-    "announceObjective": "Nouvel objectif : {name}."
+    "announceStep": "Étape {n} : {title}. Rends-toi à : {spot}.",
+    "arrivedVia": {
+      "gps": "Arrivée validée par GPS : {spot}.",
+      "qr": "Arrivée validée par QR code : {spot}.",
+      "manual": "Arrivée confirmée : {spot}."
+    },
+    "step": {
+      "progress": "{done} étapes sur {total} terminées",
+      "optional": "Facultatif",
+      "goTo": "Rendez-vous : {spot}",
+      "here": "Tu es à : {spot}",
+      "arrived": "J'y suis",
+      "skip": "Passer cette étape",
+      "gpsFallback": "Pas de souci : tu peux confirmer toi-même ton arrivée à chaque étape.",
+      "confirmTitle": "Es-tu bien à : {spot} ?",
+      "confirmBody": "Ton GPS ne permet pas de le vérifier précisément. Confirme simplement ton arrivée (les QR codes du parc arriveront plus tard).",
+      "confirmYes": "Je confirme"
+    },
+    "activity": {
+      "kind": {
+        "riddle": "Énigme",
+        "quiz": "Quiz",
+        "observe": "Observation",
+        "audioHint": "Indice audio",
+        "photo": "Photo",
+        "reward": "Trésor"
+      },
+      "riddleDone": "J'ai lu l'énigme",
+      "observeDone": "J'ai observé",
+      "didYouKnow": "Le savais-tu ?",
+      "audioListen": "Écouter l'indice",
+      "audioStop": "Arrêter la lecture",
+      "audioUnavailable": "Lecture audio indisponible sur cet appareil : l'indice est écrit ci-dessous.",
+      "transcript": "Transcription",
+      "audioDone": "J'ai compris l'indice",
+      "photoNote": "Rien n'est envoyé : ta photo reste sur ton téléphone.",
+      "photoDone": "C'est fait",
+      "openTreasure": "Révéler le secret"
+    },
+    "reward": {
+      "title": "Trésor trouvé !",
+      "rules": "Œuf de démonstration · non échangeable · non vendable · aucun tirage",
+      "replay": "Rejouer",
+      "back": "Retour au parcours",
+      "announce": "Trésor trouvé : l'Œuf du Séquoia."
+    }
   }
 }

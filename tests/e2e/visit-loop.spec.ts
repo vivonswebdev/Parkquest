@@ -225,8 +225,9 @@ test("Mode Exploration : écran de sécurité, aventure, pause et sortie", async
   await safety.getByLabel("J'ai compris ces consignes").check();
   await start.click();
 
-  // Aventure : objectif, tableau de déplacement, mention démo
-  await expect(page.getByRole("heading", { name: "Séquoia géant" })).toBeVisible();
+  // Aventure : étape 1, objectif, tableau de déplacement, mention démo
+  await expect(page.getByRole("heading", { name: "L'énigme du géant" })).toBeVisible();
+  await expect(page.getByText("Rendez-vous : Séquoia géant")).toBeVisible();
   await expect(page.getByText("Parcouru")).toBeVisible();
   await expect(page.getByText("Donnée de démonstration à valider avec le parc.")).toBeVisible();
   await expect(page.getByRole("button", { name: "Nord en haut" })).toBeVisible();
@@ -247,4 +248,69 @@ test("Mode Exploration : écran de sécurité, aventure, pause et sortie", async
 test("Mode Exploration : quête inconnue → page introuvable", async ({ page }) => {
   await page.goto("/fr/parks/plantentuin-meise/explore/quete-inexistante");
   await expect(page.getByText(/introuvable|n'existe pas/i).first()).toBeVisible();
+});
+
+test("Mode Exploration : « Le secret du Séquoia » de bout en bout, œuf de démonstration", async ({ page }) => {
+  await page.addInitScript(() => {
+    if (!sessionStorage.getItem("init")) {
+      localStorage.clear();
+      localStorage.setItem("parkquest.location-consent.v1", "declined");
+      sessionStorage.setItem("init", "1");
+    }
+  });
+  await page.goto("/fr/parks/plantentuin-meise/explore/le-secret-du-sequoia");
+  const beginAdventure = async () => {
+    await page.getByLabel("J'ai compris ces consignes").check();
+    await page.getByRole("button", { name: "Commencer l'aventure" }).click();
+  };
+  await beginAdventure();
+
+  // Sans GPS : l'arrivée se confirme manuellement (jamais de validation automatique)
+  const arriveManually = async (spot: string) => {
+    await expect(page.getByText(`Rendez-vous : ${spot}`)).toBeVisible();
+    await page.getByRole("button", { name: "J'y suis" }).click();
+    await page.getByRole("alertdialog").getByRole("button", { name: "Je confirme" }).click();
+    await expect(page.getByText(`Tu es à : ${spot}`)).toBeVisible();
+  };
+
+  // 1. Énigme
+  await arriveManually("Séquoia géant");
+  await expect(page.getByText(/Ses fruits portent un petit chapeau/)).toBeVisible();
+  await expect(page.getByText("Le savais-tu ?")).toBeVisible();
+  await page.getByRole("button", { name: "J'ai lu l'énigme" }).click();
+
+  // 2. Quiz (réponse vérifiée côté serveur) : « Continuer » seulement après avoir répondu
+  await arriveManually("Chêne remarquable");
+  const next = page.getByRole("button", { name: "Continuer", exact: true });
+  await expect(next).toBeDisabled();
+  await page.getByText("Des glands").click();
+  await page.getByRole("button", { name: "Valider" }).click();
+  await expect(page.getByText("Bonne réponse !")).toBeVisible();
+  await next.click();
+
+  // 3. Observation
+  await arriveManually("Bambouseraie");
+  await page.getByRole("button", { name: "J'ai observé" }).click();
+
+  // 4. Indice audio : le texte est toujours affiché (transcription)
+  await arriveManually("Cèdre du Liban");
+  await expect(page.getByText(/Je viens des montagnes du Liban/)).toBeVisible();
+  await page.getByRole("button", { name: "J'ai compris l'indice" }).click();
+
+  // 5. Photo facultative : passée sans s'y rendre
+  await expect(page.getByText("Facultatif")).toBeVisible();
+  await page.getByRole("button", { name: "Passer cette étape" }).click();
+
+  // 6. Retour au Séquoia : trésor
+  await arriveManually("Séquoia géant");
+  await page.getByRole("button", { name: "Révéler le secret" }).click();
+  await expect(page.getByRole("heading", { name: "Œuf du Séquoia" })).toBeVisible();
+  await expect(page.getByText(/non échangeable · non vendable · aucun tirage/)).toBeVisible();
+
+  // Progression et récompense conservées sur l'appareil
+  await page.reload();
+  await beginAdventure();
+  await expect(page.getByRole("heading", { name: "Œuf du Séquoia" })).toBeVisible();
+  await page.getByRole("button", { name: "Rejouer" }).click();
+  await expect(page.getByRole("heading", { name: "L'énigme du géant" })).toBeVisible();
 });

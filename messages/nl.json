@@ -707,11 +707,46 @@
     "cardBody": "Een begeleid avontuur, alleen op de paden van het park.",
     "cardCta": "Start het avontuur",
     "demoData": "Demogegevens, nog te valideren met het park.",
-    "objective": "Doel",
     "quests": {
       "secretSequoia": {
         "title": "Het geheim van de sequoia",
-        "intro": "Ga naar de reuzensequoia: daar wacht het eerste raadsel."
+        "intro": "Ga naar de reuzensequoia: daar wacht het eerste raadsel.",
+        "steps": {
+          "s1": {
+            "title": "Het raadsel van de reus",
+            "body": "Je staat aan de voet van de grootste boom van deze route. Hier is zijn raadsel:\n“Zoek een boom met bladeren met ronde lobben. Zijn vruchten dragen een klein hoedje. Hij wacht verderop langs het pad.”",
+            "fact": "In hun thuisland Californië behoren reuzensequoia's tot de grootste en oudste levende wezens: sommige zijn meer dan 3.000 jaar oud."
+          },
+          "s2": {
+            "title": "De eik met de hoedjes",
+            "body": "Goed gevonden! Bekijk zijn bladeren en schors zonder het pad te verlaten en beantwoord dan de vraag.",
+            "fact": "Eén eik kan honderden soorten insecten, vogels, korstmossen en paddenstoelen herbergen."
+          },
+          "s3": {
+            "title": "Het stengelwoud",
+            "body": "Kom dichter bij het bamboebos, maar blijf op het pad en ga de struiken niet in. Bekijk de stengels: zie je de regelmatige knopen die ze in stukken verdelen?",
+            "fact": "Sommige bamboesoorten behoren tot de snelst groeiende planten ter wereld: tientallen centimeters per dag."
+          },
+          "s4": {
+            "title": "Het gefluister van de ceder",
+            "body": "Luister naar de tip van de ceder, of lees hem:\n“Mijn takken spreiden zich uit in brede etages. Ik kom uit de bergen van Libanon. Ga daarna naar een plek waar je ver kunt kijken.”",
+            "fact": "De libanonceder staat op de vlag van Libanon. Zijn geurige hout was al in de oudheid gegeerd."
+          },
+          "s5": {
+            "title": "De blik van de wandelaar",
+            "body": "Neem de tijd om naar het landschap te kijken. Als je wilt, maak je een foto met de camera van je telefoon. Deze stap is optioneel.",
+            "fact": "In historische tuinen werden uitkijkpunten vaak ontworpen om een boom, een gebouw of een zichtas in de verf te zetten."
+          },
+          "s6": {
+            "title": "Het geheim van de sequoia",
+            "body": "Je hebt alle sporen gevolgd. Ga terug naar de voet van de reuzensequoia: zijn geheim wordt nu onthuld.",
+            "fact": "De dikke, vezelige schors van de reuzensequoia beschermt hem tegen bosbranden."
+          }
+        },
+        "reward": {
+          "name": "Sequoia-ei",
+          "body": "Een speciaal demo-ei, omdat je het geheim van de sequoia hebt ontrafeld. Het kan later uitkomen, wanneer de wezens van de collectie er zijn."
+        }
       }
     },
     "safety": {
@@ -762,10 +797,54 @@
     "resume": "Verder",
     "quit": "Stoppen",
     "quitTitle": "Avontuur stoppen?",
-    "quitBody": "Je kunt later opnieuw beginnen.",
+    "quitBody": "Je voortgang blijft bewaard op deze telefoon.",
     "continue": "Doorgaan",
-    "announceStart": "Avontuur gestart. Doel: {name}, op {distance}.",
     "announceResumed": "Avontuur hervat.",
-    "announceObjective": "Nieuw doel: {name}."
+    "announceStep": "Stap {n}: {title}. Ga naar: {spot}.",
+    "arrivedVia": {
+      "gps": "Aankomst bevestigd via gps: {spot}.",
+      "qr": "Aankomst bevestigd via QR-code: {spot}.",
+      "manual": "Aankomst bevestigd: {spot}."
+    },
+    "step": {
+      "progress": "{done} van {total} stappen klaar",
+      "optional": "Optioneel",
+      "goTo": "Ga naar: {spot}",
+      "here": "Je bent bij: {spot}",
+      "arrived": "Ik ben er",
+      "skip": "Deze stap overslaan",
+      "gpsFallback": "Geen probleem: je kunt je aankomst bij elke stap zelf bevestigen.",
+      "confirmTitle": "Ben je echt bij: {spot}?",
+      "confirmBody": "Je gps kan dit niet precies controleren. Bevestig gewoon je aankomst (QR-codes in het park komen later).",
+      "confirmYes": "Ik bevestig"
+    },
+    "activity": {
+      "kind": {
+        "riddle": "Raadsel",
+        "quiz": "Quiz",
+        "observe": "Observatie",
+        "audioHint": "Audiotip",
+        "photo": "Foto",
+        "reward": "Schat"
+      },
+      "riddleDone": "Ik heb het raadsel gelezen",
+      "observeDone": "Ik heb goed gekeken",
+      "didYouKnow": "Wist je dat?",
+      "audioListen": "Tip beluisteren",
+      "audioStop": "Stoppen",
+      "audioUnavailable": "Audio is niet beschikbaar op dit toestel: de tip staat hieronder.",
+      "transcript": "Tekst",
+      "audioDone": "Ik heb de tip begrepen",
+      "photoNote": "Er wordt niets verstuurd: je foto blijft op je telefoon.",
+      "photoDone": "Gedaan",
+      "openTreasure": "Het geheim onthullen"
+    },
+    "reward": {
+      "title": "Schat gevonden!",
+      "rules": "Demo-ei · niet ruilbaar · niet te koop · geen loting",
+      "replay": "Opnieuw spelen",
+      "back": "Terug naar de route",
+      "announce": "Schat gevonden: het Sequoia-ei."
+    }
   }
 }
