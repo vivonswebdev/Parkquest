@@ -1,7 +1,25 @@
 # TYLIA — Créatures, œufs et collection : architecture et design fonctionnel
 
-> **Statut : proposition, à valider.** Aucune table, migration ni écran n'est créé tant que ce document
-> n'est pas validé. Les noms, probabilités et règles ci-dessous sont des propositions de travail.
+> **Statut : approche générale validée le 28/09/2026** (décisions ci-dessous). Aucune table, migration ni
+> écran de collection n'est créé avant les étapes C1 à C5 ; la quête E3 ne livre qu'un œuf spécial de démonstration.
+
+## Décisions validées (28/09/2026)
+
+- **Noms de travail validés provisoirement** : Ramilou (feuille, commun), Rivelle (eau, commun), Pétalie (fleur,
+  commun), Zéphyl (air, peu commun), Humbo (forêt, peu commun), Lunastria (lune, rare), Soliane (soleil, rare).
+  **Non validés juridiquement** : marques, domaines, stores et réseaux sociaux à vérifier avant publication.
+- **Illustrations** : les images générées restent des références créatives internes, jamais publiées ni
+  présentées comme art final. Art public : illustrateur ou artiste 3D avec cession écrite de droits.
+- **Probabilités de lancement** : Commun 60 %, Peu commun 28 %, Rare 12 % ; garantie de nouveauté après
+  2 doublons consécutifs ; rare garantie au plus tard au 10ᵉ œuf ; jamais de tirage sur une rareté vide ;
+  probabilités configurables côté serveur.
+- **Énergie de nature** : barème du § 3.2 conservé en **configuration de démonstration** ajustable,
+  seuil initial 100 ; doublons → graines/fragments plus tard (hors E3).
+- **Ordre** : E3 (quête + œuf spécial de démonstration) → C1 → C2 → C3 → C4 → C5 (Supabase plus tard).
+- **Récompense E3** : `special_demo_egg`, source `secret-du-sequoia`, statut `demo`, non échangeable,
+  non vendable, aucune probabilité appliquée.
+- Aucun service externe payant (Pl@ntNet, Mapbox, services de vision) ; identification des plantes plus tard
+  en simulation locale, sans appel réseau ni stockage permanent de photos.
 > Les illustrations de `docs/creatures/reference/` sont une **référence artistique provisoire**
 > (direction générale), non destinées à la publication.
 
@@ -41,13 +59,13 @@ Les noms de travail ont été relus : plusieurs posent problème. Je propose une
 
 | # | Élément | Rareté | Nom de travail | Problème relevé | Alternative proposée | Direction |
 |---|---|---|---|---|---|---|
-| 1 | Feuille | commun | Lorelei | **Nom d'un personnage d'une licence de créatures à collectionner** + légende et lieu célèbres du Rhin | **Ramilou** (ramille + « loup » affectueux) | graine-gland avec pousse et collerette de feuilles |
-| 2 | Eau | commun | Aquilo | Dieu romain du vent du nord (contresens) ; très générique | **Rivelle** | goutte translucide, feuille sur la tête, galets et nénuphars |
-| 3 | Fleur | commun | Florine | Prénom courant, nombreuses marques, peu protégeable | **Pétalie** | bulbe coiffé de pétales multicolores |
-| 4 | Air | peu commun | Aviola | Proche de noms commerciaux existants (à vérifier) | **Zéphyl** | graine ailée à plumes, spirale de vent |
-| 5 | Forêt | peu commun | Boletus | **Nom scientifique d'un genre de champignons** (à éviter selon votre règle) | **Humbo** (humus) | chapeau de champignon, mousse, bois |
-| 6 | Lune | rare | Lunastria | Assez distinctif | Lunastria (à vérifier) ou **Nocélune** | pelage étoilé, croissants, fleurs de nuit |
-| 7 | Soleil | rare | Solara | Très répandu comme marque (énergie, cosmétique, hôtellerie) | **Soliane** | corolle de tournesol lumineuse |
+| 1 | Feuille | commun | Lorelei → **Ramilou ✅** | **Nom d'un personnage d'une licence de créatures à collectionner** + légende et lieu célèbres du Rhin | **Ramilou** (ramille + « loup » affectueux) | graine-gland avec pousse et collerette de feuilles |
+| 2 | Eau | commun | Aquilo → **Rivelle ✅** | Dieu romain du vent du nord (contresens) ; très générique | **Rivelle** | goutte translucide, feuille sur la tête, galets et nénuphars |
+| 3 | Fleur | commun | Florine → **Pétalie ✅** | Prénom courant, nombreuses marques, peu protégeable | **Pétalie** | bulbe coiffé de pétales multicolores |
+| 4 | Air | peu commun | Aviola → **Zéphyl ✅** | Proche de noms commerciaux existants (à vérifier) | **Zéphyl** | graine ailée à plumes, spirale de vent |
+| 5 | Forêt | peu commun | Boletus → **Humbo ✅** | **Nom scientifique d'un genre de champignons** (à éviter selon votre règle) | **Humbo** (humus) | chapeau de champignon, mousse, bois |
+| 6 | Lune | rare | **Lunastria ✅** | Assez distinctif | Lunastria (à vérifier) ou **Nocélune** | pelage étoilé, croissants, fleurs de nuit |
+| 7 | Soleil | rare | Solara → **Soliane ✅** | Très répandu comme marque (énergie, cosmétique, hôtellerie) | **Soliane** | corolle de tournesol lumineuse |
 
 Règles de nommage : 2 à 3 syllabes, prononçable en FR/NL/EN/ES/DE, sans nom d'espèce réelle, sans
 prénom très courant, sans ressemblance avec une créature ou marque connue. Le nom est traduit si besoin
