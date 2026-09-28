@@ -294,3 +294,20 @@ html[data-theme="light"] .light-serif {
 .pq-maplibre .maplibregl-ctrl-attrib a {
   color: inherit;
 }
+
+/* Marque TYLIA : encre du mot-symbole et demi-feuilles, lisibles dans chaque thème. */
+:root,
+.theme-dark {
+  --brand-ink: #eaf5ee;
+  --brand-leaf-dark: #4e9470;
+  --brand-leaf-light: #c3e6cf;
+  --brand-leaf-mid: #86c29e;
+}
+.theme-light,
+html[data-theme="light"],
+html[data-theme-pref="default"] .reading-light {
+  --brand-ink: #2e543e;
+  --brand-leaf-dark: #2f573d;
+  --brand-leaf-light: #a3c9ae;
+  --brand-leaf-mid: #66997b;
+}

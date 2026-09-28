@@ -9,7 +9,7 @@ const ips = Object.values(networkInterfaces())
   .filter((n) => n && n.family === "IPv4" && !n.internal)
   .map((n) => n.address);
 
-console.log("\n  ParkQuest — démo sur le réseau local");
+console.log("\n  TYLIA — démo sur le réseau local");
 console.log("  ─────────────────────────────────────");
 console.log(`  Sur ce PC        : http://localhost:${port}/fr`);
 if (ips.length) for (const ip of ips) console.log(`  Sur l'iPhone     : http://${ip}:${port}/fr`);

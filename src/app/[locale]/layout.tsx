@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { brand } from "@/config/brand";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Fraunces, Inter, Plus_Jakarta_Sans } from "next/font/google";
@@ -28,10 +29,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const t = await getTranslations({ locale, namespace: "meta" });
   return {
     metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"),
-    title: { default: t("title"), template: "%s · ParkQuest" },
+    title: { default: t("title"), template: `%s · ${brand.name}` },
     description: t("description"),
-    applicationName: "ParkQuest",
-    appleWebApp: { capable: true, title: "ParkQuest", statusBarStyle: "black-translucent" },
+    applicationName: brand.name,
+    appleWebApp: { capable: true, title: brand.name, statusBarStyle: "black-translucent" },
     icons: { apple: "/icons/apple-touch-icon.png" },
     alternates: { languages: Object.fromEntries(routing.locales.map((l) => [l, `/${l}`])) },
   };

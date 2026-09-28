@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "ParkQuest — Explorez. Apprenez. Jouez.",
+    "title": "TYLIA — Explorez. Apprenez. Jouez.",
     "description": "Le compagnon de visite des parcs et jardins : carte, parcours, découvertes, quiz et défis."
   },
   "common": {
-    "appName": "ParkQuest",
+    "appName": "TYLIA",
     "startVisit": "Commencer la visite",
     "exploreTrails": "Explorer les parcours",
     "seeAll": "Voir tout",
@@ -15,7 +15,7 @@
     "errorTitle": "Oups, quelque chose s'est mal passé.",
     "errorBody": "Réessayez dans un instant. Si le problème persiste, revenez à l'accueil.",
     "notFoundTitle": "Page introuvable",
-    "notFoundBody": "Ce lieu n'existe pas (encore) sur ParkQuest.",
+    "notFoundBody": "Ce lieu n'existe pas (encore) sur TYLIA.",
     "goHome": "Retour à l'accueil",
     "demo": "Démo",
     "demoData": "Données de démonstration",
@@ -121,7 +121,7 @@
     "practicalInfo": "Infos pratiques",
     "openMap": "Ouvrir la carte",
     "noTrails": "Aucun parcours n'est encore publié pour ce parc.",
-    "notReady": "Ce parc arrive bientôt sur ParkQuest. Les parcours et spots sont en préparation.",
+    "notReady": "Ce parc arrive bientôt sur TYLIA. Les parcours et spots sont en préparation.",
     "downloadPark": "Télécharger ce parc",
     "downloadParkHint": "Pour une visite sans réseau (fiches, parcours, images optimisées)."
   },
@@ -472,7 +472,7 @@
     "terms": "Conditions d'utilisation",
     "gdpr": "RGPD",
     "placeholder": "Document provisoire — à faire valider par un conseil juridique avant lancement.",
-    "footer": "Données de démonstration — ParkQuest n'est affilié à aucun des parcs présentés."
+    "footer": "Données de démonstration — TYLIA n'est affilié à aucun des parcs présentés."
   },
   "offline": {
     "title": "Vous êtes hors connexion",
@@ -482,7 +482,7 @@
   },
   "pwa": {
     "install": "Installer l'app",
-    "installBody": "Ajoutez ParkQuest à votre écran d'accueil."
+    "installBody": "Ajoutez TYLIA à votre écran d'accueil."
   },
   "demo": {
     "title": "Mode démonstration",
@@ -514,7 +514,7 @@
   },
   "geo": {
     "consentTitle": "Activez votre position",
-    "consentIntro": "ParkQuest utilise votre position uniquement pour :",
+    "consentIntro": "TYLIA utilise votre position uniquement pour :",
     "consentUse1": "vous afficher sur la carte du parc ;",
     "consentUse2": "vous guider vers les arbres et lieux remarquables ;",
     "consentUse3": "vous indiquer la distance jusqu'au prochain spot.",
@@ -637,7 +637,7 @@
     "demoNote": "Mode démo : la photo reste sur cet appareil. Validez-la depuis le panneau DÉMO pour la voir publiée.",
     "pending": "En attente de vérification",
     "you": "Vous",
-    "community": "Communauté ParkQuest",
+    "community": "Communauté TYLIA",
     "official": "Photo officielle du parc",
     "wikimedia": "Wikimedia Commons",
     "cover": "Photo de couverture",

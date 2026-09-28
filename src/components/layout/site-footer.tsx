@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { brand } from "@/config/brand";
 import { LogoMark } from "@/components/brand/logo";
 import { Link } from "@/i18n/navigation";
 
@@ -9,7 +10,7 @@ export async function SiteFooter() {
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 text-sm text-muted-foreground md:flex-row md:items-center md:px-6">
         <div className="flex items-center gap-2">
           <LogoMark className="size-6" />
-          <span>© {new Date().getFullYear()} ParkQuest</span>
+          <span>© {new Date().getFullYear()} {brand.name}</span>
         </div>
         <p className="md:flex-1">{t("footer")}</p>
         <nav className="flex gap-4">

@@ -1,4 +1,5 @@
 import { Search, UserRound } from "lucide-react";
+import { brand } from "@/config/brand";
 import { getTranslations } from "next-intl/server";
 import { Logo } from "@/components/brand/logo";
 import { Link } from "@/i18n/navigation";
@@ -19,7 +20,7 @@ export async function DesktopHeader() {
   return (
     <header className="sticky top-0 z-40 hidden border-b border-border bg-background/80 backdrop-blur-xl md:block">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-8 px-6">
-        <Link href="/" aria-label="ParkQuest">
+        <Link href="/" aria-label={brand.name}>
           <Logo />
         </Link>
         <nav aria-label={t("mainNavigation")} className="flex items-center gap-1">
