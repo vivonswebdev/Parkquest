@@ -188,7 +188,28 @@
     "stepOf": "Stop {current} of {total}",
     "elapsed": "Time",
     "nextStop": "Next spot →",
-    "visitEnded": "Visit finished"
+    "visitEnded": "Visit finished",
+    "progressTitle": "Trail progress",
+    "stepStates": {
+      "done": "discovered",
+      "current": "current step",
+      "next": "next goal",
+      "future": "upcoming"
+    },
+    "discoveredCount": "{count} / {total} spots discovered",
+    "remainingDistance": "{distance} left",
+    "remainingTime": "about {minutes} min",
+    "pointsLeft": "+{points} points to earn",
+    "about": "about {minutes} min",
+    "seeHint": "Show the clue",
+    "hideHint": "Hide the clue",
+    "seeCard": "Open the card",
+    "hintTitle": "Clue",
+    "hintLook": "Look for: {label}",
+    "mapShort": "Map",
+    "quitShort": "Quit",
+    "finalStep": "End of the trail",
+    "markerLabel": "Step {n} · {name}"
   },
   "spot": {
     "guideMe": "Guide me",

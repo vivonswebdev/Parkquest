@@ -10,10 +10,14 @@ import { makeGroves, pondRing, scatterTrees, TREE_PALETTES, treeExtrusions, tree
 import { findBuildingSource, firstSymbolLayerId, MAP_PALETTES, themePaintChanges, type MapTheme, type StyleLayerLike } from "@/lib/map/theme";
 import { cn } from "@/lib/utils";
 import { MarkerPin } from "./fallback-map";
+import { PATH_COLORS } from "./path-colors";
 import { defaultNature } from "./fallback-map";
 import type { MapMarker, MapNature, ParkMapProps } from "./types";
 
 setWorkerUrl(maplibreWorkerUrl);
+
+/** Le prochain objectif passe devant les autres marqueurs. */
+const markerZ = (mk: MapMarker) => (mk.step?.state === "next" ? "3" : mk.step?.state === "current" ? "2" : "1");
 
 /** Délai max pour charger le fond : au-delà, repli sur la carte simplifiée. */
 const LOAD_TIMEOUT_MS = 12_000;
@@ -65,6 +69,7 @@ export function MapLibreParkMap({
   view3d = false,
   focus,
   nature,
+  attributionTop,
   onFail,
   ref,
 }: ParkMapProps & { onFail(): void }) {
@@ -225,8 +230,30 @@ export function MapLibreParkMap({
     }
     const beforeId = firstSymbolLayerId((m.getStyle().layers ?? []) as StyleLayerLike[]);
     m.addSource("pq-paths", { type: "geojson", data });
+    // Tracé du parcours : terminé (plein, discret) · actif (lumineux, halo) · à venir (pointillé).
     m.addLayer(
-      { id: "pq-paths-casing", type: "line", source: "pq-paths", paint: { "line-color": "#04110c", "line-opacity": 0.35, "line-width": 8 }, layout: { "line-cap": "round", "line-join": "round" } },
+      {
+        id: "pq-paths-glow",
+        type: "line",
+        source: "pq-paths",
+        filter: ["==", ["get", "variant"], "active"],
+        paint: { "line-color": PATH_COLORS.active, "line-opacity": 0.35, "line-width": 16, "line-blur": 8 },
+        layout: { "line-cap": "round", "line-join": "round" },
+      },
+      beforeId,
+    );
+    m.addLayer(
+      {
+        id: "pq-paths-casing",
+        type: "line",
+        source: "pq-paths",
+        paint: {
+          "line-color": "#04110c",
+          "line-opacity": ["match", ["get", "variant"], "done", 0.18, "active", 0.45, 0.3],
+          "line-width": ["match", ["get", "variant"], "active", 10, 7],
+        },
+        layout: { "line-cap": "round", "line-join": "round" },
+      },
       beforeId,
     );
     m.addLayer(
@@ -236,9 +263,10 @@ export function MapLibreParkMap({
         source: "pq-paths",
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
-          "line-color": ["match", ["get", "variant"], "done", "#128C63", "active", "#19E6A2", "#CDB88A"],
-          "line-width": ["match", ["get", "variant"], "active", 5, 4],
-          "line-dasharray": ["match", ["get", "variant"], "trail", ["literal", [2, 1.5]], ["literal", [1, 0]]],
+          "line-color": ["match", ["get", "variant"], "done", PATH_COLORS.done, "active", PATH_COLORS.active, PATH_COLORS.trail],
+          "line-opacity": ["match", ["get", "variant"], "done", 0.75, 1],
+          "line-width": ["match", ["get", "variant"], "active", 6, "done", 3.5, 3.5],
+          "line-dasharray": ["match", ["get", "variant"], "trail", ["literal", [1.6, 1.4]], ["literal", [1, 0]]],
         },
       },
       beforeId,
@@ -373,7 +401,8 @@ export function MapLibreParkMap({
       if (!entry) {
         const el = document.createElement("button");
         el.type = "button";
-        el.setAttribute("aria-label", mk.label);
+        el.setAttribute("aria-label", mk.ariaLabel ?? mk.label);
+        el.style.zIndex = markerZ(mk);
         el.addEventListener("click", (e) => {
           e.stopPropagation();
           onSelectRef.current?.(mk.id);
@@ -384,6 +413,8 @@ export function MapLibreParkMap({
         markerRefs.current.set(mk.id, entry);
       } else {
         entry.marker.setLngLat([mk.location.lng, mk.location.lat]);
+        entry.marker.getElement().setAttribute("aria-label", mk.ariaLabel ?? mk.label);
+        entry.marker.getElement().style.zIndex = markerZ(mk);
       }
       entry.root.render(<MarkerPin marker={mk} selected={mk.id === selectedId} small={mk.type === "facility"} />);
     });
@@ -420,5 +451,11 @@ export function MapLibreParkMap({
     resetNorth: () => map.current?.easeTo({ bearing: 0, pitch: view3d ? PITCH_3D : 0 }),
   }));
 
-  return <div ref={container} className={cn("pq-maplibre h-full w-full", className)} />;
+  return (
+    <div
+      ref={container}
+      className={cn("pq-maplibre h-full w-full", className)}
+      style={attributionTop ? ({ "--pq-attrib-top": `${attributionTop}px` } as React.CSSProperties) : undefined}
+    />
+  );
 }

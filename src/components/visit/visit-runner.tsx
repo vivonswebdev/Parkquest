@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, Flag, Loader2, Map as MapIcon, MapPin, Navigation, Pause, Play, PartyPopper, Signpost, Timer, X } from "lucide-react";
+import { BookOpen, ChevronDown, Flag, Lightbulb, Loader2, Map as MapIcon, Navigation, Pause, Play, PartyPopper, Signpost, Timer, X } from "lucide-react";
 import { GpsStatus } from "@/components/geo/gps-status";
 import { LocationConsentSheet } from "@/components/geo/location-consent-sheet";
 import { useLocationConsent } from "@/lib/location-consent";
@@ -17,7 +17,8 @@ import { SPOT_KIND_COLOR } from "@/components/shared/icons";
 import { Button } from "@/components/ui/button";
 import { Pill } from "@/components/ui/pill";
 import { DemoBadge } from "@/components/shared/demo-badge";
-import { Progress } from "@/components/ui/progress";
+import { TrailProgress } from "@/components/trail/trail-progress";
+import { segmentVariant, trailRemaining, trailStepStates } from "@/lib/game/trail-progress";
 import { useGeolocation } from "@/hooks/use-geolocation";
 import { Link, useRouter } from "@/i18n/navigation";
 import type { ActionError, Challenge, LatLng, PublicQuiz, Trail } from "@/lib/domain/types";
@@ -79,12 +80,20 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
 
   const firstUndiscovered = trail.spots.findIndex((s) => !discovered.has(s.id));
   const initialIndex = initialSpotSlug ? trail.spots.findIndex((s) => s.slug === initialSpotSlug) : -1;
-  const [index, setIndex] = useState(initialIndex >= 0 ? initialIndex : Math.max(0, firstUndiscovered));
+  // Étape visée : tant que le visiteur n'a rien choisi, elle suit la première étape non découverte
+  // (la progression enregistrée sur l'appareil n'est connue qu'après le premier rendu) ;
+  // elle est figée dès qu'il découvre une étape ou en choisit une.
+  const [chosenIndex, setIndex] = useState<number | null>(initialIndex >= 0 ? initialIndex : null);
+  const index = chosenIndex ?? Math.max(0, firstUndiscovered);
   const current = trail.spots[index];
   // Démo : la position simulée suit le prochain spot du parcours.
   useDemoGeoTarget(current?.location);
   const foundCount = trail.spots.filter((s) => discovered.has(s.id)).length;
   const allFound = foundCount === trail.spots.length;
+  // États des étapes (✓ ● ◉ ○) et restant : logique pure partagée (src/lib/game/trail-progress.ts).
+  const stepStates = useMemo(() => trailStepStates(trail.spots.map((s) => s.id), discovered, index), [trail.spots, discovered, index]);
+  const remaining = useMemo(() => trailRemaining(trail.spots, trail.segments, discovered, trail.completionPoints), [trail, discovered]);
+  const [hintOpen, setHintOpen] = useState(false);
 
   // Démarrage de la visite côté serveur (live) — la visite reste utilisable si non connecté.
   useEffect(() => {
@@ -135,21 +144,25 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
         location: s.location,
         color: SPOT_KIND_COLOR[s.kind],
         iconKey: s.kind,
-        label: `${i + 1}. ${s.name}`,
+        label: t("visit.markerLabel", { n: i + 1, name: s.name }),
+        ariaLabel: `${t("visit.stepOf", { current: i + 1, total: trail.spots.length })} · ${s.name} · ${t(`visit.stepStates.${stepStates[i]}`)}${
+          i === trail.spots.length - 1 ? ` · ${t("visit.finalStep")}` : ""
+        }`,
         discovered: discovered.has(s.id),
-        highlighted: i === index,
+        highlighted: stepStates[i] === "next",
+        step: { n: i + 1, state: stepStates[i], last: i === trail.spots.length - 1 },
       })),
     ],
-    [trail, discovered, index, t],
+    [trail, discovered, stepStates, t],
   );
 
   const paths: MapPath[] = useMemo(
     () =>
       trail.segments.map((sg) => {
         const i = trail.spots.findIndex((s) => s.id === sg.toSpotId);
-        return { id: sg.id, coordinates: sg.path, variant: i < index ? "done" : i === index ? "active" : "trail" };
+        return { id: sg.id, coordinates: sg.path, variant: segmentVariant(stepStates[i]) };
       }),
-    [trail, index],
+    [trail, stepStates],
   );
 
   // Cadrage sur le parcours (et non tout le parc), avec marge.
@@ -183,6 +196,7 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
   };
 
   const onFound = (spotId: string) => {
+    setIndex((i) => i ?? index);
     setSessionFound((s) => (s.includes(spotId) ? s : [...s, spotId]));
   };
 
@@ -191,6 +205,7 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
     const any = next >= 0 ? next : trail.spots.findIndex((s) => !discovered.has(s.id));
     if (any >= 0) setIndex(any);
     setSheetOpen(false);
+    setHintOpen(false);
   };
 
   const complete = () =>
@@ -213,21 +228,22 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
   const ss = String(elapsed % 60).padStart(2, "0");
 
   return (
-    <div className="fixed inset-0 z-30 bg-background">
+    // Plein écran : au-dessus de la navigation du site (mobile et desktop) pendant la visite.
+    <div className="fixed inset-0 z-[44] bg-background">
       <ParkMap ref={mapRef} bounds={trailBounds} markers={markers} paths={paths} user={geo.position} selectedId={current?.id} onSelect={(id) => {
         const i = trail.spots.findIndex((s) => s.id === id);
         if (i >= 0) setIndex(i);
-      }} paddingBottom={260} />
+      }} paddingBottom={260} attributionTop={176} />
 
       {/* En-tête : parcours + progression */}
       <div className="absolute inset-x-0 top-0 z-20 p-3 pt-[max(env(safe-area-inset-top),0.75rem)]">
         <div className="glass-strong mx-auto flex max-w-xl items-center gap-3 rounded-[22px] p-3 card-shadow">
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-semibold">{trail.name}</p>
-            <div className="mt-1.5 flex items-center gap-2">
-              <Progress value={foundCount} max={trail.spots.length} className="h-1.5" label={t("visit.progress", { current: foundCount, total: trail.spots.length })} />
+            <div className="flex items-baseline justify-between gap-2">
+              <p className="truncate text-sm font-semibold">{trail.name}</p>
               <span className="shrink-0 font-display text-sm font-bold text-primary">{t("visit.progress", { current: foundCount, total: trail.spots.length })}</span>
             </div>
+            <TrailProgress trailName={trail.name} states={stepStates} stepIndex={index} remaining={remaining} compact className="mt-1.5" />
           </div>
           <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-inset px-2.5 py-1.5 text-xs tabular-nums text-muted-foreground" aria-label={t("visit.elapsed")}>
             <Timer className="size-3.5" /> {mm}:{ss}
@@ -254,7 +270,7 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
       {/* Panneau bas */}
       <div className="absolute inset-x-0 bottom-0 z-20 p-3 safe-bottom">
         <div className="mx-auto max-w-xl space-y-2">
-          {(geo.status === "denied" || geo.status === "unavailable") && (
+          {(geo.status === "denied" || geo.status === "unavailable") && !sheetOpen && (
             <p role="status" className="glass-strong rounded-2xl px-4 py-3 text-sm">
               <span className="font-semibold text-gold">{t("gps.unavailable")}</span> <span className="text-muted-foreground">{t("gps.unavailableBody")}</span>
             </p>
@@ -279,14 +295,17 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
             <div className={cn("glass-strong rounded-[var(--radius-sheet)] card-shadow transition-all", sheetOpen ? "max-h-[78dvh] overflow-y-auto" : "")}>
               <div className="p-4">
                 <div className="flex items-start gap-3">
-                  <button type="button" onClick={() => setSheetOpen((o) => !o)} className="relative size-16 shrink-0 overflow-hidden rounded-2xl" aria-label={t("visit.seeSpot")}>
+                  <button type="button" onClick={() => setSheetOpen((o) => !o)} className="relative size-16 shrink-0 overflow-hidden rounded-2xl" aria-label={t("visit.seeCard")}>
                     <Image src={current.coverImageUrl} alt="" fill sizes="64px" className="object-cover" />
                   </button>
                   <div className="min-w-0 flex-1">
-                    <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-primary">{t("visit.nextSpot")} · {t("visit.stepOf", { current: index + 1, total: trail.spots.length })}</p>
+                    <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
+                      {stepStates[index] === "current" ? t("visit.stepStates.current") : t("visit.nextSpot")}
+                    </p>
+                    <p className="text-xs font-semibold text-muted-foreground">{t("visit.stepOf", { current: index + 1, total: trail.spots.length })}</p>
                     <h2 className="truncate font-display text-2xl font-extrabold leading-tight">{current.name}</h2>
                     <p className="text-sm text-muted-foreground">
-                      {formatDistance(shownDistance, locale)} · {walkingMinutes(shownDistance)} min
+                      {formatDistance(shownDistance, locale)} · {t("visit.about", { minutes: walkingMinutes(shownDistance) })}
                     </p>
                   </div>
                   {discovered.has(current.id) && <Pill size="sm">✓</Pill>}
@@ -308,15 +327,37 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
                   </>
                 )}
 
-                <div className="mt-3 grid grid-cols-[minmax(0,1fr)_auto_auto_auto] gap-2">
-                  <Button onClick={() => setSheetOpen((o) => !o)} size="lg" className="px-4">
-                    {sheetOpen ? <ChevronDown /> : <MapPin />} {t("visit.seeSpot")}
+                {hintOpen && (
+                  <div className="mt-3 flex gap-3 rounded-2xl border border-gold/30 bg-gold/10 p-3 text-sm" role="note">
+                    <Lightbulb className="mt-0.5 size-4 shrink-0 text-gold" />
+                    <div className="min-w-0">
+                      <p className="font-semibold text-gold">{t("visit.hintTitle")}</p>
+                      {current.label && <p>{t("visit.hintLook", { label: current.label })}</p>}
+                      {current.summary && <p className="text-muted-foreground">{current.summary}</p>}
+                    </div>
+                  </div>
+                )}
+
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                  <Button onClick={() => setSheetOpen((o) => !o)} size="lg" className="px-3">
+                    {sheetOpen ? <ChevronDown /> : <BookOpen />} {t("visit.seeCard")}
                   </Button>
-                  <Button asChild variant="secondary" size="lg" className="w-12 px-0" aria-label={t("geo.openMap")} title={t("geo.openMap")}>
-                    <Link href={`/parks/${park.slug}/map?to=${current.slug}`}><MapIcon /></Link>
+                  <Button variant="secondary" size="lg" className="px-3" onClick={() => setHintOpen((o) => !o)} aria-expanded={hintOpen}>
+                    <Lightbulb /> {hintOpen ? t("visit.hideHint") : t("visit.seeHint")}
                   </Button>
-                  <Button variant="secondary" size="lg" className="w-12 px-0" onClick={togglePause} aria-label={t("visit.pause")} title={t("visit.pause")}><Pause /></Button>
-                  <Button variant="secondary" size="lg" className="w-12 px-0" onClick={complete} disabled={finishing} aria-label={t("geo.endVisit")} title={t("geo.endVisit")}><Flag /></Button>
+                </div>
+                <div className="mt-2 grid grid-cols-3 gap-2">
+                  <Button asChild variant="ghost" size="sm" className="h-11 gap-1.5 border border-border">
+                    <Link href={`/parks/${park.slug}/map?to=${current.slug}`} aria-label={t("geo.openMap")}>
+                      <MapIcon /> {t("visit.mapShort")}
+                    </Link>
+                  </Button>
+                  <Button variant="ghost" size="sm" className="h-11 gap-1.5 border border-border" onClick={togglePause}>
+                    <Pause /> {t("visit.pause")}
+                  </Button>
+                  <Button variant="ghost" size="sm" className="h-11 gap-1.5 border border-border" onClick={() => setConfirmQuit(true)} aria-label={t("visit.quit")}>
+                    <X /> {t("visit.quitShort")}
+                  </Button>
                 </div>
               </div>
 
@@ -379,6 +420,20 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
               <Button variant="secondary" onClick={() => setConfirmQuit(false)}>{t("common.back")}</Button>
               <Button variant="danger" onClick={quit}>{t("visit.quit")}</Button>
             </div>
+            {foundCount > 0 && !finish && (
+              <Button
+                variant="outline"
+                block
+                className="mt-2"
+                disabled={finishing}
+                onClick={() => {
+                  setConfirmQuit(false);
+                  complete();
+                }}
+              >
+                <Flag /> {t("geo.endVisit")}
+              </Button>
+            )}
           </div>
         </div>
       )}

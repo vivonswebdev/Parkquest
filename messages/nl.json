@@ -188,7 +188,28 @@
     "stepOf": "Stop {current} van {total}",
     "elapsed": "Duur",
     "nextStop": "Volgende spot →",
-    "visitEnded": "Bezoek afgerond"
+    "visitEnded": "Bezoek afgerond",
+    "progressTitle": "Voortgang van de route",
+    "stepStates": {
+      "done": "ontdekt",
+      "current": "huidige stap",
+      "next": "volgend doel",
+      "future": "komt nog"
+    },
+    "discoveredCount": "{count} / {total} spots ontdekt",
+    "remainingDistance": "nog {distance}",
+    "remainingTime": "ongeveer {minutes} min",
+    "pointsLeft": "+{points} punten te verdienen",
+    "about": "ongeveer {minutes} min",
+    "seeHint": "Hint bekijken",
+    "hideHint": "Hint verbergen",
+    "seeCard": "Fiche bekijken",
+    "hintTitle": "Hint",
+    "hintLook": "Zoek: {label}",
+    "mapShort": "Kaart",
+    "quitShort": "Stoppen",
+    "finalStep": "Einde van de route",
+    "markerLabel": "Stap {n} · {name}"
   },
   "spot": {
     "guideMe": "Begeleid me",
