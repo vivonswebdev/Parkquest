@@ -700,5 +700,72 @@
       "EX": "Extinct",
       "DD": "Data deficient"
     }
+  },
+  "explore": {
+    "title": "Exploration mode",
+    "loading": "Preparing the adventure…",
+    "cardBody": "A guided adventure, only on the park's paths.",
+    "cardCta": "Start the adventure",
+    "demoData": "Demo data, to be validated with the park.",
+    "objective": "Objective",
+    "quests": {
+      "secretSequoia": {
+        "title": "The Secret of the Sequoia",
+        "intro": "Head to the giant sequoia: the first riddle is waiting there."
+      }
+    },
+    "safety": {
+      "title": "Before you start",
+      "l1": "{app} is played outdoors. Stay aware of your surroundings.",
+      "l2": "Never leave the permitted paths and follow the signs.",
+      "l3": "Stop before looking at your screen.",
+      "l4": "Watch out for bikes, other visitors and obstacles.",
+      "l5": "Children play with an adult.",
+      "accept": "I understand these guidelines",
+      "start": "Start the adventure",
+      "back": "Back",
+      "parkRules": "{app} does not replace the park's rules and guidelines."
+    },
+    "dashboard": {
+      "title": "Movement",
+      "remaining": "Left",
+      "minutes": "≈ {minutes} min",
+      "direction": "Direction",
+      "walked": "Walked",
+      "speed": "Speed",
+      "speedValue": "{value} km/h",
+      "note": "Calculated on your phone, never sent. For info only: going fast earns nothing."
+    },
+    "cardinals": {
+      "N": "North",
+      "NE": "North-east",
+      "E": "East",
+      "SE": "South-east",
+      "S": "South",
+      "SW": "South-west",
+      "W": "West",
+      "NW": "North-west"
+    },
+    "cardinalsShort": {
+      "N": "N",
+      "NE": "NE",
+      "E": "E",
+      "SE": "SE",
+      "S": "S",
+      "SW": "SW",
+      "W": "W",
+      "NW": "NW"
+    },
+    "pause": "Pause",
+    "paused": "Adventure paused",
+    "pausedBody": "Location tracking is stopped. Resume when you're ready.",
+    "resume": "Resume",
+    "quit": "Quit",
+    "quitTitle": "Quit the adventure?",
+    "quitBody": "You can start it again later.",
+    "continue": "Continue",
+    "announceStart": "Adventure started. Objective: {name}, {distance} away.",
+    "announceResumed": "Adventure resumed.",
+    "announceObjective": "New objective: {name}."
   }
 }

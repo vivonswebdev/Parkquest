@@ -204,3 +204,47 @@ test("visite plein écran : défilement de la page bloqué, restauré à la sort
   await expect(page).toHaveURL(/\/trails\/arbres-remarquables$/);
   await expect(page.locator("html")).not.toHaveClass(/pq-immersive/);
 });
+
+test("Mode Exploration : écran de sécurité, aventure, pause et sortie", async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("parkquest.location-consent.v1", "granted");
+    localStorage.setItem("parkquest.demo-geo.v1", "approximate");
+  });
+  // Point d'entrée depuis la fiche du parcours
+  await page.goto("/fr/parks/plantentuin-meise/trails/arbres-remarquables");
+  await page.getByRole("link", { name: "Commencer l'aventure" }).click();
+  await expect(page).toHaveURL(/\/explore\/le-secret-du-sequoia$/);
+  await expect(page.locator("html")).toHaveClass(/pq-immersive/);
+
+  // Sécurité : consignes validées, bouton désactivé tant que la case n'est pas cochée
+  const safety = page.getByRole("dialog", { name: "Avant de commencer" });
+  await expect(safety.getByText("Arrête-toi avant de regarder ton écran.")).toBeVisible();
+  await expect(safety.getByText(/ne remplace pas les consignes et règles du parc/)).toBeVisible();
+  const start = safety.getByRole("button", { name: "Commencer l'aventure" });
+  await expect(start).toBeDisabled();
+  await safety.getByLabel("J'ai compris ces consignes").check();
+  await start.click();
+
+  // Aventure : objectif, tableau de déplacement, mention démo
+  await expect(page.getByRole("heading", { name: "Séquoia géant" })).toBeVisible();
+  await expect(page.getByText("Parcouru")).toBeVisible();
+  await expect(page.getByText("Donnée de démonstration à valider avec le parc.")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Nord en haut" })).toBeVisible();
+
+  // Pause bien visible, puis reprise
+  await page.getByRole("button", { name: "Pause" }).click();
+  await expect(page.getByText(/Le suivi de ta position est arrêté/)).toBeVisible();
+  await expect(page.locator("[aria-live=polite]", { hasText: "Aventure en pause" })).toHaveCount(1);
+  await page.getByRole("button", { name: "Reprendre" }).click();
+
+  // Sortie avec confirmation → retour à la fiche du parcours
+  await page.getByRole("button", { name: "Quitter" }).first().click();
+  await page.getByRole("alertdialog").getByRole("button", { name: "Quitter" }).click();
+  await expect(page).toHaveURL(/\/trails\/arbres-remarquables$/);
+  await expect(page.locator("html")).not.toHaveClass(/pq-immersive/);
+});
+
+test("Mode Exploration : quête inconnue → page introuvable", async ({ page }) => {
+  await page.goto("/fr/parks/plantentuin-meise/explore/quete-inexistante");
+  await expect(page.getByText(/introuvable|n'existe pas/i).first()).toBeVisible();
+});
