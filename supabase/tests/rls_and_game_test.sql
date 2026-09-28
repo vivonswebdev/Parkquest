@@ -52,6 +52,17 @@ do $$ begin
 exception when insufficient_privilege then raise notice 'ok  anon ne peut pas appeler discover_spot';
 end $$;
 
+-- 1b. « Autour de vous » : spots et services proches, traduits, sans position stockée
+select pg_temp.assert(
+  (select slug from public.nearby_spots('00000001-0000-4000-8000-000000000001', 50.92845, 4.32505, 500, 'fr') limit 1) = 'sequoia-geant',
+  'nearby_spots : le séquoia est le plus proche');
+select pg_temp.assert(
+  (select 'remarkable-trees' = any(categories) from public.nearby_spots('00000001-0000-4000-8000-000000000001', 50.92845, 4.32505, 500, 'fr') limit 1),
+  'nearby_spots renvoie les catégories');
+select pg_temp.assert(
+  (select count(*) from public.nearby_facilities('00000001-0000-4000-8000-000000000001', 50.9296, 4.3271, 200, 'fr')) >= 3,
+  'nearby_facilities trouve les services près de l''entrée');
+
 -- 2. Alice : ne peut pas s'attribuer de points ni écrire une découverte directement
 reset role;
 select pg_temp.as_user('aaaaaaaa-0000-4000-8000-000000000001');

@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Fraunces, Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { BottomNav } from "@/components/layout/bottom-nav";
@@ -16,6 +16,8 @@ import { routing } from "@/i18n/routing";
 
 const inter = Inter({ subsets: ["latin", "latin-ext"], variable: "--font-inter", display: "swap" });
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin", "latin-ext"], variable: "--font-jakarta", display: "swap" });
+// Serif éditoriale pour les pages de lecture (blog, infos pratiques, légal).
+const fraunces = Fraunces({ subsets: ["latin", "latin-ext"], variable: "--font-serif", display: "swap", weight: ["600", "700"] });
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -49,7 +51,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
 
   return (
     // data-theme* sont posés avant le rendu par themeInitScript (préférence locale) → suppressHydrationWarning.
-    <html lang={locale} data-theme="dark" data-theme-pref="default" className={`${inter.variable} ${jakarta.variable}`} suppressHydrationWarning>
+    <html lang={locale} data-theme="dark" data-theme-pref="default" className={`${inter.variable} ${jakarta.variable} ${fraunces.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>

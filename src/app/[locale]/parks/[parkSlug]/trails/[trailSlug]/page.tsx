@@ -14,6 +14,9 @@ import { getPark, repo } from "@/lib/data";
 import { requirePark } from "@/lib/data/loaders";
 import { formatDistance, formatDuration } from "@/lib/format";
 import { pathLengthM, walkingMinutes } from "@/lib/geo";
+import { WeatherCard } from "@/components/weather/weather-card";
+import { getVisitWeather } from "@/lib/weather";
+
 
 type Params = { params: Promise<{ locale: string; parkSlug: string; trailSlug: string }> };
 
@@ -24,6 +27,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   return trail ? { title: trail.name, description: trail.summary } : {};
 }
 
+// Météo : page régénérée au plus toutes les 30 minutes.
+export const revalidate = 1800;
+
 export default async function TrailPage({ params }: Params) {
   const { locale, parkSlug, trailSlug } = await params;
   setRequestLocale(locale);
@@ -31,6 +37,7 @@ export default async function TrailPage({ params }: Params) {
   const park = await requirePark(parkSlug, locale);
   const trail = await repo.getTrail(park.id, trailSlug, locale);
   if (!trail) notFound();
+  const weather = await getVisitWeather(park.location, park.timezone, trail.durationMin);
 
   const stats = [
     { icon: Clock, label: t("trail.duration"), value: formatDuration(trail.durationMin) },
@@ -67,6 +74,8 @@ export default async function TrailPage({ params }: Params) {
               </Card>
             ))}
           </div>
+
+          <WeatherCard weather={weather} compact />
 
           <Button asChild size="lg" block className="md:w-auto">
             <Link href={`/parks/${park.slug}/trails/${trail.slug}/visit`}>

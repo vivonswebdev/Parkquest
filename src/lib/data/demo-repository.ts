@@ -20,6 +20,7 @@ import type {
   TrailSummary,
 } from "@/lib/domain/types";
 import { pickTranslation } from "@/lib/i18n-content";
+import { rankNearby } from "@/lib/nearby";
 import type { ContentRepository } from "./repository";
 
 const published = <T extends { status: string }>(x: T) => x.status === "PUBLISHED";
@@ -152,6 +153,19 @@ export const demoRepository: ContentRepository = {
       .filter((s) => s.parkId === parkId && published(s))
       .sort((a, b) => a.sortOrder - b.sortOrder)
       .map((s) => toSpotSummary(s, locale));
+  },
+
+  async listNearbySpots(parkId, origin, radiusM, locale) {
+    const spots = await demoRepository.listSpots(parkId, locale);
+    return rankNearby(
+      spots.map((s) => ({ ...s, kind: "spot" as const, spotKind: s.kind })),
+      origin,
+      radiusM,
+      30,
+    ).map(({ item, distanceM }) => {
+      const { spotKind, ...rest } = item;
+      return { ...rest, kind: spotKind, distanceM };
+    });
   },
 
   async getSpot(parkId, spotSlug, locale): Promise<Spot | null> {

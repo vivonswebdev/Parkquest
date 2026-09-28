@@ -180,7 +180,8 @@
     "start": "Vertrek",
     "stepOf": "Stop {current} van {total}",
     "elapsed": "Duur",
-    "nextStop": "Volgende spot →"
+    "nextStop": "Volgende spot →",
+    "visitEnded": "Bezoek afgerond"
   },
   "spot": {
     "guideMe": "Begeleid me",
@@ -487,7 +488,8 @@
       "low-accuracy": "Onvoldoende nauwkeurig (± 60 m)",
       "denied": "Gps geweigerd",
       "unavailable": "Gps niet beschikbaar",
-      "real": "Echte gps van het toestel"
+      "real": "Echte gps van het toestel",
+      "approximate": "Benaderende gps (± 18 m)"
     },
     "realHint": "Echte gps vereist HTTPS op iPhone (tunnel, zie README).",
     "progress": "Gesimuleerde voortgang",
@@ -502,5 +504,100 @@
     "resetDone": "Demo gereset.",
     "badgeUnlocked": "Badge ontgrendeld",
     "profile": "Fictief profiel: {name}"
+  },
+  "geo": {
+    "consentTitle": "Zet je locatie aan",
+    "consentIntro": "ParkQuest gebruikt je locatie alleen om:",
+    "consentUse1": "je op de parkkaart te tonen;",
+    "consentUse2": "je naar merkwaardige bomen en plekken te leiden;",
+    "consentUse3": "de afstand tot de volgende spot aan te geven.",
+    "consentPrivate": "Je locatie is nooit zichtbaar voor andere bezoekers.",
+    "consentLater": "Niet nu",
+    "consentAccept": "Locatie aanzetten",
+    "privacyLink": "Privacy",
+    "declinedNotice": "Zonder locatie is de navigatie minder nauwkeurig. Kies een vertrekpunt of volg de routebeschrijving.",
+    "nearbyTitle": "In je buurt",
+    "from": "Vanaf: {place}",
+    "yourPosition": "je locatie",
+    "startPoint": "Vertrekpunt",
+    "seeOnMap": "Kaart",
+    "seeCard": "Fiche",
+    "guideMe": "Begeleid me",
+    "guidingTo": "Naar {name}",
+    "guideHint": "Volg de pijl. Je bevestigt de ontdekking ter plaatse.",
+    "arrived": "Je bent er bijna",
+    "stopGuiding": "Begeleiding stoppen",
+    "direction": "Richting {dir}",
+    "precise": "Je bent bij: {name}",
+    "estDistance": "Geschatte afstand: {distance}",
+    "accuracy": "Gps-nauwkeurigheid: ± {count} m",
+    "likely": "Je lijkt dicht bij deze plek",
+    "likelyBody": "Bevestig dat je ter plaatse bent.",
+    "imprecise": "Onnauwkeurig gps-signaal (± {count} m)",
+    "impreciseBody": "We kunnen je locatie niet controleren. Bekijk de foto en de kaart en bevestig als je er bent.",
+    "confirmHere": "Ik bevestig, ik ben er",
+    "status": {
+      "precise": "Nauwkeurige gps",
+      "approximate": "Benaderende gps",
+      "imprecise": "Onnauwkeurige gps",
+      "off": "Gps uit",
+      "denied": "Gps geweigerd",
+      "locating": "Locatie bepalen…"
+    },
+    "openMap": "Kaart openen",
+    "endVisit": "Bezoek afronden",
+    "service": "Voorziening",
+    "accessible": "Toegankelijk",
+    "noResult": "Niets in de buurt voor deze filter.",
+    "filters": {
+      "all": "Alles",
+      "trees": "Bomen",
+      "plants": "Planten",
+      "history": "Geschiedenis",
+      "photo": "Foto",
+      "challenges": "Uitdagingen",
+      "services": "Voorzieningen",
+      "pmr": "Toegankelijk"
+    },
+    "dirs": {
+      "N": "noord",
+      "NE": "noordoost",
+      "E": "oost",
+      "SE": "zuidoost",
+      "S": "zuid",
+      "SW": "zuidwest",
+      "W": "west",
+      "NW": "noordwest"
+    }
+  },
+  "weather": {
+    "title": "Weer tijdens je bezoek",
+    "simulated": "Gesimuleerd weer (demomodus)",
+    "source": "Weergegevens: Open-Meteo.com",
+    "now": "Nu",
+    "rainAt": "Regen verwacht rond {hour}",
+    "noRain": "Geen regen verwacht",
+    "wind": "Wind {speed} km/u",
+    "uv": "UV {value}",
+    "unavailable": "Weer momenteel niet beschikbaar.",
+    "advice": {
+      "rain": "Neem een regenjas mee: de grote serres bieden beschutting.",
+      "heat": "Het is warm: zoek de drinkwaterpunten en schaduwrijke plekken.",
+      "cold": "Het is fris: kleed je warm aan, zeker de kinderen.",
+      "wind": "Harde wind: vermijd beboste zones en respecteer eventuele sluitingen.",
+      "uv": "Hoge UV: hoed en zonnecrème.",
+      "nice": "Ideale omstandigheden voor je bezoek."
+    },
+    "codes": {
+      "clear": "Zonnig",
+      "partly": "Half bewolkt",
+      "cloudy": "Bewolkt",
+      "fog": "Mist",
+      "drizzle": "Motregen",
+      "rain": "Regen",
+      "snow": "Sneeuw",
+      "showers": "Buien",
+      "storm": "Onweer"
+    }
   }
 }

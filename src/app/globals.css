@@ -58,30 +58,33 @@
   --map-tree: #0f4531;
   --map-water: #0f4b5a;
   --map-topo: rgba(138, 244, 201, 0.06);
+  --card-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.04) inset, 0 18px 40px -20px rgba(0, 0, 0, 0.65);
   color-scheme: dark;
 }
 
 .theme-light,
 html[data-theme="light"],
 html[data-theme-pref="default"] .reading-light {
+  /* Thème clair éditorial (crème / papier / encre forêt) — inspiré des maquettes DeepSeek */
   --pq-gold: #8a5d00; /* or plus foncé : contraste AA sur fond clair */
-  --background: #f3f8f5;
-  --foreground: #06231a;
-  --surface: #ffffff;
+  --background: #f7f4ec; /* crème */
+  --foreground: #1a2e24; /* encre forêt */
+  --surface: #ffffff; /* papier */
   --surface-elevated: #ffffff;
-  --glass: rgba(255, 255, 255, 0.86);
-  --glass-strong: rgba(255, 255, 255, 0.95);
-  --muted: #e6f0eb;
-  --muted-foreground: #4b665b;
-  --border: rgba(6, 35, 26, 0.12);
+  --glass: rgba(255, 255, 255, 0.88);
+  --glass-strong: rgba(255, 255, 255, 0.96);
+  --muted: #edeade;
+  --muted-foreground: #56665a;
+  --border: #e3e2d6;
   --primary: #0b6b4f;
   --primary-foreground: #f5fffa;
   --primary-soft: rgba(11, 107, 79, 0.1);
   --accent: #b7862a;
   --accent-foreground: #ffffff;
   --success: #0b6b4f;
-  --danger: #c0392b;
+  --danger: #b3261e;
   --ring: rgba(11, 107, 79, 0.45);
+  --card-shadow: 0 1px 3px rgba(27, 67, 50, 0.06), 0 8px 24px -8px rgba(27, 67, 50, 0.1);
   --topo-opacity: 0.05;
   --track: rgba(6, 35, 26, 0.1);
   --inset: rgba(6, 35, 26, 0.06);
@@ -200,9 +203,15 @@ html[data-theme-pref="default"] .reading-light {
   }
 
   .card-shadow {
-    box-shadow:
-      0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
-      0 18px 40px -20px rgba(0, 0, 0, 0.65);
+    box-shadow: var(--card-shadow);
+  }
+
+  /* Pages de lecture : titres serif éditoriaux (Fraunces) */
+  .reading-light :is(h1, h2),
+  .font-serif-display {
+    font-family: var(--font-serif), Georgia, "Times New Roman", serif;
+    letter-spacing: -0.015em;
+    font-weight: 700;
   }
 
   /* Dégradé de lisibilité sur image plein cadre */

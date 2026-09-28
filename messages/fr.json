@@ -180,7 +180,8 @@
     "start": "Départ",
     "stepOf": "Étape {current} sur {total}",
     "elapsed": "Durée",
-    "nextStop": "Spot suivant →"
+    "nextStop": "Spot suivant →",
+    "visitEnded": "Visite terminée"
   },
   "spot": {
     "guideMe": "Me guider",
@@ -487,7 +488,8 @@
       "low-accuracy": "Précision insuffisante (± 60 m)",
       "denied": "GPS refusé",
       "unavailable": "GPS indisponible",
-      "real": "Vrai GPS de l'appareil"
+      "real": "Vrai GPS de l'appareil",
+      "approximate": "GPS approximatif (± 18 m)"
     },
     "realHint": "Le vrai GPS exige HTTPS sur iPhone (tunnel, voir README).",
     "progress": "Progression simulée",
@@ -502,5 +504,100 @@
     "resetDone": "Démo réinitialisée.",
     "badgeUnlocked": "Badge débloqué",
     "profile": "Profil fictif : {name}"
+  },
+  "geo": {
+    "consentTitle": "Activez votre position",
+    "consentIntro": "ParkQuest utilise votre position uniquement pour :",
+    "consentUse1": "vous afficher sur la carte du parc ;",
+    "consentUse2": "vous guider vers les arbres et lieux remarquables ;",
+    "consentUse3": "vous indiquer la distance jusqu'au prochain spot.",
+    "consentPrivate": "Votre position n'est jamais visible par les autres visiteurs.",
+    "consentLater": "Pas maintenant",
+    "consentAccept": "Activer ma position",
+    "privacyLink": "Confidentialité",
+    "declinedNotice": "Sans position, la navigation est moins précise. Choisissez un point de départ ou suivez les indications du parcours.",
+    "nearbyTitle": "Autour de vous",
+    "from": "Depuis : {place}",
+    "yourPosition": "votre position",
+    "startPoint": "Point de départ",
+    "seeOnMap": "Carte",
+    "seeCard": "Fiche",
+    "guideMe": "Me guider",
+    "guidingTo": "Vers {name}",
+    "guideHint": "Suivez la flèche. La découverte se confirme sur place.",
+    "arrived": "Vous y êtes presque",
+    "stopGuiding": "Arrêter le guidage",
+    "direction": "Direction {dir}",
+    "precise": "Vous êtes près de : {name}",
+    "estDistance": "Distance estimée : {distance}",
+    "accuracy": "Précision GPS : ± {count} m",
+    "likely": "Vous semblez proche de ce lieu",
+    "likelyBody": "Confirmez que vous êtes bien sur place.",
+    "imprecise": "Signal GPS imprécis (± {count} m)",
+    "impreciseBody": "Impossible de vérifier votre position. Regardez la photo et la carte, puis confirmez si vous y êtes.",
+    "confirmHere": "Je confirme, j'y suis",
+    "status": {
+      "precise": "GPS précis",
+      "approximate": "GPS approximatif",
+      "imprecise": "GPS imprécis",
+      "off": "GPS désactivé",
+      "denied": "GPS refusé",
+      "locating": "Localisation…"
+    },
+    "openMap": "Ouvrir la carte",
+    "endVisit": "Terminer la visite",
+    "service": "Service",
+    "accessible": "Accessible",
+    "noResult": "Rien à proximité pour ce filtre.",
+    "filters": {
+      "all": "Tout",
+      "trees": "Arbres",
+      "plants": "Plantes",
+      "history": "Histoire",
+      "photo": "Photo",
+      "challenges": "Défis",
+      "services": "Services",
+      "pmr": "PMR"
+    },
+    "dirs": {
+      "N": "nord",
+      "NE": "nord-est",
+      "E": "est",
+      "SE": "sud-est",
+      "S": "sud",
+      "SW": "sud-ouest",
+      "W": "ouest",
+      "NW": "nord-ouest"
+    }
+  },
+  "weather": {
+    "title": "Météo pendant votre visite",
+    "simulated": "Météo simulée (mode démo)",
+    "source": "Données météo : Open-Meteo.com",
+    "now": "Maintenant",
+    "rainAt": "Pluie probable vers {hour}",
+    "noRain": "Pas de pluie prévue",
+    "wind": "Vent {speed} km/h",
+    "uv": "UV {value}",
+    "unavailable": "Météo indisponible pour le moment.",
+    "advice": {
+      "rain": "Prévoyez un imperméable : les grandes serres sont un bon abri.",
+      "heat": "Il fait chaud : repérez les points d'eau et les zones ombragées.",
+      "cold": "Il fait frais : couvrez-vous, surtout les enfants.",
+      "wind": "Vent fort : évitez les zones boisées et respectez les éventuelles fermetures du parc.",
+      "uv": "UV élevé : chapeau et crème solaire.",
+      "nice": "Conditions idéales pour la visite."
+    },
+    "codes": {
+      "clear": "Ensoleillé",
+      "partly": "Partiellement nuageux",
+      "cloudy": "Nuageux",
+      "fog": "Brouillard",
+      "drizzle": "Bruine",
+      "rain": "Pluie",
+      "snow": "Neige",
+      "showers": "Averses",
+      "storm": "Orage"
+    }
   }
 }

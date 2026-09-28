@@ -96,7 +96,7 @@ export const demoBaselineProgress: DemoProgress = {
 // Position simulée
 // ---------------------------------------------------------------------------
 
-export type DemoGeoMode = "near" | "entrance" | "low-accuracy" | "denied" | "unavailable" | "real";
+export type DemoGeoMode = "near" | "approximate" | "entrance" | "low-accuracy" | "denied" | "unavailable" | "real";
 
 export const demoGeo = {
   /** Mode par défaut : « près du spot » pour tester la découverte validée par GPS. */
@@ -106,6 +106,9 @@ export const demoGeo = {
   /** Décalage appliqué autour du spot ciblé (≈ 8 m). */
   nearOffset: { lat: 0.00006, lng: 0.00004 },
   nearAccuracyM: 6,
+  /** GPS approximatif : proche mais précision moyenne (10–25 m) → confirmation demandée. */
+  approximateAccuracyM: 18,
+  approximateOffset: { lat: 0.00012, lng: 0.00008 },
   entranceAccuracyM: 10,
   lowAccuracyM: 60,
 } as const;

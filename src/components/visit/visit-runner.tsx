@@ -1,6 +1,9 @@
 "use client";
 
-import { ChevronDown, Flag, Loader2, MapPin, Navigation, Pause, Play, PartyPopper, Signpost, Timer, X } from "lucide-react";
+import { ChevronDown, Flag, Loader2, Map as MapIcon, MapPin, Navigation, Pause, Play, PartyPopper, Signpost, Timer, X } from "lucide-react";
+import { GpsStatus } from "@/components/geo/gps-status";
+import { LocationConsentSheet } from "@/components/geo/location-consent-sheet";
+import { useLocationConsent } from "@/lib/location-consent";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
@@ -43,7 +46,18 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
   const locale = useLocale();
   const router = useRouter();
   const mapRef = useRef<MapHandle>(null);
-  const geo = useGeolocation();
+  // Haute précision uniquement pendant la navigation active (écran de visite).
+  const geo = useGeolocation({ highAccuracy: true });
+  const consent = useLocationConsent();
+  const [askConsent, setAskConsent] = useState(false);
+  const gpsStarted = useRef(false);
+  useEffect(() => {
+    if (consent === "granted" && !gpsStarted.current) {
+      gpsStarted.current = true;
+      geo.start();
+    }
+  }, [consent, geo]);
+  const enableGps = () => (consent === "granted" ? geo.start() : setAskConsent(true));
   const demo = useDemoProgress();
 
   const [visitId, setVisitId] = useState<string | null>(null);
@@ -224,6 +238,9 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
         {startError === "AUTH_REQUIRED" && (
           <div className="mx-auto mt-2 max-w-xl"><ActionErrorMessage error="AUTH_REQUIRED" className="glass-strong" /></div>
         )}
+        <div className="mx-auto mt-2 flex max-w-xl justify-center">
+          <GpsStatus status={geo.status} accuracy={geo.position?.accuracy} />
+        </div>
         {isDemoMode && (
           <p className="glass-strong mx-auto mt-2 w-fit max-w-xl rounded-full px-3 py-1.5 text-center text-[11px] text-gold">{t("common.demoModeNotice")}</p>
         )}
@@ -283,17 +300,23 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
                 )}
 
                 {geo.status === "idle" && !sheetOpen && (
-                  <Button variant="outline" block className="mt-3" onClick={geo.start}>
-                    <Navigation /> {t("gps.enable")}
-                  </Button>
+                  <>
+                    {consent === "declined" && <p className="mt-3 text-xs text-muted-foreground">{t("geo.declinedNotice")}</p>}
+                    <Button variant="outline" block className="mt-3" onClick={enableGps}>
+                      <Navigation /> {t("gps.enable")}
+                    </Button>
+                  </>
                 )}
 
-                <div className="mt-3 grid grid-cols-[1fr_auto_auto] gap-2">
-                  <Button onClick={() => setSheetOpen((o) => !o)} size="lg">
+                <div className="mt-3 grid grid-cols-[minmax(0,1fr)_auto_auto_auto] gap-2">
+                  <Button onClick={() => setSheetOpen((o) => !o)} size="lg" className="px-4">
                     {sheetOpen ? <ChevronDown /> : <MapPin />} {t("visit.seeSpot")}
                   </Button>
-                  <Button variant="secondary" size="lg" onClick={togglePause} aria-label={t("visit.pause")}><Pause /></Button>
-                  <Button variant="secondary" size="lg" onClick={() => setConfirmQuit(true)} aria-label={t("visit.quit")}><X /></Button>
+                  <Button asChild variant="secondary" size="lg" className="w-12 px-0" aria-label={t("geo.openMap")} title={t("geo.openMap")}>
+                    <Link href={`/parks/${park.slug}/map?to=${current.slug}`}><MapIcon /></Link>
+                  </Button>
+                  <Button variant="secondary" size="lg" className="w-12 px-0" onClick={togglePause} aria-label={t("visit.pause")} title={t("visit.pause")}><Pause /></Button>
+                  <Button variant="secondary" size="lg" className="w-12 px-0" onClick={complete} disabled={finishing} aria-label={t("geo.endVisit")} title={t("geo.endVisit")}><Flag /></Button>
                 </div>
               </div>
 
@@ -303,6 +326,7 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
                   <DiscoverSpotCard
                     key={current.id}
                     spotId={current.id}
+                    spotName={current.name}
                     spotLocation={current.location}
                     radiusM={35}
                     visitId={visitId}
@@ -335,6 +359,17 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
           ) : null}
         </div>
       </div>
+
+      {!finish && !paused && (askConsent || consent === "unset") && (
+        <LocationConsentSheet
+          onAccept={() => {
+            setAskConsent(false);
+            gpsStarted.current = true;
+            geo.start();
+          }}
+          onDecline={() => setAskConsent(false)}
+        />
+      )}
 
       {confirmQuit && (
         <div role="alertdialog" aria-modal="true" aria-labelledby="quit-title" className="absolute inset-0 z-40 flex items-end justify-center bg-black/60 p-3 backdrop-blur-sm sm:items-center">
@@ -371,7 +406,7 @@ function FinishPanel({
   if (!finish.ok) return <ActionErrorMessage error={finish.error} className="glass-strong" />;
   return (
     <div className="glass-strong rounded-[var(--radius-sheet)] p-5 card-shadow" aria-live="polite">
-      <p className="flex items-center gap-2 font-display text-2xl font-extrabold text-primary"><PartyPopper className="size-7" /> {t("visit.trailComplete")}</p>
+      <p className="flex items-center gap-2 font-display text-2xl font-extrabold text-primary"><PartyPopper className="size-7" /> {finish.trailCompleted ? t("visit.trailComplete") : t("visit.visitEnded")}</p>
       <div className="mt-3 grid grid-cols-3 gap-2 text-center">
         <div className="rounded-2xl bg-inset p-3"><p className="font-display text-xl font-bold">{foundCount}/{total}</p><p className="text-[11px] text-muted-foreground">spots</p></div>
         <div className="rounded-2xl bg-inset p-3"><p className="font-display text-xl font-bold tabular-nums">{elapsed}</p><p className="text-[11px] text-muted-foreground">{t("visit.elapsed")}</p></div>

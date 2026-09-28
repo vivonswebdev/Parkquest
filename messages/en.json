@@ -180,7 +180,8 @@
     "start": "Start",
     "stepOf": "Stop {current} of {total}",
     "elapsed": "Time",
-    "nextStop": "Next spot →"
+    "nextStop": "Next spot →",
+    "visitEnded": "Visit finished"
   },
   "spot": {
     "guideMe": "Guide me",
@@ -487,7 +488,8 @@
       "low-accuracy": "Low accuracy (± 60 m)",
       "denied": "GPS denied",
       "unavailable": "GPS unavailable",
-      "real": "Device's real GPS"
+      "real": "Device's real GPS",
+      "approximate": "Approximate GPS (± 18 m)"
     },
     "realHint": "Real GPS requires HTTPS on iPhone (tunnel, see README).",
     "progress": "Simulated progress",
@@ -502,5 +504,100 @@
     "resetDone": "Demo reset.",
     "badgeUnlocked": "Badge unlocked",
     "profile": "Sample profile: {name}"
+  },
+  "geo": {
+    "consentTitle": "Turn on your location",
+    "consentIntro": "ParkQuest uses your location only to:",
+    "consentUse1": "show you on the park map;",
+    "consentUse2": "guide you to remarkable trees and places;",
+    "consentUse3": "tell you the distance to the next spot.",
+    "consentPrivate": "Your location is never visible to other visitors.",
+    "consentLater": "Not now",
+    "consentAccept": "Turn on my location",
+    "privacyLink": "Privacy",
+    "declinedNotice": "Without location, navigation is less precise. Choose a starting point or follow the trail directions.",
+    "nearbyTitle": "Around you",
+    "from": "From: {place}",
+    "yourPosition": "your location",
+    "startPoint": "Starting point",
+    "seeOnMap": "Map",
+    "seeCard": "Details",
+    "guideMe": "Guide me",
+    "guidingTo": "To {name}",
+    "guideHint": "Follow the arrow. You confirm the discovery on site.",
+    "arrived": "You're almost there",
+    "stopGuiding": "Stop guidance",
+    "direction": "Head {dir}",
+    "precise": "You're near: {name}",
+    "estDistance": "Estimated distance: {distance}",
+    "accuracy": "GPS accuracy: ± {count} m",
+    "likely": "You seem to be close to this place",
+    "likelyBody": "Confirm that you are on site.",
+    "imprecise": "Imprecise GPS signal (± {count} m)",
+    "impreciseBody": "We can't verify your location. Check the photo and the map, then confirm if you're there.",
+    "confirmHere": "I confirm, I'm here",
+    "status": {
+      "precise": "Precise GPS",
+      "approximate": "Approximate GPS",
+      "imprecise": "Imprecise GPS",
+      "off": "GPS off",
+      "denied": "GPS denied",
+      "locating": "Locating…"
+    },
+    "openMap": "Open the map",
+    "endVisit": "Finish the visit",
+    "service": "Service",
+    "accessible": "Accessible",
+    "noResult": "Nothing nearby for this filter.",
+    "filters": {
+      "all": "All",
+      "trees": "Trees",
+      "plants": "Plants",
+      "history": "History",
+      "photo": "Photo",
+      "challenges": "Challenges",
+      "services": "Services",
+      "pmr": "Accessible"
+    },
+    "dirs": {
+      "N": "north",
+      "NE": "north-east",
+      "E": "east",
+      "SE": "south-east",
+      "S": "south",
+      "SW": "south-west",
+      "W": "west",
+      "NW": "north-west"
+    }
+  },
+  "weather": {
+    "title": "Weather during your visit",
+    "simulated": "Simulated weather (demo mode)",
+    "source": "Weather data: Open-Meteo.com",
+    "now": "Now",
+    "rainAt": "Rain likely around {hour}",
+    "noRain": "No rain expected",
+    "wind": "Wind {speed} km/h",
+    "uv": "UV {value}",
+    "unavailable": "Weather unavailable right now.",
+    "advice": {
+      "rain": "Bring a raincoat: the great glasshouses are a good shelter.",
+      "heat": "It's hot: spot the water points and shaded areas.",
+      "cold": "It's chilly: dress warmly, especially the children.",
+      "wind": "Strong wind: avoid wooded areas and respect any park closures.",
+      "uv": "High UV: hat and sunscreen.",
+      "nice": "Ideal conditions for your visit."
+    },
+    "codes": {
+      "clear": "Sunny",
+      "partly": "Partly cloudy",
+      "cloudy": "Cloudy",
+      "fog": "Fog",
+      "drizzle": "Drizzle",
+      "rain": "Rain",
+      "snow": "Snow",
+      "showers": "Showers",
+      "storm": "Thunderstorm"
+    }
   }
 }

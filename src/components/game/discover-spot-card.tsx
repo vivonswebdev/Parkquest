@@ -9,7 +9,8 @@ import { useGeolocation } from "@/hooks/use-geolocation";
 import type { DiscoverResult, LatLng } from "@/lib/domain/types";
 import { formatDistance } from "@/lib/format";
 import { updateDemoProgress, useDemoProgress } from "@/features/demo/demo-progress";
-import { GPS_RULES, distanceM } from "@/lib/geo";
+import { distanceM } from "@/lib/geo";
+import { proximityTier } from "@/lib/game/rules";
 import { useDemoGeoTarget } from "@/features/demo/demo-geo";
 import { isDemoMode } from "@/lib/config/app-mode";
 import { cn } from "@/lib/utils";
@@ -18,13 +19,16 @@ import { ActionErrorMessage, ModeNotice, PointsBurst } from "./feedback";
 
 /**
  * Découverte d'un spot — JAMAIS automatique :
- * 1. l'utilisateur active sa position (ou choisit le mode sans GPS),
- * 2. si proche, on affiche « Vous semblez proche de ce lieu »,
- * 3. l'utilisateur appuie sur « Découvrir ce spot »,
- * 4. le serveur vérifie distance + précision et attribue les points une seule fois.
+ *   distance + précision GPS + geste explicite = découverte.
+ * Paliers affichés (src/lib/game/rules.ts → proximityTier) :
+ *  - précision ≤ 10 m et ≤ 25 m : « Vous êtes près de … », distance et précision ;
+ *  - précision 10–25 m : « Vous semblez proche de ce lieu », confirmation ;
+ *  - précision > 25 m : pas de validation GPS, confirmation manuelle (déclarative).
+ * Le serveur revérifie tout et n'attribue les points qu'une seule fois.
  */
 export function DiscoverSpotCard({
   spotId,
+  spotName,
   spotLocation,
   radiusM,
   visitId,
@@ -35,6 +39,7 @@ export function DiscoverSpotCard({
   className,
 }: {
   spotId: string;
+  spotName?: string;
   spotLocation: LatLng;
   radiusM: number;
   visitId?: string | null;
@@ -59,8 +64,8 @@ export function DiscoverSpotCard({
   const already = serverDiscovered || (isDemoMode && demo.discovered.includes(spotId)) || (result?.ok && result.status === "ALREADY_DISCOVERED");
 
   const d = geo.position ? distanceM(geo.position, spotLocation) : null;
-  const near = d !== null && d <= Math.max(GPS_RULES.nearHintM, radiusM);
-  const precise = geo.position ? geo.position.accuracy <= GPS_RULES.maxAccuracyM : false;
+  const tier = geo.position && d !== null ? proximityTier(d, geo.position.accuracy, radiusM) : null;
+  const near = tier === "precise" || tier === "likely";
 
   const discover = () => {
     if (!online) {
@@ -143,24 +148,33 @@ export function DiscoverSpotCard({
         </>
       )}
 
-      {geo.status === "active" && d !== null && (
+      {geo.status === "active" && d !== null && tier && (
         <>
           <div className="flex items-center gap-3">
-            <span className={cn("relative inline-flex size-11 items-center justify-center rounded-full", near ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>
+            <span className={cn("relative inline-flex size-11 shrink-0 items-center justify-center rounded-full", near ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>
               {near && <span className="animate-pulse-ring absolute inset-0 rounded-full bg-primary/50" />}
               <Radar className="relative size-5" />
             </span>
-            <div>
-              <p className="font-semibold">{near ? t("gps.near") : formatDistance(d, locale)}</p>
+            <div className="min-w-0">
+              <p className="font-semibold">
+                {tier === "precise"
+                  ? t("geo.precise", { name: spotName ?? "" })
+                  : tier === "likely"
+                    ? t("gps.near")
+                    : tier === "imprecise"
+                      ? t("geo.imprecise", { count: geo.position!.accuracy })
+                      : formatDistance(d, locale)}
+              </p>
               <p className="text-xs text-muted-foreground">
-                {t("map.accuracy", { count: geo.position!.accuracy })}
-                {!precise && ` · ${t("gps.lowAccuracy", { count: geo.position!.accuracy })}`}
+                {tier === "likely" ? `${t("geo.likelyBody")} · ` : ""}
+                {t("geo.estDistance", { distance: formatDistance(d, locale) })} · {t("geo.accuracy", { count: geo.position!.accuracy })}
               </p>
             </div>
           </div>
+          {tier === "imprecise" && <p className="text-sm text-muted-foreground">{t("geo.impreciseBody")}</p>}
           <Button block size="lg" onClick={discover} disabled={pending} variant={near ? "primary" : "secondary"}>
             {pending && <Loader2 className="animate-spin" />}
-            {near ? t("gps.discover") : t("gps.discoverManual")}
+            {near ? t("gps.discover") : tier === "imprecise" ? t("geo.confirmHere") : t("gps.discoverManual")}
           </Button>
         </>
       )}

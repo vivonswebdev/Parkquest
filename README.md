@@ -72,14 +72,29 @@ En mode démo :
 
 Toutes les pages existent aussi en `/nl`, `/en`, `/es`, `/de`.
 
-Scénario conseillé : **Accueil → Commencer la visite → Voir le spot → Activer ma position → Découvrir ce spot (+10) → Quiz (+10) → Spot suivant → … → Terminer la visite (+20, badge « Boucle bouclée ») → Défis → Profil**.
+Scénario conseillé : **Accueil → Commencer la visite → « Activez votre position » → Voir le spot → Découvrir ce spot (+10) → Quiz (+10) → Spot suivant → … → Terminer la visite (+20, badge « Boucle bouclée ») → Défis → Profil**.
+
+Géolocalisation simulée (panneau **DÉMO** à gauche de l'écran) :
+
+| Mode | Ce qu'on voit |
+|---|---|
+| Près du spot (± 6 m) | « Vous êtes près de : … » → **Découvrir ce spot** (validation GPS) |
+| Approximatif (± 18 m) | « Vous semblez proche de ce lieu » → confirmation demandée |
+| Précision insuffisante (± 60 m) | « Signal GPS imprécis » → **Je confirme, j'y suis** (sans validation GPS) |
+| Entrée du parc | « Autour de vous » depuis l'entrée, guidage flèche + distance + minutes |
+| Refusé / indisponible | l'app reste utilisable, point de départ au choix (entrée, parking, arrêt, café) |
+| Réel | le vrai GPS du téléphone (nécessite HTTPS, voir iPhone ci-dessous) |
+
+La météo pendant la visite (accueil, parc, parcours) est **simulée** en mode démo et affichée comme telle ;
+`WEATHER_LIVE=true` appelle réellement [Open-Meteo](https://open-meteo.com) (sans clé).
 
 ### 4. Vérifications et captures
 
 ```bash
 npm run lint          # ESLint
 npm run typecheck     # TypeScript strict
-npm run test          # traductions (5 langues) + tests unitaires (règles GPS, points, badges, données démo)
+npm run test          # traductions (5 langues) + tests unitaires (règles GPS, paliers de proximité,
+                      # « Autour de vous », météo, points, badges, données démo)
 npm run verify        # les trois à la suite
 
 npx playwright install chromium   # une seule fois, pour les captures
@@ -209,6 +224,7 @@ spécifique (Node ≥ 20.9).
 
 - Bouton soleil/lune dans l'en-tête (mobile et desktop) et sélecteur **Sombre / Clair / Système** dans le Profil.
 - Préférence stockée dans le navigateur (`localStorage`), appliquée avant l'affichage (pas de flash).
+- Thème clair « papier crème » (fond `#f7f4ec`, titres serif Fraunces, ombres douces).
 - Sans choix explicite : app sombre (identité ParkQuest) et pages de lecture (blog, infos pratiques, légal, admin) en clair.
 - Les cartes suivent le thème (fond de repli clair/sombre, style Mapbox `light-v11` / `dark-v11`).
 
@@ -217,9 +233,12 @@ spécifique (Node ≥ 20.9).
 - **RLS sur toutes les tables** ; rôles `SUPER_ADMIN`, `PLATFORM_ADMIN`, `PARK_ADMIN`, `EDITOR`,
   `MODERATOR`, `USER` — les équipes d'un parc n'ont aucun droit sur les autres parcs.
 - **Points attribués uniquement côté serveur** (fonctions SQL), journal immuable et idempotent.
-- **GPS** : permission demandée seulement au moment utile ; découverte jamais automatique ;
-  précision ≤ 25 m exigée pour une validation GPS ; **aucune coordonnée brute stockée**
-  (seulement distance et précision) ; aucune position visible par d'autres utilisateurs.
+- **GPS** : écran d'explication « Activez votre position » AVANT la demande du navigateur ;
+  suivi (`watchPosition`) uniquement pendant la carte ou une visite, coupé en arrière-plan ;
+  découverte jamais automatique (précision ≤ 10 m : « Vous êtes près de » ; 10–25 m : confirmation ;
+  > 25 m : jamais de validation GPS) ; **aucune coordonnée brute stockée** (seulement distance et
+  précision) ; aucune position visible par d'autres utilisateurs. Le partage entre amis est
+  seulement documenté : [docs/FUTURE_SOCIAL_AND_LOCATION_SHARING.md](docs/FUTURE_SOCIAL_AND_LOCATION_SHARING.md).
 - **Pseudonyme par défaut** ; photos et commentaires `PENDING` avant publication ; signalement.
 - La bonne réponse des quiz n'est jamais envoyée au navigateur (privilèges de colonnes + test e2e).
 - Hors connexion, aucune action n'est présentée comme validée.
@@ -228,7 +247,7 @@ spécifique (Node ≥ 20.9).
 
 ```bash
 npm run check          # types, lint, traductions
-npm run db:test        # 30 assertions RLS & règles de jeu (PostgreSQL 15+ avec PostGIS)
+npm run db:test        # 33 assertions RLS, règles de jeu et « Autour de vous » (PostgreSQL 15+ avec PostGIS)
 npm run build && npm run test:e2e
 ```
 

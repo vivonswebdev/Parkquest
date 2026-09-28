@@ -15,6 +15,9 @@ import { Link } from "@/i18n/navigation";
 import { getPark, listSpots, listTrails } from "@/lib/data";
 import { requirePark } from "@/lib/data/loaders";
 import { getServerProgress } from "@/server/progress";
+import { WeatherCard } from "@/components/weather/weather-card";
+import { getVisitWeather } from "@/lib/weather";
+
 
 type Params = { params: Promise<{ locale: string; parkSlug: string }> };
 
@@ -24,12 +27,20 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   return park ? { title: park.name, description: park.tagline } : {};
 }
 
+// Météo : page régénérée au plus toutes les 30 minutes.
+export const revalidate = 1800;
+
 export default async function ParkPage({ params }: Params) {
   const { locale, parkSlug } = await params;
   setRequestLocale(locale);
   const t = await getTranslations();
   const park = await requirePark(parkSlug, locale);
-  const [trails, spots, progress] = await Promise.all([listTrails(park.id, locale), listSpots(park.id, locale), getServerProgress()]);
+  const [trails, spots, progress, weather] = await Promise.all([
+    listTrails(park.id, locale),
+    listSpots(park.id, locale),
+    getServerProgress(),
+    getVisitWeather(park.location, park.timezone, 120),
+  ]);
   const main = trails[0];
 
   return (
@@ -76,6 +87,8 @@ export default async function ParkPage({ params }: Params) {
           </div>
 
           {park.isDemoData && <DemoNotice />}
+
+          <WeatherCard weather={weather} />
 
           <div className="grid gap-4 lg:grid-cols-[1.5fr_1fr]">
             <Card className="p-5">

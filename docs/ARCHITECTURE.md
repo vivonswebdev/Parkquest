@@ -194,6 +194,22 @@ Principes :
 - [x] PWA (manifest, icônes, service worker, page hors ligne)
 - [x] E2E Playwright de la boucle de visite
 
+## 10. Géolocalisation interactive & météo ✅
+
+- `src/lib/game/rules.ts` → `proximityTier` : précis (≤ 10 m et ≤ 25 m), probable (≤ 25 m de précision),
+  imprécis (> 25 m, jamais de validation GPS), loin. Le serveur (`discover_spot`) reste seul juge.
+- `src/hooks/use-geolocation.ts` : `watchPosition` uniquement quand la carte / la visite est active,
+  lissage, arrêt en arrière-plan (`visibilitychange`), simulation en mode démo.
+- `src/lib/location-consent.ts` + `components/geo/location-consent-sheet.tsx` : pré-autorisation
+  expliquée avant la demande du navigateur (choix mémorisé sur l'appareil).
+- `src/lib/nearby.ts` + `components/geo/nearby-list.tsx` : « Autour de vous » (filtres, carte, fiche,
+  guidage), recalcul après ~15 m ; en production `ContentRepository.listNearbySpots` → RPC PostGIS
+  `nearby_spots` / `nearby_facilities` (migration `20260927001400`).
+- `components/geo/guide-panel.tsx` : guidage flèche + distance + minutes (`/map?to=<spot>`).
+- `src/lib/weather/` : Open-Meteo côté serveur (cache 30 min, 4 s max, jamais bloquant) ou prévision
+  simulée en démo ; `WeatherCard` sur l'accueil, le parc et le parcours.
+- Social / partage de position : documenté seulement → `docs/FUTURE_SOCIAL_AND_LOCATION_SHARING.md`.
+
 ## Prochaines étapes (Sprint 2 → 4)
 
 - **Sprint 2** : admin CRUD (spots, parcours avec éditeur de tracé sur carte, quiz, défis, services, traductions), import des données validées de Meise.

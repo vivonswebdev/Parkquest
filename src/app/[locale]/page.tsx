@@ -22,6 +22,12 @@ import { FEATURED_PARK_SLUG, getPark, listSpots, listTrails, repo } from "@/lib/
 import { distanceM, walkingMinutes } from "@/lib/geo";
 import { formatDistance } from "@/lib/format";
 import { getServerProgress } from "@/server/progress";
+import { WeatherCard } from "@/components/weather/weather-card";
+import { getVisitWeather } from "@/lib/weather";
+
+
+// Météo : page régénérée au plus toutes les 30 minutes.
+export const revalidate = 1800;
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -31,12 +37,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   const park = await getPark(FEATURED_PARK_SLUG, loc);
   if (!park) notFound();
-  const [trails, spots, challenges, parks, progress] = await Promise.all([
+  const [trails, spots, challenges, parks, progress, weather] = await Promise.all([
     listTrails(park.id, loc),
     listSpots(park.id, loc),
     repo.listChallenges(park.id, loc),
     repo.listParks(loc),
     getServerProgress(),
+    getVisitWeather(park.location, park.timezone, 120),
   ]);
   const mainTrail = trails[0];
   const entrance = mainTrail ? (await repo.getTrail(park.id, mainTrail.slug, loc))?.start : park.location;
@@ -153,6 +160,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </div>
 
         {park.isDemoData && <DemoNotice className="mt-4" />}
+
+        <WeatherCard weather={weather} className="mt-4" />
 
         {/* Parcours populaires */}
         <section className="mt-10">

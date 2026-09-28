@@ -115,6 +115,7 @@ export default async function SpotPage({ params }: Params) {
           {/* Découverte (validation serveur, jamais automatique) */}
           <DiscoverSpotCard
             spotId={spot.id}
+            spotName={spot.name}
             spotLocation={spot.location}
             radiusM={spot.discoveryRadiusM}
             serverDiscovered={progress?.discoveredSpotIds.includes(spot.id)}
