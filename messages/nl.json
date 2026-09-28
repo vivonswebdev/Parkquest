@@ -608,5 +608,76 @@
       "showers": "Buien",
       "storm": "Onweer"
     }
+  },
+  "photos": {
+    "title": "Foto's",
+    "count": "{count, plural, one {# foto} other {# foto's}}",
+    "add": "Foto toevoegen",
+    "addShort": "Toevoegen",
+    "emptyTitle": "Maak als eerste een foto van deze plek",
+    "emptyBody": "Je foto's helpen andere bezoekers {name} te herkennen.",
+    "sheetTitle": "Foto van {name}",
+    "sheetIntro": "Je foto wordt zichtbaar nadat het parkteam hem heeft gecontroleerd.",
+    "rules": {
+      "place": "Fotografeer de plek of plant: geen herkenbare personen, nooit kinderen.",
+      "own": "Alleen foto's die je zelf hebt gemaakt.",
+      "paths": "Blijf op de paden: vertrap of pluk niets voor de foto.",
+      "privacy": "GPS-positie en toestelgegevens worden automatisch verwijderd."
+    },
+    "choose": "Foto maken of kiezen",
+    "preparing": "Voorbereiden…",
+    "change": "Wijzigen",
+    "altLabel": "Beschrijving (optioneel)",
+    "altPlaceholder": "Bv. de stam gezien vanaf het pad",
+    "consent": "Ik ga akkoord met publicatie onder de CC BY-SA 4.0-licentie, met mijn gebruikersnaam als vermelding.",
+    "send": "Foto versturen",
+    "sending": "Versturen…",
+    "thanksTitle": "Bedankt!",
+    "thanksBody": "Je foto wordt gepubliceerd na controle door het parkteam (+5 punten na goedkeuring).",
+    "demoNote": "Demomodus: de foto blijft op dit toestel. Keur hem goed via het DEMO-paneel om hem gepubliceerd te zien.",
+    "pending": "Wacht op controle",
+    "you": "Jij",
+    "community": "ParkQuest-community",
+    "official": "Officiële foto van het park",
+    "wikimedia": "Wikimedia Commons",
+    "cover": "Omslagfoto",
+    "open": "Foto {n} bekijken",
+    "close": "Sluiten",
+    "prev": "Vorige foto",
+    "next": "Volgende foto",
+    "sourceLink": "Bron en licentie bekijken",
+    "errors": {
+      "TYPE": "Niet-ondersteund formaat (JPEG, PNG, WebP of HEIC).",
+      "TOO_LARGE": "Foto te groot (max. 25 MB).",
+      "EMPTY": "Leeg bestand.",
+      "TOO_SMALL": "Foto te klein (minimaal 480 pixels).",
+      "READ": "Deze foto kan op dit toestel niet worden gelezen. Probeer een JPEG.",
+      "CONSENT": "Aanvaard de licentie om je foto te publiceren.",
+      "RATE_LIMITED": "Je hebt vandaag veel foto's voorgesteld. Probeer het morgen opnieuw."
+    },
+    "speciesTitle": "Foto's van de soort",
+    "speciesNote": "Echte waarnemingen onder vrije licentie: dit is de soort, niet noodzakelijk de boom van het park.",
+    "nearHere": "in de buurt",
+    "km": "op {km} km",
+    "heroCredit": "Foto van de soort"
+  },
+  "species": {
+    "title": "Soortfiche",
+    "commonName": "Gewone naam",
+    "family": "Familie",
+    "iucn": "IUCN-status",
+    "observations": "Waarnemingen wereldwijd",
+    "learnMore": "Meer weten",
+    "sources": "Gegevens: iNaturalist, GBIF, Wikimedia Commons (vrije licenties).",
+    "iucnLabels": {
+      "LC": "Niet bedreigd",
+      "NT": "Gevoelig",
+      "VU": "Kwetsbaar",
+      "EN": "Bedreigd",
+      "CR": "Ernstig bedreigd",
+      "EW": "Uitgestorven in het wild",
+      "EX": "Uitgestorven",
+      "DD": "Onvoldoende gegevens"
+    }
   }
 }

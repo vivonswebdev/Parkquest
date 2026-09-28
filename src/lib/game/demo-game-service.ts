@@ -66,4 +66,12 @@ export const demoGameService: GameService = {
     // La photo n'est ni envoyée ni stockée en mode démo.
     return { ok: true, mode: "demo", status: r.status, pointsAwarded: r.points, newBadges: [] };
   },
+
+  async submitSpotPhoto(i) {
+    if (!i.licenseConsent) return { ok: false, error: "CONSENT_REQUIRED" };
+    const spot = demoData.spots.find((s) => s.id === i.spotId && s.status === "PUBLISHED");
+    if (!spot) return { ok: false, error: "NOT_FOUND" };
+    // Démo : rien n'est envoyé ; la photo reste sur l'appareil, « en attente ».
+    return { ok: true, mode: "demo", status: "PENDING" };
+  },
 };

@@ -1,4 +1,4 @@
-import type { ActionError, ActionMode, ChallengeResult, DiscoverResult, QuizResult } from "@/lib/domain/types";
+import type { ActionError, ActionMode, ChallengeResult, DiscoverResult, QuizResult, SpotPhotoResult } from "@/lib/domain/types";
 
 /**
  * Couche de service du jeu. Les écrans et les Server Actions ne connaissent que
@@ -30,6 +30,16 @@ export interface ChallengeInput {
   photo: File | null;
 }
 
+export interface SpotPhotoInput {
+  spotId: string;
+  /** Image déjà redimensionnée et nettoyée (EXIF/GPS retirés) par l'appareil */
+  photo: File;
+  width: number;
+  height: number;
+  alt?: string;
+  licenseConsent: boolean;
+}
+
 export type StartVisitResult = { ok: true; mode: ActionMode; visitId: string | null } | { ok: false; error: ActionError };
 export type CompleteVisitResult =
   | { ok: true; mode: ActionMode; trailCompleted: boolean; pointsAwarded: number; newBadges: string[] }
@@ -43,4 +53,6 @@ export interface GameService {
   discoverSpot(input: DiscoverInput): Promise<DiscoverResult>;
   submitQuiz(input: QuizInput): Promise<QuizResult>;
   completeChallenge(input: ChallengeInput): Promise<ChallengeResult>;
+  /** Proposer une photo d'un spot : toujours en attente de validation. */
+  submitSpotPhoto(input: SpotPhotoInput): Promise<SpotPhotoResult>;
 }

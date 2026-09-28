@@ -12,6 +12,7 @@ import type {
   PublicQuiz,
   Spot,
   SpotCategory,
+  SpotPhoto,
   SpotSummary,
   Trail,
   TrailSummary,
@@ -236,6 +237,31 @@ export const supabaseRepository: ContentRepository = {
       categoryKeys: r.categories ?? [],
       contentLocale: locale,
       distanceM: r.distance_m,
+    }));
+  },
+
+  async listSpotPhotos(spotId): Promise<SpotPhoto[]> {
+    const { data, error } = await (await db())
+      .from("media")
+      .select("id, public_url, width, height, alt_text, source, author_name, license, source_url, is_cover")
+      .eq("spot_id", spotId)
+      .eq("moderation_status", "APPROVED")
+      .not("public_url", "is", null)
+      .order("is_cover", { ascending: false })
+      .order("created_at", { ascending: false })
+      .limit(24);
+    if (error) throw error;
+    return (data ?? []).map((r) => ({
+      id: r.id as string,
+      url: r.public_url as string,
+      width: (r.width as number | null) ?? undefined,
+      height: (r.height as number | null) ?? undefined,
+      alt: (r.alt_text as string | null) ?? undefined,
+      source: r.source as SpotPhoto["source"],
+      authorName: (r.author_name as string | null) ?? undefined,
+      license: (r.license as string | null) ?? undefined,
+      sourceUrl: (r.source_url as string | null) ?? undefined,
+      isCover: Boolean(r.is_cover),
     }));
   },
 

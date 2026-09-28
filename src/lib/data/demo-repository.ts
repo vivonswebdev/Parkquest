@@ -1,6 +1,7 @@
 import "server-only";
 import { demoData } from "@/features/demo/demo-data";
 import type {
+  SpotPhoto,
   Article,
   ArticleRecord,
   ArticleSummary,
@@ -166,6 +167,11 @@ export const demoRepository: ContentRepository = {
       const { spotKind, ...rest } = item;
       return { ...rest, kind: spotKind, distanceM };
     });
+  },
+
+  async listSpotPhotos(): Promise<SpotPhoto[]> {
+    // Démo : aucune photo réelle n'est inventée ; les photos proposées restent sur l'appareil.
+    return [];
   },
 
   async getSpot(parkId, spotSlug, locale): Promise<Spot | null> {

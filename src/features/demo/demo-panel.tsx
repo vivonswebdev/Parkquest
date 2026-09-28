@@ -7,6 +7,7 @@ import { pickTranslation } from "@/lib/i18n-content";
 import { cn } from "@/lib/utils";
 import { demoData, demoUser } from "./demo-data";
 import { DEMO_GEO_MODES, setDemoGeoMode, useDemoGeoMode } from "./demo-geo";
+import { approveDemoSpotPhotos, clearDemoSpotPhotos } from "./demo-photos";
 import { approvePendingDemoPhotos, onDemoBadgesUnlocked, resetDemoProgress, useDemoProgress } from "./demo-progress";
 
 /**
@@ -104,7 +105,8 @@ export function DemoPanel() {
               <button
                 type="button"
                 onClick={() => {
-                  const n = approvePendingDemoPhotos();
+                  // Défis photo + photos de spots proposées sur cet appareil
+                  const n = approvePendingDemoPhotos() + approveDemoSpotPhotos();
                   setFlash(n ? t("approved", { count: n }) : t("noPending"));
                 }}
                 className="flex h-12 items-center justify-center gap-2 rounded-2xl border border-border text-sm font-semibold hover:bg-primary-soft"
@@ -115,6 +117,7 @@ export function DemoPanel() {
                 type="button"
                 onClick={() => {
                   resetDemoProgress();
+                  clearDemoSpotPhotos();
                   setFlash(t("resetDone"));
                 }}
                 className="flex h-12 items-center justify-center gap-2 rounded-2xl border border-danger/40 text-sm font-semibold text-danger hover:bg-danger/10"

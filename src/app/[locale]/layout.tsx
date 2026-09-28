@@ -53,6 +53,13 @@ export default async function LocaleLayout({ children, params }: { children: Rea
     // data-theme* sont posés avant le rendu par themeInitScript (préférence locale) → suppressHydrationWarning.
     <html lang={locale} data-theme="dark" data-theme-pref="default" className={`${inter.variable} ${jakarta.variable} ${fraunces.variable}`} suppressHydrationWarning>
       <head>
+        {/*
+          Compromis Next 16 (voir docs/ARCHITECTURE.md § « Initialisation du thème ») : ce script
+          brut s'exécute pendant l'analyse du HTML, AVANT le premier affichage (aucun flash).
+          next/script + beforeInteractive supprime l'avertissement React de développement mais
+          applique le thème après le premier affichage (flash mesuré). Ne pas remplacer sans solution
+          qui garde les deux propriétés.
+        */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body>

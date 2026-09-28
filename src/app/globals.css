@@ -58,6 +58,14 @@
   --map-tree: #0f4531;
   --map-water: #0f4b5a;
   --map-topo: rgba(138, 244, 201, 0.06);
+  --map-tree-1: #1f6a44;
+  --map-tree-2: #287a4f;
+  --map-tree-3: #185a39;
+  --map-conifer: #154a32;
+  --map-tree-light: #4fae78;
+  --map-tree-shadow: rgba(0, 0, 0, 0.38);
+  --map-water-rim: #2a7f93;
+  --map-water-light: #2f7486;
   --card-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.04) inset, 0 18px 40px -20px rgba(0, 0, 0, 0.65);
   color-scheme: dark;
 }
@@ -89,13 +97,21 @@ html[data-theme-pref="default"] .reading-light {
   --track: rgba(6, 35, 26, 0.1);
   --inset: rgba(6, 35, 26, 0.06);
   --nav-active-bg: #06231a;
-  --map-bg: #dcebe2;
-  --map-base: #e4f0e8;
-  --map-lawn: #cfe6d6;
-  --map-wood: #b9dcc4;
-  --map-tree: #a3cfb1;
-  --map-water: #9fd3e6;
-  --map-topo: rgba(11, 107, 79, 0.08);
+  --map-bg: #d4e6bd;
+  --map-base: #d9eac3;
+  --map-lawn: #c8e0a6;
+  --map-wood: #b7d693;
+  --map-tree: #9cc77c;
+  --map-water: #8ecae0;
+  --map-topo: rgba(11, 107, 79, 0.07);
+  --map-tree-1: #5f9e4f;
+  --map-tree-2: #72b05c;
+  --map-tree-3: #4f8f45;
+  --map-conifer: #3f7d45;
+  --map-tree-light: #9fd07e;
+  --map-tree-shadow: rgba(40, 70, 30, 0.22);
+  --map-water-rim: #d6eef5;
+  --map-water-light: #b5e0ee;
   color-scheme: light;
 }
 

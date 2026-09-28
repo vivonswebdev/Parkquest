@@ -211,6 +211,22 @@ Principes :
   simulée en démo ; `WeatherCard` sur l'accueil, le parc et le parcours.
 - Social / partage de position : documenté seulement → `docs/FUTURE_SOCIAL_AND_LOCATION_SHARING.md`.
 
+## 11. Initialisation du thème (compromis Next 16) — TODO technique
+
+**TODO : résoudre l'initialisation du thème Next 16 sans avertissement React ni flash visuel.**
+
+| Solution | Thème appliqué | Flash clair/sombre | Avertissement React (dev) |
+|---|---|---|---|
+| `<script dangerouslySetInnerHTML>` dans `<head>` (**actuelle**) | ≈ 540 ms, avant le 1er affichage (560 ms) | non | seulement si React re-crée la balise côté client (ex. rendu refait après une erreur d'hydratation, souvent causée par une extension du navigateur) |
+| `next/script` `beforeInteractive` (en ligne ou `src`) | ≈ 920–1150 ms, **après** le 1er affichage (≈ 600 ms) | **oui** (≈ 0,3–0,6 s, mesuré avec CPU ÷4) | non |
+
+- Mesures : Playwright, préférence « clair », `PerformanceObserver` (first-paint) + `MutationObserver` sur `data-theme`.
+- L'avertissement n'apparaît sur **aucune** des 16 pages testées (mobile et desktop) : il n'est émis que si React
+  crée la balise `<script>` côté client (`react-dom`, `completeWork` → `case "script"`), jamais à l'hydratation normale.
+- Décision : garder la solution actuelle (aucun flash). Avertissement de développement uniquement, sans effet en production.
+- Pistes : thème aussi en cookie lu par le serveur (mais pages rendues dynamiques), ou `<script>` de type « data block »
+  exécuté autrement ; à réévaluer à chaque mise à jour de Next/React.
+
 ## Prochaines étapes (Sprint 2 → 4)
 
 - **Sprint 2** : admin CRUD (spots, parcours avec éditeur de tracé sur carte, quiz, défis, services, traductions), import des données validées de Meise.

@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import type { ChallengeResult, DiscoverResult, QuizResult } from "@/lib/domain/types";
+import type { ChallengeResult, DiscoverResult, QuizResult, SpotPhotoResult } from "@/lib/domain/types";
 import { gameService } from "@/lib/game";
 import type { CompleteVisitResult, StartVisitResult } from "@/lib/game/game-service";
 
@@ -93,4 +93,34 @@ export async function completeVisitAction(input: z.infer<typeof completeVisitSch
   const p = completeVisitSchema.safeParse(input);
   if (!p.success) return { ok: false, error: "INVALID_INPUT" };
   return gameService.completeVisit(p.data);
+}
+
+const SPOT_PHOTO_MAX_BYTES = 5 * 1024 * 1024;
+
+/**
+ * Photo d'un spot : FormData { spotId, photo (JPEG préparé par l'appareil), width, height, alt?, consent }.
+ * Toujours en attente de validation par un modérateur du parc.
+ */
+export async function submitSpotPhotoAction(form: FormData): Promise<SpotPhotoResult> {
+  const p = z
+    .object({
+      spotId: uuid,
+      width: z.coerce.number().int().min(200).max(4096),
+      height: z.coerce.number().int().min(200).max(4096),
+      alt: z.string().trim().max(200).optional(),
+      consent: z.literal("true"),
+    })
+    .safeParse({
+      spotId: form.get("spotId"),
+      width: form.get("width"),
+      height: form.get("height"),
+      alt: form.get("alt") || undefined,
+      consent: form.get("consent"),
+    });
+  if (!p.success) return { ok: false, error: form.get("consent") !== "true" ? "CONSENT_REQUIRED" : "INVALID_INPUT" };
+  const photo = form.get("photo");
+  if (!(photo instanceof File) || photo.size === 0 || photo.size > SPOT_PHOTO_MAX_BYTES || photo.type !== "image/jpeg") {
+    return { ok: false, error: "INVALID_INPUT" };
+  }
+  return gameService.submitSpotPhoto({ spotId: p.data.spotId, photo, width: p.data.width, height: p.data.height, alt: p.data.alt, licenseConsent: true });
 }

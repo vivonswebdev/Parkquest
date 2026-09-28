@@ -510,7 +510,27 @@ export type ActionError =
   | "INVALID_INPUT"
   | "OFFLINE"
   | "PHOTO_REQUIRED"
+  | "CONSENT_REQUIRED"
+  | "RATE_LIMITED"
   | "SERVER_ERROR";
+
+/** Photo publiée d'un spot (communauté validée, officielle ou Wikimedia Commons). */
+export interface SpotPhoto {
+  id: string;
+  url: string;
+  width?: number;
+  height?: number;
+  alt?: string;
+  source: "COMMUNITY" | "OFFICIAL" | "WIKIMEDIA";
+  /** Crédit affiché : pseudonyme ou auteur externe */
+  authorName?: string;
+  license?: string;
+  /** Page d'origine (Wikimedia Commons) */
+  sourceUrl?: string;
+  isCover: boolean;
+}
+
+export type SpotPhotoResult = { ok: true; mode: ActionMode; status: "PENDING" } | { ok: false; error: ActionError };
 
 export interface UserStats {
   totalPoints: number;

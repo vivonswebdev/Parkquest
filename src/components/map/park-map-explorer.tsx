@@ -22,7 +22,7 @@ import { distanceM, walkingMinutes } from "@/lib/geo";
 import { cn } from "@/lib/utils";
 import { satelliteTilesUrl } from "@/lib/map/config";
 import { ParkMap } from "./park-map";
-import type { MapEngine, MapHandle, MapLayer, MapMarker } from "./types";
+import type { MapEngine, MapHandle, MapLayer, MapMarker, MapNature } from "./types";
 
 export function ParkMapExplorer({
   park,
@@ -110,6 +110,29 @@ export function ParkMapExplorer({
     [filter, origin.lat, origin.lng, locale, spots, facilities, serverDiscovered, demo.discovered],
   );
 
+  // Décor stable (indépendant des filtres) : tous les lieux restent dégagés, étangs aux spots « eau ».
+  const nature = useMemo<MapNature>(
+    () => ({
+      clearings: [...spots.map((s) => s.location), ...facilities.map((f) => f.location)],
+      ponds: spots.filter((s) => s.kind === "WATER").map((s) => ({ center: s.location, radiusM: 55 })),
+    }),
+    [spots, facilities],
+  );
+
+  // Cadrage d'ouverture : lieux + parcours (+ marge), plutôt que toute l'emprise du parc.
+  const focus = useMemo<[LatLng, LatLng]>(() => {
+    const pts = [...spots.map((s) => s.location), ...trailSegments.flatMap((g) => g.path.map(([lng, lat]) => ({ lat, lng })))];
+    const lats = pts.map((p) => p.lat);
+    const lngs = pts.map((p) => p.lng);
+    const [s0, n0, w0, e0] = [Math.min(...lats), Math.max(...lats), Math.min(...lngs), Math.max(...lngs)];
+    const my = (n0 - s0) * 0.12;
+    const mx = (e0 - w0) * 0.12;
+    return [
+      { lat: s0 - my, lng: w0 - mx },
+      { lat: n0 + my, lng: e0 + mx },
+    ];
+  }, [spots, trailSegments]);
+
   const paths = useMemo(() => {
     const base = trailSegments.map((s) => ({ id: s.id, coordinates: s.path, variant: "trail" as const }));
     if (!guideTarget) return base;
@@ -151,6 +174,8 @@ export function ParkMapExplorer({
         layer={layer}
         paddingBottom={290}
         view3d={view3d}
+        nature={nature}
+        focus={spots.length > 1 ? focus : undefined}
         onEngine={setEngine}
       />
 
