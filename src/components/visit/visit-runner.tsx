@@ -1,6 +1,14 @@
 "use client";
 
 import { BookOpen, ChevronDown, Flag, Lightbulb, Loader2, Map as MapIcon, Navigation, Pause, Play, PartyPopper, Signpost, Timer, X } from "lucide-react";
+import {
+  ExplorationBottomPanel,
+  ExplorationControlButton,
+  ExplorationControls,
+  ExplorationDialog,
+  ExplorationShell,
+  ExplorationTopBar,
+} from "@/components/exploration/exploration-shell";
 import { GpsStatus } from "@/components/geo/gps-status";
 import { LocationConsentSheet } from "@/components/geo/location-consent-sheet";
 import { useLocationConsent } from "@/lib/location-consent";
@@ -228,15 +236,15 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
   const ss = String(elapsed % 60).padStart(2, "0");
 
   return (
-    // Plein écran : au-dessus de la navigation du site (mobile et desktop) pendant la visite.
-    <div className="fixed inset-0 z-[44] bg-background">
+    // Plein écran (pseudo-plein-écran CSS, iPhone compris) : voir ExplorationShell.
+    <ExplorationShell>
       <ParkMap ref={mapRef} bounds={trailBounds} markers={markers} paths={paths} user={geo.position} selectedId={current?.id} onSelect={(id) => {
         const i = trail.spots.findIndex((s) => s.id === id);
         if (i >= 0) setIndex(i);
       }} paddingBottom={260} attributionTop={176} />
 
       {/* En-tête : parcours + progression */}
-      <div className="absolute inset-x-0 top-0 z-20 p-3 pt-[max(env(safe-area-inset-top),0.75rem)]">
+      <ExplorationTopBar>
         <div className="glass-strong mx-auto flex max-w-xl items-center gap-3 rounded-[22px] p-3 card-shadow">
           <div className="min-w-0 flex-1">
             <div className="flex items-baseline justify-between gap-2">
@@ -260,16 +268,17 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
           {/* Démo : pastille discrète ; le détail est dans le panneau DÉMO et sur chaque résultat */}
           {isDemoMode && <DemoBadge className="border-transparent bg-black/55 text-[#f4c95d] backdrop-blur" />}
         </div>
-      </div>
+      </ExplorationTopBar>
 
       {/* Bouton recentrer */}
-      <button type="button" onClick={recenter} aria-label={t("map.myPosition")} className="glass-strong absolute right-3 top-1/2 z-20 inline-flex size-12 -translate-y-1/2 items-center justify-center rounded-full">
-        <Navigation className="size-5" />
-      </button>
+      <ExplorationControls>
+        <ExplorationControlButton label={t("map.myPosition")} onClick={recenter}>
+          <Navigation className="size-5" />
+        </ExplorationControlButton>
+      </ExplorationControls>
 
       {/* Panneau bas */}
-      <div className="absolute inset-x-0 bottom-0 z-20 p-3 safe-bottom">
-        <div className="mx-auto max-w-xl space-y-2">
+      <ExplorationBottomPanel>
           {(geo.status === "denied" || geo.status === "unavailable") && !sheetOpen && (
             <p role="status" className="glass-strong rounded-2xl px-4 py-3 text-sm">
               <span className="font-semibold text-gold">{t("gps.unavailable")}</span> <span className="text-muted-foreground">{t("gps.unavailableBody")}</span>
@@ -398,8 +407,7 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
               )}
             </div>
           ) : null}
-        </div>
-      </div>
+      </ExplorationBottomPanel>
 
       {!finish && !paused && (askConsent || consent === "unset") && (
         <LocationConsentSheet
@@ -413,8 +421,7 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
       )}
 
       {confirmQuit && (
-        <div role="alertdialog" aria-modal="true" aria-labelledby="quit-title" className="absolute inset-0 z-40 flex items-end justify-center bg-black/60 p-3 backdrop-blur-sm sm:items-center">
-          <div className="glass-strong w-full max-w-sm rounded-[var(--radius-sheet)] p-5">
+        <ExplorationDialog labelledBy="quit-title">
             <p id="quit-title" className="font-display text-lg font-bold">{t("visit.quitConfirm")}</p>
             <div className="mt-4 grid grid-cols-2 gap-2">
               <Button variant="secondary" onClick={() => setConfirmQuit(false)}>{t("common.back")}</Button>
@@ -434,10 +441,9 @@ export function VisitRunner({ park, trail, quizzesBySpot, challengesBySpot, serv
                 <Flag /> {t("geo.endVisit")}
               </Button>
             )}
-          </div>
-        </div>
+        </ExplorationDialog>
       )}
-    </div>
+    </ExplorationShell>
   );
 }
 
