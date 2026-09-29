@@ -962,5 +962,31 @@
     "pausedTitle": "Entdeckungen pausiert",
     "pausedBody": "Die Entdeckungsverfolgung ist während einer schnellen Fortbewegung pausiert. Sie geht weiter, sobald du wieder langsamer unterwegs bist.",
     "pausedDiscover": "Die Entdeckungsverfolgung ist während einer schnellen Fortbewegung pausiert."
+  },
+  "avatar": {
+    "change": "Avatar ändern",
+    "title": "Dein Avatar",
+    "close": "Schließen",
+    "presets": "Naturembleme",
+    "photo": "Foto auswählen",
+    "privacy": "Dein Avatar bleibt auf diesem Telefon. Das Foto wird zugeschnitten, verkleinert und von seinen Informationen (einschließlich Standort) befreit. Es wird nie gesendet, ist nie öffentlich und für niemanden sonst sichtbar.",
+    "errorType": "Format nicht unterstützt (JPEG, PNG, WebP, HEIC).",
+    "errorSize": "Foto zu groß (max. 25 MB).",
+    "errorEmpty": "Leere Datei.",
+    "errorRead": "Dieses Foto kann nicht gelesen werden. Versuche ein anderes Bild.",
+    "errorStorage": "Speichern auf diesem Gerät nicht möglich (Speicher voll oder privates Surfen).",
+    "preset": {
+      "leaf": "Blatt",
+      "water": "Wasser",
+      "flower": "Blume",
+      "air": "Luft",
+      "forest": "Wald",
+      "moon": "Mond",
+      "sun": "Sonne",
+      "bird": "Vogel",
+      "squirrel": "Eichhörnchen",
+      "mountain": "Berg"
+    },
+    "removePhoto": "Mein Foto löschen"
   }
 }

@@ -962,5 +962,31 @@
     "pausedTitle": "Seguimiento de descubrimientos en pausa",
     "pausedBody": "El seguimiento de descubrimientos está en pausa durante un desplazamiento rápido. Se reanuda en cuanto vuelves a ir despacio.",
     "pausedDiscover": "El seguimiento de descubrimientos está en pausa durante un desplazamiento rápido."
+  },
+  "avatar": {
+    "change": "Cambiar avatar",
+    "title": "Tu avatar",
+    "close": "Cerrar",
+    "presets": "Emblemas de naturaleza",
+    "photo": "Elegir una foto",
+    "privacy": "Tu avatar se queda en este teléfono. La foto se recorta, se reduce y se limpia de su información (incluida la ubicación). Nunca se envía, nunca es pública y nunca la ven otras personas.",
+    "errorType": "Formato no compatible (JPEG, PNG, WebP, HEIC).",
+    "errorSize": "Foto demasiado pesada (máx. 25 MB).",
+    "errorEmpty": "Archivo vacío.",
+    "errorRead": "No se puede leer esta foto. Prueba con otra imagen.",
+    "errorStorage": "No se puede guardar en este dispositivo (almacenamiento lleno o navegación privada).",
+    "preset": {
+      "leaf": "Hoja",
+      "water": "Agua",
+      "flower": "Flor",
+      "air": "Aire",
+      "forest": "Bosque",
+      "moon": "Luna",
+      "sun": "Sol",
+      "bird": "Pájaro",
+      "squirrel": "Ardilla",
+      "mountain": "Montaña"
+    },
+    "removePhoto": "Eliminar mi foto"
   }
 }

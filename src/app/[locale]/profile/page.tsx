@@ -1,7 +1,8 @@
-import { Award, ChevronRight, Heart, Map, MessageSquare, Route, Settings, ShieldCheck, UserRound } from "lucide-react";
+import { Award, ChevronRight, Heart, Map, MessageSquare, Route, Settings, ShieldCheck } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { LevelLine, StatsGrid } from "@/components/game/progress-dashboard";
+import { AvatarPicker } from "@/components/profile/avatar-picker";
 import { LocaleSwitcher } from "@/components/layout/locale-switcher";
 import { ThemeSwitcher } from "@/components/theme/theme-switcher";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -39,11 +40,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
     <>
       <main className="topo-bg mx-auto max-w-3xl space-y-6 px-4 pb-32 pt-[max(env(safe-area-inset-top),1.25rem)] md:px-6 md:pt-10">
         <Card className="p-5 text-center">
-          <div className="mx-auto inline-flex size-24 items-center justify-center rounded-full bg-gradient-to-br from-mint to-forest p-1 glow-mint">
-            <span className="inline-flex size-full items-center justify-center rounded-full bg-background">
-              <UserRound className="size-10 text-primary" />
-            </span>
-          </div>
+          <AvatarPicker />
           <h1 className="mt-3 font-display text-2xl font-extrabold">{name}</h1>
           <p className="text-sm font-semibold text-primary"><LevelLine live={live} /></p>
           <div className="mt-5">

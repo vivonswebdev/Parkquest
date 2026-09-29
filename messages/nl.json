@@ -962,5 +962,31 @@
     "pausedTitle": "Ontdekkingen gepauzeerd",
     "pausedBody": "Het volgen van ontdekkingen staat op pauze tijdens een snelle verplaatsing. Het gaat verder zodra je weer rustiger beweegt.",
     "pausedDiscover": "Het volgen van ontdekkingen staat op pauze tijdens een snelle verplaatsing."
+  },
+  "avatar": {
+    "change": "Avatar wijzigen",
+    "title": "Jouw avatar",
+    "close": "Sluiten",
+    "presets": "Natuuremblemen",
+    "photo": "Een foto kiezen",
+    "privacy": "Je avatar blijft op deze telefoon. De foto wordt bijgesneden, verkleind en ontdaan van gegevens (waaronder locatie). Hij wordt nooit verstuurd, nooit openbaar gemaakt en is nooit zichtbaar voor anderen.",
+    "errorType": "Formaat niet ondersteund (JPEG, PNG, WebP, HEIC).",
+    "errorSize": "Foto te groot (max. 25 MB).",
+    "errorEmpty": "Leeg bestand.",
+    "errorRead": "Deze foto kan niet worden gelezen. Probeer een andere afbeelding.",
+    "errorStorage": "Opslaan lukt niet op dit toestel (opslag vol of privénavigatie).",
+    "preset": {
+      "leaf": "Blad",
+      "water": "Water",
+      "flower": "Bloem",
+      "air": "Lucht",
+      "forest": "Bos",
+      "moon": "Maan",
+      "sun": "Zon",
+      "bird": "Vogel",
+      "squirrel": "Eekhoorn",
+      "mountain": "Berg"
+    },
+    "removePhoto": "Mijn foto verwijderen"
   }
 }
