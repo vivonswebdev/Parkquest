@@ -962,5 +962,31 @@
     "vehicleTitle": "Parece que vas en coche o en transporte",
     "vehicleBody": "El progreso está en pausa: sin distancia ni descubrimientos en un vehículo. Se reanuda en cuanto vuelvas a caminar.",
     "vehicleDiscover": "No se puede descubrir en un vehículo: detente y sigue a pie."
+  },
+  "avatar": {
+    "change": "Cambiar avatar",
+    "title": "Tu avatar",
+    "close": "Cerrar",
+    "presets": "Emblemas de naturaleza",
+    "photo": "Elegir una foto",
+    "remove": "Quitar el avatar",
+    "privacy": "Tu avatar se queda en este teléfono. La foto se recorta, se reduce y se limpia de su información (incluida la ubicación); nunca se envía.",
+    "errorType": "Formato no compatible (JPEG, PNG, WebP, HEIC).",
+    "errorSize": "Foto demasiado pesada (máx. 25 MB).",
+    "errorEmpty": "Archivo vacío.",
+    "errorRead": "No se puede leer esta foto. Prueba con otra imagen.",
+    "errorStorage": "No se puede guardar en este dispositivo (almacenamiento lleno o navegación privada).",
+    "preset": {
+      "leaf": "Hoja",
+      "water": "Agua",
+      "flower": "Flor",
+      "air": "Aire",
+      "forest": "Bosque",
+      "moon": "Luna",
+      "sun": "Sol",
+      "bird": "Pájaro",
+      "squirrel": "Ardilla",
+      "mountain": "Montaña"
+    }
   }
 }

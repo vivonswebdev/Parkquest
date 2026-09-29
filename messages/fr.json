@@ -962,5 +962,31 @@
     "vehicleTitle": "Tu sembles être en voiture ou en transport",
     "vehicleBody": "La progression est en pause : pas de distance ni de découverte en véhicule. Elle reprend dès que tu marches à nouveau.",
     "vehicleDiscover": "Découverte impossible en véhicule : arrête-toi et continue à pied."
+  },
+  "avatar": {
+    "change": "Changer d'avatar",
+    "title": "Ton avatar",
+    "close": "Fermer",
+    "presets": "Emblèmes nature",
+    "photo": "Choisir une photo",
+    "remove": "Retirer l'avatar",
+    "privacy": "Ton avatar reste sur ce téléphone. La photo est recadrée, réduite et nettoyée de ses informations (dont la position) ; elle n'est jamais envoyée.",
+    "errorType": "Format non pris en charge (JPEG, PNG, WebP, HEIC).",
+    "errorSize": "Photo trop lourde (25 Mo maximum).",
+    "errorEmpty": "Fichier vide.",
+    "errorRead": "Impossible de lire cette photo. Essaie une autre image.",
+    "errorStorage": "Enregistrement impossible sur cet appareil (stockage plein ou navigation privée).",
+    "preset": {
+      "leaf": "Feuille",
+      "water": "Eau",
+      "flower": "Fleur",
+      "air": "Air",
+      "forest": "Forêt",
+      "moon": "Lune",
+      "sun": "Soleil",
+      "bird": "Oiseau",
+      "squirrel": "Écureuil",
+      "mountain": "Montagne"
+    }
   }
 }

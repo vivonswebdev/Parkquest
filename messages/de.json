@@ -962,5 +962,31 @@
     "vehicleTitle": "Du scheinst im Auto oder in einem Verkehrsmittel zu sein",
     "vehicleBody": "Der Fortschritt ist pausiert: keine Strecke und keine Entdeckungen im Fahrzeug. Er geht weiter, sobald du wieder gehst.",
     "vehicleDiscover": "Im Fahrzeug ist keine Entdeckung möglich: halte an und geh zu Fuß weiter."
+  },
+  "avatar": {
+    "change": "Avatar ändern",
+    "title": "Dein Avatar",
+    "close": "Schließen",
+    "presets": "Naturembleme",
+    "photo": "Foto auswählen",
+    "remove": "Avatar entfernen",
+    "privacy": "Dein Avatar bleibt auf diesem Telefon. Das Foto wird zugeschnitten, verkleinert und von seinen Informationen (einschließlich Standort) befreit; es wird nie gesendet.",
+    "errorType": "Format nicht unterstützt (JPEG, PNG, WebP, HEIC).",
+    "errorSize": "Foto zu groß (max. 25 MB).",
+    "errorEmpty": "Leere Datei.",
+    "errorRead": "Dieses Foto kann nicht gelesen werden. Versuche ein anderes Bild.",
+    "errorStorage": "Speichern auf diesem Gerät nicht möglich (Speicher voll oder privates Surfen).",
+    "preset": {
+      "leaf": "Blatt",
+      "water": "Wasser",
+      "flower": "Blume",
+      "air": "Luft",
+      "forest": "Wald",
+      "moon": "Mond",
+      "sun": "Sonne",
+      "bird": "Vogel",
+      "squirrel": "Eichhörnchen",
+      "mountain": "Berg"
+    }
   }
 }
