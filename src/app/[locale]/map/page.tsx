@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ParksMapExplorer } from "@/components/map/parks-map-explorer";
 import { FEATURED_PARK_SLUG, repo } from "@/lib/data";
+import { QUESTS } from "@/lib/quests/catalog";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -34,6 +35,10 @@ export default async function MapPage({ params }: { params: Promise<{ locale: st
           spotCount: p.spotCount,
           trailCount: p.trailCount,
           isDemoData: p.isDemoData,
+          adventureHref: (() => {
+            const q = QUESTS.find((x) => x.parkSlug === p.slug);
+            return q ? `/parks/${p.slug}/explore/${q.slug}` : undefined;
+          })(),
         }))}
         demoZone={demoZone}
       />

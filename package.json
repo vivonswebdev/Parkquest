@@ -22,7 +22,8 @@
     "demo:capture": "npm run verify && node scripts/capture-demo.mjs",
     "test": "npm run i18n:check && tsx --test --test-reporter=spec \"tests/unit/**/*.test.ts\"",
     "verify": "npm run lint && npm run typecheck && npm run test",
-    "check": "npm run verify"
+    "check": "npm run verify",
+    "media:verify": "tsx scripts/verify-park-media.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",

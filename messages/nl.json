@@ -169,7 +169,10 @@
     "panelExpand": "Paneel openen",
     "panelHide": "Paneel verbergen",
     "panelShow": "{title} · {count}",
-    "nearbyShort": "In de buurt"
+    "nearbyShort": "In de buurt",
+    "seePlaces": "Plekken bekijken",
+    "startAdventure": "Een avontuur starten",
+    "inPreparation": "Inhoud in voorbereiding"
   },
   "gps": {
     "denied": "Locatie geweigerd",
@@ -513,7 +516,8 @@
     "terms": "Gebruiksvoorwaarden",
     "gdpr": "AVG",
     "placeholder": "Voorlopig document — te laten valideren door een juridisch adviseur vóór de lancering.",
-    "footer": "Demogegevens — ParkQuest is niet verbonden aan de getoonde parken."
+    "footer": "Demogegevens — ParkQuest is niet verbonden aan de getoonde parken.",
+    "credits": "Credits en licenties"
   },
   "offline": {
     "title": "Je bent offline",
@@ -631,7 +635,7 @@
     "uv": "UV {value}",
     "unavailable": "Weer momenteel niet beschikbaar.",
     "advice": {
-      "rain": "Neem een regenjas mee: de grote serres bieden beschutting.",
+      "rain": "Neem een regenjas mee en zoek schuilplekken langs je route.",
       "heat": "Het is warm: zoek de drinkwaterpunten en schaduwrijke plekken.",
       "cold": "Het is fris: kleed je warm aan, zeker de kinderen.",
       "wind": "Harde wind: vermijd beboste zones en respecteer eventuele sluitingen.",
@@ -866,5 +870,70 @@
       "back": "Terug naar de route",
       "announce": "Schat gevonden: het Sequoia-ei."
     }
+  },
+  "parkInfo": {
+    "dataNotice": "Demogegevens, nog te valideren met het park.",
+    "particularities": "Kenmerken van het park",
+    "placesTitle": "Plekken om te ontdekken",
+    "placesProposedNote": "Voorgestelde plekken, nog te bevestigen met het park: ze staan nog niet op de kaart.",
+    "contentInPreparation": "Inhoud in voorbereiding: de plekken en routes van dit park worden nagekeken.",
+    "hoursAccess": "Openingsuren en toegang",
+    "hoursAccessBody": "Openingsuren, toegang en regels: raadpleeg de officiële bronnen hiernaast. Ze worden hier pas vermeld na controle.",
+    "sources": "Bronnen",
+    "sourceChecked": "geraadpleegd op {date}",
+    "sourceUnchecked": "nog niet gecontroleerd",
+    "illustrationNotice": "Demo-illustratie — officiële foto nog te bevestigen met het park.",
+    "placePhotoLabel": "Foto van de plek in het park",
+    "status": {
+      "demo": "Demo",
+      "proposed": "Voorgesteld",
+      "park_verified": "Gecontroleerd door het park",
+      "published": "Gepubliceerd"
+    },
+    "features": {
+      "tree": "Bomen",
+      "ancient_tree": "Oude bomen",
+      "plant": "Planten",
+      "flower": "Bloemen",
+      "greenhouse": "Serres",
+      "lake": "Meer",
+      "pond": "Vijvers",
+      "river": "Rivier",
+      "castle": "Kasteel",
+      "historic_building": "Historisch gebouw",
+      "ruin": "Ruïnes",
+      "cafe": "Café",
+      "restaurant": "Restaurant",
+      "viewpoint": "Uitkijkpunt",
+      "garden": "Tuinen",
+      "forest": "Bossen",
+      "playground": "Speeltuin",
+      "picnic_area": "Picknickplaats",
+      "toilet": "Toiletten",
+      "accessible_toilet": "Toegankelijke toiletten",
+      "entrance": "Ingang",
+      "parking": "Parking",
+      "bike_parking": "Fietsenstalling",
+      "photo_spot": "Fotoplek",
+      "history": "Geschiedenis en erfgoed",
+      "challenge": "Uitdaging",
+      "museum": "Museum",
+      "walk": "Wandelingen"
+    }
+  },
+  "credits": {
+    "title": "Credits en licenties",
+    "mapTitle": "Kaart",
+    "mapBody": "Achtergrondkaart OpenFreeMap, gebaseerd op OpenStreetMap-gegevens (ODbL-licentie).",
+    "speciesTitle": "Soortgegevens en -foto's",
+    "speciesBody": "iNaturalist, GBIF en Wikimedia Commons, alleen onder vrije licenties (CC0, CC BY, CC BY-SA). Het zijn foto's van de soort, niet van de precieze plek.",
+    "photosTitle": "Foto's van plekken",
+    "photosBody": "Een foto wordt pas gepubliceerd na controle van licentie, auteur en werkelijk onderwerp.",
+    "noPublishedPhotos": "Nog geen foto's van plekken gepubliceerd.",
+    "pendingTitle": "{count, plural, one {# foto wacht op controle} other {# foto's wachten op controle}}",
+    "toVerify": "Te controleren",
+    "illustrationsTitle": "Illustraties",
+    "illustrationsBody": "De illustraties van parken, plekken en het spel zijn originele demo-creaties, nooit officiële foto's.",
+    "parkSourcesTitle": "Bronnen van de parken"
   }
 }

@@ -15,6 +15,7 @@ export async function SiteFooter() {
         <nav className="flex gap-4">
           <Link href="/legal/privacy" className="hover:text-foreground">{t("privacy")}</Link>
           <Link href="/legal/terms" className="hover:text-foreground">{t("terms")}</Link>
+          <Link href="/credits" className="hover:text-foreground">{t("credits")}</Link>
         </nav>
       </div>
     </footer>

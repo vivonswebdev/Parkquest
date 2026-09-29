@@ -316,6 +316,7 @@ test("Mode Exploration : « Le secret du Séquoia » de bout en bout, œuf de d�
   await expect(page.getByRole("heading", { name: "Œuf du Séquoia" })).toBeVisible();
   await page.getByRole("button", { name: "Rejouer" }).click();
   await expect(page.getByRole("heading", { name: "L'énigme du géant" })).toBeVisible();
+});
 
 test("carte générale : aucun parc sélectionné d'office, choix explicite d'un parc", async ({ page }) => {
   await grantConsent(page, "denied");
@@ -335,7 +336,7 @@ test("carte générale : aucun parc sélectionné d'office, choix explicite d'un
   await page.getByRole("button", { name: /^Plantentuin Meise Meise/ }).click();
   const card = page.getByRole("dialog", { name: "Plantentuin Meise" });
   await expect(card).toBeVisible();
-  await card.getByRole("link", { name: "Carte du parc" }).click();
+  await card.getByRole("link", { name: "Voir les lieux" }).click();
   await expect(page).toHaveURL(/\/parks\/plantentuin-meise\/map$/);
 });
 

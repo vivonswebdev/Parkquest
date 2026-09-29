@@ -169,7 +169,10 @@
     "panelExpand": "Ouvrir le panneau",
     "panelHide": "Masquer le panneau",
     "panelShow": "{title} · {count}",
-    "nearbyShort": "Autour de vous"
+    "nearbyShort": "Autour de vous",
+    "seePlaces": "Voir les lieux",
+    "startAdventure": "Démarrer une aventure",
+    "inPreparation": "Contenu en préparation"
   },
   "gps": {
     "denied": "Position refusée",
@@ -513,7 +516,8 @@
     "terms": "Conditions d'utilisation",
     "gdpr": "RGPD",
     "placeholder": "Document provisoire — à faire valider par un conseil juridique avant lancement.",
-    "footer": "Données de démonstration — ParkQuest n'est affilié à aucun des parcs présentés."
+    "footer": "Données de démonstration — ParkQuest n'est affilié à aucun des parcs présentés.",
+    "credits": "Crédits et licences"
   },
   "offline": {
     "title": "Vous êtes hors connexion",
@@ -631,7 +635,7 @@
     "uv": "UV {value}",
     "unavailable": "Météo indisponible pour le moment.",
     "advice": {
-      "rain": "Prévoyez un imperméable : les grandes serres sont un bon abri.",
+      "rain": "Prévoyez un imperméable et repérez les abris sur votre parcours.",
       "heat": "Il fait chaud : repérez les points d'eau et les zones ombragées.",
       "cold": "Il fait frais : couvrez-vous, surtout les enfants.",
       "wind": "Vent fort : évitez les zones boisées et respectez les éventuelles fermetures du parc.",
@@ -866,5 +870,70 @@
       "back": "Retour au parcours",
       "announce": "Trésor trouvé : l'Œuf du Séquoia."
     }
+  },
+  "parkInfo": {
+    "dataNotice": "Donnée de démonstration à valider avec le parc.",
+    "particularities": "Particularités du parc",
+    "placesTitle": "Lieux à découvrir",
+    "placesProposedNote": "Lieux proposés, à confirmer avec le parc : ils n'apparaissent pas encore sur la carte.",
+    "contentInPreparation": "Contenu en préparation : les lieux et les parcours de ce parc sont en cours de vérification.",
+    "hoursAccess": "Horaires et accès",
+    "hoursAccessBody": "Horaires, accès et règles : consultez les sources officielles ci-contre. Ils ne sont pas repris ici tant qu'ils n'ont pas été vérifiés.",
+    "sources": "Sources",
+    "sourceChecked": "consultée le {date}",
+    "sourceUnchecked": "non vérifiée à ce jour",
+    "illustrationNotice": "Illustration de démonstration — photo officielle à confirmer avec le parc.",
+    "placePhotoLabel": "Photo du lieu dans le parc",
+    "status": {
+      "demo": "Démonstration",
+      "proposed": "Proposé",
+      "park_verified": "Vérifié par le parc",
+      "published": "Publié"
+    },
+    "features": {
+      "tree": "Arbres",
+      "ancient_tree": "Arbres anciens",
+      "plant": "Plantes",
+      "flower": "Fleurs",
+      "greenhouse": "Serres",
+      "lake": "Lac",
+      "pond": "Étangs",
+      "river": "Rivière",
+      "castle": "Château",
+      "historic_building": "Bâtiment historique",
+      "ruin": "Ruines",
+      "cafe": "Café",
+      "restaurant": "Restaurant",
+      "viewpoint": "Point de vue",
+      "garden": "Jardins",
+      "forest": "Bois et forêt",
+      "playground": "Aire de jeux",
+      "picnic_area": "Aire de pique-nique",
+      "toilet": "Toilettes",
+      "accessible_toilet": "Toilettes accessibles",
+      "entrance": "Entrée",
+      "parking": "Parking",
+      "bike_parking": "Parking vélos",
+      "photo_spot": "Spot photo",
+      "history": "Histoire et patrimoine",
+      "challenge": "Défi",
+      "museum": "Musée",
+      "walk": "Promenades"
+    }
+  },
+  "credits": {
+    "title": "Crédits et licences",
+    "mapTitle": "Carte",
+    "mapBody": "Fond de carte OpenFreeMap, construit à partir des données OpenStreetMap (licence ODbL).",
+    "speciesTitle": "Données et photos d'espèces",
+    "speciesBody": "iNaturalist, GBIF et Wikimedia Commons, uniquement sous licences libres (CC0, CC BY, CC BY-SA). Ce sont des photos de l'espèce, pas du lieu exact.",
+    "photosTitle": "Photos des lieux",
+    "photosBody": "Une photo n'est publiée qu'après vérification de sa licence, de son auteur et de son sujet réel.",
+    "noPublishedPhotos": "Aucune photo de lieu publiée pour l'instant.",
+    "pendingTitle": "{count, plural, one {# photo en attente de vérification} other {# photos en attente de vérification}}",
+    "toVerify": "À vérifier",
+    "illustrationsTitle": "Illustrations",
+    "illustrationsBody": "Les illustrations des parcs, des lieux et du jeu sont des créations originales de démonstration, jamais des photos officielles.",
+    "parkSourcesTitle": "Sources des parcs"
   }
 }

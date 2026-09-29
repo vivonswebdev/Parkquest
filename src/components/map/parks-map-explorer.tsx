@@ -28,6 +28,8 @@ export interface ParkPin {
   spotCount: number;
   trailCount: number;
   isDemoData: boolean;
+  /** Aventure disponible dans ce parc (lien direct), si elle existe. */
+  adventureHref?: string;
 }
 
 const PARK_COLOR = "#5fb88f";
@@ -212,7 +214,7 @@ export function ParksMapExplorer({ parks, demoZone }: { parks: ParkPin[]; demoZo
                   {selectedDistance !== null && ` · ${formatDistance(selectedDistance, locale)}`}
                 </p>
                 <p className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
-                  {selected.spotCount > 0 ? t("map.parkStats", { spots: selected.spotCount, trails: selected.trailCount }) : t("map.comingSoon")}
+                  {selected.spotCount > 0 ? t("map.parkStats", { spots: selected.spotCount, trails: selected.trailCount }) : t("map.inPreparation")}
                   {selected.isDemoData && <DemoBadge />}
                 </p>
               </div>
@@ -221,14 +223,18 @@ export function ParksMapExplorer({ parks, demoZone }: { parks: ParkPin[]; demoZo
               </button>
             </div>
             <div className="mt-3 grid grid-cols-2 gap-2">
-              {selected.spotCount > 0 && (
-                <Button asChild>
-                  <Link href={`/parks/${selected.slug}/map`}>{t("map.openParkMap")}</Link>
-                </Button>
-              )}
-              <Button asChild variant="secondary" className={cn(selected.spotCount === 0 && "col-span-2")}>
+              <Button asChild variant="secondary">
                 <Link href={`/parks/${selected.slug}`}>{t("map.seePark")}</Link>
               </Button>
+              {/* Lieux : la carte du parc s'il a des spots, sinon la liste des lieux proposés de la fiche */}
+              <Button asChild variant="secondary">
+                <Link href={selected.spotCount > 0 ? `/parks/${selected.slug}/map` : `/parks/${selected.slug}#places`}>{t("map.seePlaces")}</Link>
+              </Button>
+              {selected.adventureHref && (
+                <Button asChild className="col-span-2">
+                  <Link href={selected.adventureHref}>{t("map.startAdventure")}</Link>
+                </Button>
+              )}
             </div>
           </div>
         ) : (
@@ -259,7 +265,7 @@ export function ParksMapExplorer({ parks, demoZone }: { parks: ParkPin[]; demoZo
                           {p.city}
                           {/* Distance affichée seulement depuis une vraie position (pas depuis la zone de démonstration) */}
                           {d !== null && geo.position && ` · ${formatDistance(d, locale)}`}
-                          {p.spotCount === 0 && ` · ${t("map.comingSoon")}`}
+                          {p.spotCount === 0 && ` · ${t("map.inPreparation")}`}
                         </span>
                       </span>
                     </button>
