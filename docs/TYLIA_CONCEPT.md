@@ -23,6 +23,12 @@ des souvenirs et une collection.
 **En une phrase :** tu explores la nature réelle, tu accomplis des aventures et tu fais éclore des
 créatures originales liées aux lieux que tu découvres.
 
+**Mission :** rendre tous les espaces verts accessibles à tout le monde. Cela veut dire :
+- **savoir** qu'un lieu existe et ce qu'il offre ;
+- **s'y retrouver** sans se perdre : limites du parc, repères, retour à l'entrée ;
+- **y accéder** quelles que soient ses capacités : informations PMR vérifiées, parcours adaptés, texte, audio et contraste ;
+- **y venir sans barrière d'argent** : le jeu reste gratuit pour progresser.
+
 ---
 
 ## 1. La grande boucle
@@ -188,6 +194,7 @@ réel semble réagir à l'exploration.
 | Promenade | Petite découverte familiale |
 | Randonnée | Forêt, rivière, château, panorama |
 | Vélo | Voies vertes et connexions entre lieux |
+| Équitation (plus tard) | Parcours équestres autorisés dans les parcs et forêts |
 
 **Routes Vivantes** (priorité à long terme) : plusieurs lieux réels deviennent une seule grande
 aventure. Exemples :
@@ -203,6 +210,11 @@ Règles :
 - pas de chrono, pas de classement de vitesse ;
 - à vélo, **aucune interaction** avec l'écran pendant le déplacement : notification à l'arrêt seulement ;
 - les itinéraires s'appuient sur des chemins autorisés et vérifiés.
+
+**Parcours équestres (plus tard) :**
+- uniquement sur les pistes cavalières officiellement autorisées, à valider avec le gestionnaire du parc ou de la forêt ;
+- signalisation propre et règles de cohabitation avec les piétons et les cyclistes ;
+- aucune interaction avec l'écran en selle : révélation des spots à l'arrêt seulement.
 
 ## 9. Saisons
 
