@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { mergeSpeciesPhotos, normalizeLicense, parseGbifMatch, parseGbifOccurrences, parseINatObservations, parseINatTaxon, queryableName } from "../../src/lib/species/parse";
+import { mergeSpeciesPhotos, normalizeLicense, parseGbifMatch, parseGbifOccurrences, parseINatObservations, parseINatTaxon, queryableName, speciesThumb } from "../../src/lib/species/parse";
 
 const meise = { lat: 50.9276, lng: 4.3268 };
 
@@ -74,5 +74,22 @@ describe("Données d'espèces (iNaturalist, GBIF)", () => {
     assert.equal(queryableName("Fagus sylvatica f. purpurea"), "Fagus sylvatica");
     assert.equal(queryableName("Phyllostachys sp."), "Phyllostachys");
     assert.equal(queryableName("Magnolia × soulangeana"), "Magnolia × soulangeana");
+  });
+});
+
+describe("Vignette d'espèce (tuiles et fiche de carte)", () => {
+  const base = { id: "1", url: "https://x/large.jpg", thumbUrl: "https://x/medium.jpg", source: "INATURALIST" as const, sourceUrl: "https://www.inaturalist.org/observations/1" };
+
+  it("prend la première photo créditée (auteur + licence libre)", () => {
+    const t = speciesThumb([
+      { ...base, id: "0", author: " ", license: "CC BY 4.0" },
+      { ...base, author: "Anne", license: "CC BY-SA 4.0" },
+    ]);
+    assert.deepEqual(t, { url: "https://x/medium.jpg", author: "Anne", license: "CC BY-SA 4.0", sourceUrl: base.sourceUrl });
+  });
+
+  it("aucune photo exploitable → pas de vignette (l'illustration reste)", () => {
+    assert.equal(speciesThumb([]), null);
+    assert.equal(speciesThumb([{ ...base, author: "", license: "" }]), null);
   });
 });

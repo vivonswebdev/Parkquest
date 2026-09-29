@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withSpeciesPhotos } from "@/lib/species";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ParkMapExplorer } from "@/components/map/park-map-explorer";
 import { listSpots, listTrails, repo } from "@/lib/data";
@@ -19,7 +20,7 @@ export default async function ParkMapPage({ params, searchParams }: Params) {
   setRequestLocale(locale);
   const park = await requirePark(parkSlug, locale);
   const [spots, facilities, trails, challenges, progress] = await Promise.all([
-    listSpots(park.id, locale),
+    listSpots(park.id, locale).then((list) => withSpeciesPhotos(list, locale, park.location)),
     repo.listFacilities(park.id, locale),
     listTrails(park.id, locale),
     repo.listChallenges(park.id, locale),

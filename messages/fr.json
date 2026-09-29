@@ -708,7 +708,7 @@
       "RATE_LIMITED": "Vous avez proposé beaucoup de photos aujourd'hui. Réessayez demain."
     },
     "speciesTitle": "Photos de l'espèce",
-    "speciesNote": "Observations réelles partagées sous licence libre : c'est l'espèce, pas forcément l'arbre du parc.",
+    "speciesNote": "Photos de l'espèce, partagées sous licence libre par des naturalistes : elles ne montrent ni ce lieu ni l'arbre du parc.",
     "nearHere": "près d'ici",
     "km": "à {km} km",
     "heroCredit": "Photo de l'espèce"

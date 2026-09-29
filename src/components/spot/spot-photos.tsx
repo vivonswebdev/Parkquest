@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, ChevronLeft, ChevronRight, Clock, ExternalLink, ImagePlus, Loader2, MapPin, ShieldCheck, Star, X } from "lucide-react";
+import { Camera, ChevronLeft, ChevronRight, Clock, ExternalLink, ImagePlus, Loader2, ShieldCheck, Star, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRef, useState, useTransition } from "react";
 import { ActionErrorMessage, ModeNotice } from "@/components/game/feedback";
@@ -27,7 +27,8 @@ interface GalleryItem {
   sourceUrl?: string;
   /** Lieu / date / distance (photos d'espèce) */
   note?: string;
-  near?: boolean;
+  /** Photo de l'espèce (pas du lieu) : étiquette explicite sur la vignette. */
+  speciesLabel?: boolean;
 }
 
 const SOURCE_NAME: Record<SpeciesPhoto["source"], string> = { INATURALIST: "iNaturalist", GBIF: "GBIF", WIKIMEDIA: "Wikimedia Commons" };
@@ -59,20 +60,19 @@ export function SpotPhotos({ spotId, spotName, photos, speciesPhotos = [] }: { s
     ...photos.map((p) => ({ key: p.id, url: p.url, alt: p.alt, pending: false, isCover: p.isCover, credit: credit(p), sourceUrl: p.sourceUrl })),
   ];
 
-  const speciesItems: GalleryItem[] = speciesPhotos.map((p) => {
-    const km = p.distanceM !== undefined ? Math.max(1, Math.round(p.distanceM / 1000)) : null;
-    return {
-      key: p.id,
-      url: p.url,
-      thumbUrl: p.thumbUrl,
-      pending: false,
-      isCover: false,
-      credit: `© ${p.author} · ${p.license} · ${SOURCE_NAME[p.source]}`,
-      sourceUrl: p.sourceUrl,
-      near: km !== null && km <= 50,
-      note: [p.place, p.observedOn, km !== null && km <= 50 ? t("km", { km }) : null].filter(Boolean).join(" · ") || undefined,
-    };
-  });
+  // Photos de l'ESPÈCE : jamais présentées comme prises dans ce parc (ni lieu d'observation, ni
+  // distance affichés), toujours avec auteur, licence et source.
+  const speciesItems: GalleryItem[] = speciesPhotos.map((p) => ({
+    key: p.id,
+    url: p.url,
+    thumbUrl: p.thumbUrl,
+    pending: false,
+    isCover: false,
+    credit: `© ${p.author} · ${p.license} · ${SOURCE_NAME[p.source]}`,
+    sourceUrl: p.sourceUrl,
+    speciesLabel: true,
+    note: t("heroCredit"),
+  }));
   const viewerItems = viewer?.band === "species" ? speciesItems : items;
 
   return (
@@ -151,10 +151,8 @@ export function SpotPhotos({ spotId, spotName, photos, speciesPhotos = [] }: { s
                 <button type="button" onClick={() => setViewer({ band: "species", index: i })} aria-label={t("open", { n: i + 1 })} className="relative block h-44 w-36 overflow-hidden rounded-2xl bg-inset">
                   {/* eslint-disable-next-line @next/next/no-img-element -- photos d'observations (iNaturalist, GBIF, Wikimedia) */}
                   <img src={it.thumbUrl ?? it.url} alt="" loading="lazy" referrerPolicy="no-referrer" className="size-full object-cover" />
-                  {it.near && (
-                    <span className="absolute left-1.5 top-1.5 inline-flex items-center gap-1 rounded-full bg-black/65 px-2 py-1 text-[10px] font-semibold text-white">
-                      <MapPin className="size-3" /> {t("nearHere")}
-                    </span>
+                  {it.speciesLabel && (
+                    <span className="absolute left-1.5 top-1.5 rounded-full bg-black/65 px-2 py-1 text-[10px] font-semibold text-white">{t("heroCredit")}</span>
                   )}
                   <span className="absolute inset-x-0 bottom-0 truncate bg-gradient-to-t from-black/75 to-transparent px-2 pb-1.5 pt-5 text-left text-[10px] text-white/90">{it.credit}</span>
                 </button>

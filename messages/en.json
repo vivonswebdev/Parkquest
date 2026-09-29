@@ -708,7 +708,7 @@
       "RATE_LIMITED": "You've suggested many photos today. Please try again tomorrow."
     },
     "speciesTitle": "Photos of the species",
-    "speciesNote": "Real observations shared under free licences: this is the species, not necessarily the park's tree.",
+    "speciesNote": "Photos of the species, shared under a free licence by naturalists: they show neither this place nor the park's tree.",
     "nearHere": "nearby",
     "km": "{km} km away",
     "heroCredit": "Photo of the species"

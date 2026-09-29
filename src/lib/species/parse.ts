@@ -9,7 +9,7 @@
  * - crédit affiché (auteur, licence, source avec lien) ;
  * - ce sont des photos de l'ESPÈCE, pas du spécimen du parc.
  */
-import type { LatLng } from "@/lib/domain/types";
+import type { LatLng, SpeciesThumb } from "@/lib/domain/types";
 import { distanceM } from "@/lib/geo";
 
 export type SpeciesPhotoSource = "INATURALIST" | "GBIF" | "WIKIMEDIA";
@@ -181,6 +181,12 @@ export function mergeSpeciesPhotos(lists: SpeciesPhoto[][], max = 12): SpeciesPh
   const near = all.filter((p) => p.distanceM !== undefined && p.distanceM <= 50_000).sort((a, b) => a.distanceM! - b.distanceM!);
   const rest = all.filter((p) => !near.includes(p));
   return [...near, ...rest].slice(0, max);
+}
+
+/** Vignette d'espèce : première photo créditée (auteur + licence libre), la plus proche du parc. */
+export function speciesThumb(photos: SpeciesPhoto[]): SpeciesThumb | null {
+  const p = photos.find((x) => x.author.trim() && x.license && x.thumbUrl && x.sourceUrl);
+  return p ? { url: p.thumbUrl, author: p.author.trim(), license: p.license, sourceUrl: p.sourceUrl } : null;
 }
 
 /** Nom scientifique interrogeable : retire la forme/cultivar et « sp. ». */

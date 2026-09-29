@@ -340,6 +340,14 @@ export interface SpotCategory {
   name: string;
 }
 
+/** Photo libre de l'ESPÈCE (pas du spécimen du parc), toujours créditée. */
+export interface SpeciesThumb {
+  url: string;
+  author: string;
+  license: string;
+  sourceUrl: string;
+}
+
 export interface SpotSummary extends Localized {
   id: string;
   parkId: string;
@@ -354,6 +362,8 @@ export interface SpotSummary extends Localized {
   scientificName?: string;
   pointsValue: number;
   categoryKeys: string[];
+  /** Photo de l'espèce (sources ouvertes, licence libre), si disponible. */
+  speciesPhoto?: SpeciesThumb;
 }
 
 export interface Spot extends SpotSummary {
