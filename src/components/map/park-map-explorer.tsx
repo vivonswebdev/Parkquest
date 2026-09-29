@@ -477,7 +477,12 @@ function SpotSheet({
       <div className="mx-auto mb-2 h-1 w-10 rounded-full bg-white/20" />
       <div className="flex gap-3">
         <div className="relative size-24 shrink-0 overflow-hidden rounded-2xl">
-          <Image src={spot.coverImageUrl} alt="" fill sizes="96px" className="object-cover" />
+          {spot.speciesPhoto ? (
+            // eslint-disable-next-line @next/next/no-img-element -- photo libre de l'espèce (créditée)
+            <img src={spot.speciesPhoto.url} alt="" loading="lazy" referrerPolicy="no-referrer" className="absolute inset-0 size-full object-cover" />
+          ) : (
+            <Image src={spot.coverImageUrl} alt="" fill sizes="96px" className="object-cover" />
+          )}
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
@@ -490,6 +495,11 @@ function SpotSheet({
           <p className="mt-0.5 text-sm text-muted-foreground">
             {formatDistance(d, locale)} · {walkingMinutes(d)} min {!fromUser && <span className="text-xs">({t("spot.fromEntrance")})</span>}
           </p>
+          {spot.speciesPhoto && (
+            <a href={spot.speciesPhoto.sourceUrl} target="_blank" rel="noopener noreferrer" className="mt-0.5 block truncate text-[10px] text-muted-foreground hover:underline">
+              {t("photos.heroCredit")} · © {spot.speciesPhoto.author} · {spot.speciesPhoto.license}
+            </a>
+          )}
           <div className="mt-2 flex flex-wrap gap-1.5">
             {spot.label && <Pill size="sm">{spot.label}</Pill>}
             {discovered && <Pill size="sm" tone="gold">{t("visit.alreadyDiscovered")}</Pill>}

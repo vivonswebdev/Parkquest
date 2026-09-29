@@ -1,3 +1,4 @@
+import { withSpeciesPhotos } from "@/lib/species";
 import { ArrowRight, Bell, Camera, ChevronRight, Footprints, Map, MapPin, Play, Route, Sparkles, Trophy, Users } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -40,7 +41,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   if (!park) notFound();
   const [trails, spots, challenges, parks, progress, weather] = await Promise.all([
     listTrails(park.id, loc),
-    listSpots(park.id, loc),
+    listSpots(park.id, loc).then((list) => withSpeciesPhotos(list, loc, park.location)),
     repo.listChallenges(park.id, loc),
     repo.listParks(loc),
     getServerProgress(),

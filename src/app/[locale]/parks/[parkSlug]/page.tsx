@@ -1,3 +1,4 @@
+import { withSpeciesPhotos } from "@/lib/species";
 import { ArrowLeft, Clock, Download, Info, Map, MapPin, Play, Sparkles } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -39,7 +40,7 @@ export default async function ParkPage({ params }: Params) {
   const park = await requirePark(parkSlug, locale);
   const [trails, spots, progress, weather] = await Promise.all([
     listTrails(park.id, locale),
-    listSpots(park.id, locale),
+    listSpots(park.id, locale).then((list) => withSpeciesPhotos(list, locale, park.location)),
     getServerProgress(),
     getVisitWeather(park.location, park.timezone, 120),
   ]);

@@ -1,5 +1,5 @@
 import "server-only";
-import type { LatLng } from "@/lib/domain/types";
+import type { LatLng, SpotSummary } from "@/lib/domain/types";
 import { commonsSearchUrl, parseCommonsResponse } from "@/lib/photos/wikimedia";
 import {
   mergeSpeciesPhotos,
@@ -8,6 +8,7 @@ import {
   parseINatObservations,
   parseINatTaxon,
   queryableName,
+  speciesThumb,
   type SpeciesInfo,
   type SpeciesPhoto,
 } from "./parse";
@@ -115,4 +116,24 @@ export async function getSpeciesData(scientificName: string | undefined, locale:
     },
     photos,
   };
+}
+
+/**
+ * Ajoute la photo de l'espèce aux spots qui ont un nom scientifique (une requête par espèce,
+ * mise en cache 7 jours). Sans réseau ou sans photo libre : le spot garde son illustration.
+ */
+export async function withSpeciesPhotos<T extends SpotSummary>(spots: T[], locale: string, parkLocation: LatLng): Promise<T[]> {
+  if (!ENABLED) return spots;
+  const names = [...new Set(spots.map((s) => s.scientificName).filter((n): n is string => Boolean(n)))];
+  const entries = await Promise.all(
+    names.map(async (n) => {
+      const data = await getSpeciesData(n, locale, parkLocation).catch(() => null);
+      return [n, data ? speciesThumb(data.photos) : null] as const;
+    }),
+  );
+  const thumbs = new Map(entries);
+  return spots.map((s) => {
+    const thumb = s.scientificName ? thumbs.get(s.scientificName) : null;
+    return thumb ? { ...s, speciesPhoto: thumb } : s;
+  });
 }
