@@ -173,11 +173,11 @@
     "seePlaces": "Plekken bekijken",
     "startAdventure": "Een avontuur starten",
     "inPreparation": "Inhoud in voorbereiding",
-    "leaveTitle": "Je verlaat het park",
-    "leaveBody": "Je lijkt de bezoekzone te verlaten. Wil je terug naar de ingang?",
+    "leaveTitle": "Je verwijdert je van de bezoekzone",
+    "leaveBody": "Bezoekzone bij benadering, niet officieel. Volg altijd de bewegwijzering en de regels van het park.",
     "leaveDismiss": "Melding verbergen",
     "backToEntrance": "Terug naar de ingang",
-    "boundaryNote": "Stippellijn: bezoekzone bij benadering, te bevestigen met het park."
+    "boundaryNote": "Stippellijn: bezoekzone bij benadering — demonstratieperimeter, te bevestigen met het park, geen officiële grens."
   },
   "gps": {
     "denied": "Locatie geweigerd",
@@ -542,7 +542,7 @@
     "modes": {
       "near": "Bij de spot · nauwkeurige gps",
       "entrance": "Aan de ingang van het park",
-      "outside": "Buiten het park (~450 m)",
+      "outside": "Buiten de bezoekzone (~450 m)",
       "low-accuracy": "Onvoldoende nauwkeurig (± 60 m)",
       "denied": "Gps geweigerd",
       "unavailable": "Gps niet beschikbaar",

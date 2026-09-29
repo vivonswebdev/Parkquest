@@ -173,11 +173,11 @@
     "seePlaces": "Orte ansehen",
     "startAdventure": "Abenteuer starten",
     "inPreparation": "Inhalte in Vorbereitung",
-    "leaveTitle": "Du verlässt den Park",
-    "leaveBody": "Du scheinst den Besuchsbereich zu verlassen. Zurück zum Eingang?",
+    "leaveTitle": "Du entfernst dich vom Besuchsbereich",
+    "leaveBody": "Ungefährer, nicht offizieller Besuchsbereich. Folge immer der Beschilderung und den Regeln des Parks.",
     "leaveDismiss": "Hinweis ausblenden",
     "backToEntrance": "Zurück zum Eingang",
-    "boundaryNote": "Gestrichelt: ungefährer Besuchsbereich, mit dem Park zu bestätigen."
+    "boundaryNote": "Gestrichelt: ungefährer Besuchsbereich — Demonstrationsperimeter, mit dem Park zu bestätigen, keine offizielle Grenze."
   },
   "gps": {
     "denied": "Standort abgelehnt",
@@ -542,7 +542,7 @@
     "modes": {
       "near": "Am Spot · genaues GPS",
       "entrance": "Am Parkeingang",
-      "outside": "Außerhalb des Parks (~450 m)",
+      "outside": "Außerhalb des Besuchsbereichs (~450 m)",
       "low-accuracy": "Ungenau (± 60 m)",
       "denied": "GPS abgelehnt",
       "unavailable": "GPS nicht verfügbar",

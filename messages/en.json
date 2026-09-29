@@ -173,11 +173,11 @@
     "seePlaces": "See places",
     "startAdventure": "Start an adventure",
     "inPreparation": "Content in preparation",
-    "leaveTitle": "You're leaving the park",
-    "leaveBody": "You seem to be leaving the visit area. Head back to the entrance?",
+    "leaveTitle": "You're moving away from the visit area",
+    "leaveBody": "Approximate, unofficial visit area. Always follow the park's signs and rules.",
     "leaveDismiss": "Hide alert",
     "backToEntrance": "Back to the entrance",
-    "boundaryNote": "Dotted line: approximate visit area, to be confirmed with the park."
+    "boundaryNote": "Dotted line: approximate visit area — demo perimeter to be confirmed with the park, not an official boundary."
   },
   "gps": {
     "denied": "Location denied",
@@ -542,7 +542,7 @@
     "modes": {
       "near": "Near the spot · precise GPS",
       "entrance": "At the park entrance",
-      "outside": "Outside the park (~450 m)",
+      "outside": "Outside the visit area (~450 m)",
       "low-accuracy": "Low accuracy (± 60 m)",
       "denied": "GPS denied",
       "unavailable": "GPS unavailable",

@@ -173,11 +173,11 @@
     "seePlaces": "Voir les lieux",
     "startAdventure": "Démarrer une aventure",
     "inPreparation": "Contenu en préparation",
-    "leaveTitle": "Tu t'éloignes du parc",
-    "leaveBody": "Tu sembles sortir de la zone de visite. Veux-tu revenir vers l'entrée ?",
+    "leaveTitle": "Tu t'éloignes de la zone de visite",
+    "leaveBody": "Zone de visite approximative, non officielle. Suis toujours la signalisation et les consignes du parc.",
     "leaveDismiss": "Masquer l'alerte",
     "backToEntrance": "Retour à l'entrée",
-    "boundaryNote": "Pointillés : zone de visite approximative, à confirmer avec le parc."
+    "boundaryNote": "Pointillés : zone de visite approximative — périmètre de démonstration à valider avec le parc, pas une limite officielle."
   },
   "gps": {
     "denied": "Position refusée",
@@ -542,7 +542,7 @@
     "modes": {
       "near": "Près du spot · GPS précis",
       "entrance": "À l'entrée du parc",
-      "outside": "Hors du parc (~450 m)",
+      "outside": "Hors de la zone de visite (~450 m)",
       "low-accuracy": "Précision insuffisante (± 60 m)",
       "denied": "GPS refusé",
       "unavailable": "GPS indisponible",

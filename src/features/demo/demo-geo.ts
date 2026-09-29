@@ -9,7 +9,7 @@ import { demoGeo, type DemoGeoMode } from "./demo-data";
  *  - near         : à ~8 m du spot ciblé, précision 6 m → découverte validée par GPS
  *  - approximate  : à ~16 m, précision 18 m → « Vous semblez proche », confirmation
  *  - entrance     : à l'entrée du parc, précision 10 m
- *  - outside      : ~450 m hors de la zone de visite, précision 8 m → alerte « Tu t'éloignes du parc »
+ *  - outside      : ~450 m hors de la zone de visite, précision 8 m → alerte « Tu t'éloignes de la zone de visite »
  *  - low-accuracy : près du spot mais précision 60 m → pas de validation GPS
  *  - denied       : permission refusée
  *  - unavailable  : position indisponible

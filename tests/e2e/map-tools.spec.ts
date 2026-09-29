@@ -40,10 +40,13 @@ test("favoris : un spot s'ajoute et se retire depuis sa fiche", async ({ page })
   await expect(sheet.getByRole("button", { name: "Ajouter aux favoris" })).toHaveAttribute("aria-pressed", "false");
 });
 
-test("hors de la zone du parc : alerte douce et retour à l'entrée", async ({ page }) => {
+test("hors de la zone de visite : alerte douce, jamais « hors du parc », retour à l'entrée", async ({ page }) => {
   await openParkMap(page, "outside");
-  const alert = page.getByRole("alert").filter({ hasText: "Tu t'éloignes du parc" });
+  const alert = page.getByRole("alert").filter({ hasText: "Tu t'éloignes de la zone de visite" });
   await expect(alert).toBeVisible();
+  // Limite non officielle : consignes du parc prioritaires, aucune formulation « quitté le parc »
+  await expect(alert.getByText(/non officielle/)).toBeVisible();
+  await expect(page.getByText(/quitté le parc|t'éloignes du parc/)).toHaveCount(0);
   await alert.getByRole("button", { name: "Retour à l'entrée" }).click();
   await expect(alert).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Arrêter le guidage" })).toBeVisible();
@@ -52,7 +55,7 @@ test("hors de la zone du parc : alerte douce et retour à l'entrée", async ({ p
 test("dans le parc : aucune alerte de sortie", async ({ page }) => {
   await openParkMap(page, "entrance");
   await expect(page.getByText("GPS précis").first()).toBeVisible();
-  await expect(page.getByRole("alert").filter({ hasText: "Tu t'éloignes du parc" })).toHaveCount(0);
+  await expect(page.getByRole("alert").filter({ hasText: "Tu t'éloignes de la zone de visite" })).toHaveCount(0);
 });
 
 test("indicateur GPS : se réduit tout seul, se rouvre au toucher", async ({ page }) => {

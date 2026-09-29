@@ -173,11 +173,11 @@
     "seePlaces": "Ver los lugares",
     "startAdventure": "Empezar una aventura",
     "inPreparation": "Contenido en preparación",
-    "leaveTitle": "Te alejas del parque",
-    "leaveBody": "Parece que sales de la zona de visita. ¿Quieres volver a la entrada?",
+    "leaveTitle": "Te alejas de la zona de visita",
+    "leaveBody": "Zona de visita aproximada, no oficial. Sigue siempre la señalización y las normas del parque.",
     "leaveDismiss": "Ocultar aviso",
     "backToEntrance": "Volver a la entrada",
-    "boundaryNote": "Línea discontinua: zona de visita aproximada, por confirmar con el parque."
+    "boundaryNote": "Línea discontinua: zona de visita aproximada — perímetro de demostración por validar con el parque, no un límite oficial."
   },
   "gps": {
     "denied": "Ubicación denegada",
@@ -542,7 +542,7 @@
     "modes": {
       "near": "Cerca del punto · GPS preciso",
       "entrance": "En la entrada del parque",
-      "outside": "Fuera del parque (~450 m)",
+      "outside": "Fuera de la zona de visita (~450 m)",
       "low-accuracy": "Precisión insuficiente (± 60 m)",
       "denied": "GPS denegado",
       "unavailable": "GPS no disponible",
