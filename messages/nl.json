@@ -55,7 +55,10 @@
     "trails": "Routes",
     "tips": "Tips",
     "community": "Community",
-    "mainNavigation": "Hoofdnavigatie"
+    "mainNavigation": "Hoofdnavigatie",
+    "parksTab": "Parken",
+    "explore": "Verkennen",
+    "collection": "Collectie"
   },
   "home": {
     "heroLine1": "Ontdek.",
@@ -865,6 +868,55 @@
       "replay": "Opnieuw spelen",
       "back": "Terug naar de route",
       "announce": "Schat gevonden: het Sequoia-ei."
+    }
+  },
+  "game": {
+    "hello": "Hallo, ontdekker",
+    "activeEgg": "Mijn actieve ei",
+    "energy": "{value} / {max} natuurenergie",
+    "energyLabel": "Natuurenergie",
+    "discoveriesLeft": "{count, plural, one {Nog ongeveer # ontdekking} other {Nog ongeveer # ontdekkingen}}",
+    "readyTitle": "Klaar om uit te komen!",
+    "readyBody": "Het uitkomen komt binnenkort.",
+    "firstTitle": "Je eerste ei wacht op je",
+    "firstBody": "Start een avontuur om het te laten groeien.",
+    "chooseTitle": "Kies je volgende ei",
+    "noneTitle": "Nog geen ei",
+    "noneBody": "Je volgende ei krijg je door een avontuur af te ronden.",
+    "exploreCta": "Een park verkennen",
+    "demoProgress": "Demovoortgang, bewaard op dit toestel.",
+    "companionTitle": "Mijn metgezel",
+    "companionEmpty": "Nog geen metgezel",
+    "companionEmptyBody": "Misschien wacht er een wezen in je volgende ei.",
+    "collectionTitle": "Mijn collectie",
+    "seeCollection": "Bekijken",
+    "collectionCount": "{count} / {total} wezens ontdekt",
+    "elementLocked": "{element}: nog niet ontdekt",
+    "provisional": "Voorlopige emblemen, in afwachting van de officiële illustraties.",
+    "nearTitle": "In je buurt",
+    "adventureSteps": "{count} stappen",
+    "seeAdventure": "Avontuur bekijken",
+    "allParks": "Alle parken bekijken",
+    "eventsTitle": "Evenementen",
+    "collectionPageTitle": "Mijn collectie",
+    "albumSoon": "Het volledige album, de wezenfiches en de metgezel komen binnenkort.",
+    "elements": {
+      "leaf": "Blad",
+      "water": "Water",
+      "flower": "Bloem",
+      "air": "Lucht",
+      "forest": "Bos",
+      "moon": "Maan",
+      "sun": "Zon"
+    },
+    "eggNames": {
+      "leaf": "Blad-ei",
+      "water": "Water-ei",
+      "flower": "Bloemen-ei",
+      "air": "Wind-ei",
+      "forest": "Bos-ei",
+      "moon": "Maan-ei",
+      "sun": "Zonne-ei"
     }
   }
 }
