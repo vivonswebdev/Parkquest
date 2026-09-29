@@ -172,7 +172,12 @@
     "nearbyShort": "In de buurt",
     "seePlaces": "Plekken bekijken",
     "startAdventure": "Een avontuur starten",
-    "inPreparation": "Inhoud in voorbereiding"
+    "inPreparation": "Inhoud in voorbereiding",
+    "leaveTitle": "Je verlaat het park",
+    "leaveBody": "Je lijkt de bezoekzone te verlaten. Wil je terug naar de ingang?",
+    "leaveDismiss": "Melding verbergen",
+    "backToEntrance": "Terug naar de ingang",
+    "boundaryNote": "Stippellijn: bezoekzone bij benadering, te bevestigen met het park."
   },
   "gps": {
     "denied": "Locatie geweigerd",
@@ -537,6 +542,7 @@
     "modes": {
       "near": "Bij de spot · nauwkeurige gps",
       "entrance": "Aan de ingang van het park",
+      "outside": "Buiten het park (~450 m)",
       "low-accuracy": "Onvoldoende nauwkeurig (± 60 m)",
       "denied": "Gps geweigerd",
       "unavailable": "Gps niet beschikbaar",
@@ -935,5 +941,20 @@
     "illustrationsTitle": "Illustraties",
     "illustrationsBody": "De illustraties van parken, plekken en het spel zijn originele demo-creaties, nooit officiële foto's.",
     "parkSourcesTitle": "Bronnen van de parken"
+  },
+  "favorites": {
+    "title": "Favoriet",
+    "add": "Toevoegen aan favorieten",
+    "remove": "Verwijderen uit favorieten",
+    "addPoint": "Favoriet punt toevoegen",
+    "placeTitle": "Nieuw favoriet punt",
+    "placeBody": "Verschuif de kaart om de ster te plaatsen en bevestig.",
+    "placeHere": "Hier plaatsen",
+    "useMyPosition": "Mijn positie gebruiken",
+    "cancel": "Annuleren",
+    "defaultName": "Mijn punt {n}",
+    "markerLabel": "Favoriet: {name}",
+    "showOnMap": "Centreren",
+    "privacy": "Je favorieten blijven op deze telefoon en worden nooit gedeeld."
   }
 }

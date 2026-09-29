@@ -1,8 +1,9 @@
 "use client";
 
-import { ArrowLeft, Compass, Crosshair, Layers, LocateFixed, Maximize2, Minimize2, Navigation, X } from "lucide-react";
+import { ArrowLeft, Compass, Crosshair, Layers, LocateFixed, MapPinPlus, Maximize2, Minimize2, Navigation, Plus, Star, Trash2, X } from "lucide-react";
 import { GpsStatus } from "@/components/geo/gps-status";
 import { GuidePanel } from "@/components/geo/guide-panel";
+import { LeaveParkBanner, useLeaveAlert } from "@/components/geo/leave-park-banner";
 import { LocationConsentSheet } from "@/components/geo/location-consent-sheet";
 import { facilityMatchesFilter, NearbyList, spotMatchesFilter, type NearbyFilter } from "@/components/geo/nearby-list";
 import { DiscoverSpotCard } from "@/components/game/discover-spot-card";
@@ -20,6 +21,9 @@ import type { Facility, LatLng, Park, SpotSummary, TrailSegment } from "@/lib/do
 import { formatDistance } from "@/lib/format";
 import { useDemoProgress } from "@/features/demo/demo-progress";
 import { distanceM, walkingMinutes } from "@/lib/geo";
+import { addFavorite, favoritesOfPark, isFavorite, removeFavorite, toggleFavorite, type Favorite } from "@/lib/favorites";
+import { saveFavorites, useFavorites } from "@/features/favorites/use-favorites";
+import { parkBoundary } from "@/lib/map/boundary";
 import { cn } from "@/lib/utils";
 import { satelliteTilesUrl } from "@/lib/map/config";
 import { MapPanel, PanelCollapseButton, useDefaultPanelMode, type PanelMode } from "./map-panel";
@@ -67,6 +71,15 @@ export function ParkMapExplorer({
   const [startId, setStartId] = useState<string | null>(null);
   const [guideId, setGuideId] = useState<string | null>(() => spots.find((s) => s.slug === initialGuideSlug)?.id ?? null);
   const fullscreen = useFullscreenMode();
+  const allFavorites = useFavorites();
+  const favorites = useMemo(() => favoritesOfPark(allFavorites, park.slug), [allFavorites, park.slug]);
+  const [placing, setPlacing] = useState(false);
+  // Zone de visite approximative (nos lieux + parcours) : dessinée, et alerte si l'on s'en éloigne.
+  const boundary = useMemo(
+    () => parkBoundary([...spots.map((s) => s.location), ...facilities.map((f) => f.location)], trailSegments.map((g) => g.path)),
+    [spots, facilities, trailSegments],
+  );
+  const leave = useLeaveAlert(boundary, geo.position, { simulated: geo.simulated });
   // Panneau « Autour de vous » : ouvert, réduit (petite barre) ou masqué (carte maximale).
   const [chosenPanel, setPanel] = useState<PanelMode | null>(null);
   const panel = useDefaultPanelMode(chosenPanel);
@@ -111,9 +124,18 @@ export function ParkMapExplorer({
         iconKey: f.type,
         label: f.name,
       })),
+      ...favorites.map((f) => ({
+        id: f.id,
+        type: "favorite" as const,
+        location: f.location,
+        color: "#F4C95D",
+        iconKey: "favorite",
+        label: f.name,
+        ariaLabel: t("favorites.markerLabel", { name: f.name }),
+      })),
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [filter, origin.lat, origin.lng, locale, spots, facilities, serverDiscovered, demo.discovered],
+    [filter, origin.lat, origin.lng, locale, spots, facilities, serverDiscovered, demo.discovered, favorites],
   );
 
   // Décor stable (indépendant des filtres) : tous les lieux restent dégagés, étangs aux spots « eau ».
@@ -152,6 +174,19 @@ export function ParkMapExplorer({
 
   const selectedSpot = spots.find((s) => s.id === selected);
   const selectedFacility = facilities.find((f) => f.id === selected);
+  const selectedFavorite = favorites.find((f) => f.id === selected);
+  const entranceFacility = facilities.find((f) => f.type === "ENTRANCE");
+
+  const toggleFav = (ref: { id: string; name: string; location: LatLng }, kind: "spot" | "facility") =>
+    saveFavorites(toggleFavorite(allFavorites, { parkSlug: park.slug, kind, refId: ref.id, name: ref.name, location: ref.location }));
+  const addPoint = (location: LatLng | null) => {
+    setPlacing(false);
+    if (!location) return;
+    const name = t("favorites.defaultName", { n: favorites.filter((f) => f.kind === "point").length + 1 });
+    const next = addFavorite(allFavorites, { parkSlug: park.slug, kind: "point", name, location });
+    saveFavorites(next);
+    setSelected(next[next.length - 1].id);
+  };
 
   const locate = () => {
     if (geo.position) mapRef.current?.flyTo(geo.position, 17.5);
@@ -185,6 +220,7 @@ export function ParkMapExplorer({
         paddingBottom={290}
         view3d={view3d}
         nature={nature}
+        boundary={boundary}
         focus={spots.length > 1 ? focus : undefined}
         onEngine={setEngine}
       />
@@ -224,6 +260,9 @@ export function ParkMapExplorer({
             <Layers />
           </MapControl>
         )}
+        <MapControl label={t("favorites.addPoint")} onClick={() => { setSelected(null); setPlacing(true); }} active={placing}>
+          <MapPinPlus />
+        </MapControl>
         <MapControl label={t("map.orientation")} onClick={() => mapRef.current?.resetNorth()}>
           <Compass />
         </MapControl>
@@ -231,6 +270,13 @@ export function ParkMapExplorer({
           <Crosshair />
         </MapControl>
       </div>
+
+      {/* Placement d'un point favori : viseur au centre de la carte */}
+      {placing && (
+        <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-full text-gold drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
+          <Star className="size-9 fill-current" />
+        </div>
+      )}
 
       {/* États GPS / carte de repli */}
       <div
@@ -251,7 +297,41 @@ export function ParkMapExplorer({
           <p className="glass-strong pointer-events-auto rounded-2xl px-4 py-2.5 text-xs text-muted-foreground">{t("geo.declinedNotice")}</p>
         )}
 
-        {guideTarget ? (
+        {leave.active && !placing && (
+          <LeaveParkBanner
+            onDismiss={leave.dismiss}
+            onBackToEntrance={() => {
+              leave.dismiss();
+              if (entranceFacility) guide(entranceFacility.id);
+              else mapRef.current?.flyTo(entrance);
+            }}
+          />
+        )}
+
+        {placing ? (
+          <div role="dialog" aria-label={t("favorites.placeTitle")} className="glass-strong pointer-events-auto rounded-[var(--radius-sheet)] p-4 card-shadow">
+            <p className="font-semibold">{t("favorites.placeTitle")}</p>
+            <p className="mt-0.5 text-sm text-muted-foreground">{t("favorites.placeBody")}</p>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <Button
+                onClick={() =>
+                  // Carte encore en chargement : centre de l'emprise du parc
+                  addPoint(mapRef.current?.getCenter() ?? { lat: (park.bounds[0].lat + park.bounds[1].lat) / 2, lng: (park.bounds[0].lng + park.bounds[1].lng) / 2 })
+                }
+              >
+                <Plus /> {t("favorites.placeHere")}
+              </Button>
+              <Button variant="secondary" onClick={() => setPlacing(false)}>
+                {t("favorites.cancel")}
+              </Button>
+            </div>
+            {geo.position && (
+              <Button variant="ghost" block className="mt-1" onClick={() => addPoint(geo.position)}>
+                <LocateFixed /> {t("favorites.useMyPosition")}
+              </Button>
+            )}
+          </div>
+        ) : guideTarget ? (
           <GuidePanel name={guideTarget.name} target={guideTarget.location} origin={origin} onStop={() => setGuideId(null)}>
             {"slug" in guideTarget && distanceM(origin, guideTarget.location) <= 60 && (
               <DiscoverSpotCard spotId={guideTarget.id} spotName={guideTarget.name} spotLocation={guideTarget.location} radiusM={35} geo={geo} serverDiscovered={discovered.has(guideTarget.id)} />
@@ -263,9 +343,40 @@ export function ParkMapExplorer({
             )}
           </GuidePanel>
         ) : selectedSpot ? (
-          <SpotSheet spot={selectedSpot} parkSlug={park.slug} origin={origin} fromUser={Boolean(geo.position)} onClose={() => setSelected(null)} onGuide={() => guide(selectedSpot.id)} discovered={discovered.has(selectedSpot.id)} />
+          <SpotSheet
+            spot={selectedSpot}
+            parkSlug={park.slug}
+            origin={origin}
+            fromUser={Boolean(geo.position)}
+            onClose={() => setSelected(null)}
+            onGuide={() => guide(selectedSpot.id)}
+            discovered={discovered.has(selectedSpot.id)}
+            favorite={isFavorite(allFavorites, park.slug, selectedSpot.id)}
+            onToggleFavorite={() => toggleFav(selectedSpot, "spot")}
+          />
         ) : selectedFacility ? (
-          <FacilitySheet facility={selectedFacility} origin={origin} onClose={() => setSelected(null)} />
+          <FacilitySheet
+            facility={selectedFacility}
+            origin={origin}
+            onClose={() => setSelected(null)}
+            favorite={isFavorite(allFavorites, park.slug, selectedFacility.id)}
+            onToggleFavorite={() => toggleFav(selectedFacility, "facility")}
+          />
+        ) : selectedFavorite ? (
+          <FavoriteSheet
+            favorite={selectedFavorite}
+            origin={origin}
+            onClose={() => setSelected(null)}
+            onGuide={() => {
+              setSelected(null);
+              setGuideId(null);
+              mapRef.current?.flyTo(selectedFavorite.location);
+            }}
+            onRemove={() => {
+              saveFavorites(removeFavorite(allFavorites, selectedFavorite.id));
+              setSelected(null);
+            }}
+          />
         ) : (
           <MapPanel
             mode={panel}
@@ -298,6 +409,7 @@ export function ParkMapExplorer({
                 if (loc) mapRef.current?.flyTo(loc);
               }}
               onGuide={guide}
+              footer={boundary && <p className="px-1 pt-2 text-[11px] text-muted-foreground">{t("map.boundaryNote")}</p>}
             />
           </MapPanel>
         )}
@@ -331,7 +443,27 @@ function MapControl({ label, onClick, active, children }: { label: string; onCli
   );
 }
 
-function SpotSheet({ spot, parkSlug, origin, fromUser, onClose, onGuide, discovered }: { spot: SpotSummary; parkSlug: string; origin: LatLng; fromUser: boolean; onClose(): void; onGuide(): void; discovered: boolean }) {
+function SpotSheet({
+  spot,
+  parkSlug,
+  origin,
+  fromUser,
+  onClose,
+  onGuide,
+  discovered,
+  favorite,
+  onToggleFavorite,
+}: {
+  spot: SpotSummary;
+  parkSlug: string;
+  origin: LatLng;
+  fromUser: boolean;
+  onClose(): void;
+  onGuide(): void;
+  discovered: boolean;
+  favorite: boolean;
+  onToggleFavorite(): void;
+}) {
   const t = useTranslations();
   const locale = useLocale();
   const d = distanceM(origin, spot.location);
@@ -345,6 +477,7 @@ function SpotSheet({ spot, parkSlug, origin, fromUser, onClose, onGuide, discove
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
             <h2 className="font-display text-xl font-bold leading-tight">{spot.name}</h2>
+            <FavoriteToggle active={favorite} onClick={onToggleFavorite} />
             <button type="button" onClick={onClose} aria-label={t("common.close")} className="-mr-1 -mt-1 inline-flex size-9 shrink-0 items-center justify-center rounded-full hover:bg-white/10">
               <X className="size-4" />
             </button>
@@ -370,7 +503,7 @@ function SpotSheet({ spot, parkSlug, origin, fromUser, onClose, onGuide, discove
   );
 }
 
-function FacilitySheet({ facility, origin, onClose }: { facility: Facility; origin: LatLng; onClose(): void }) {
+function FacilitySheet({ facility, origin, onClose, favorite, onToggleFavorite }: { facility: Facility; origin: LatLng; onClose(): void; favorite: boolean; onToggleFavorite(): void }) {
   const t = useTranslations();
   const locale = useLocale();
   const Icon = FACILITY_ICON[facility.type];
@@ -387,9 +520,59 @@ function FacilitySheet({ facility, origin, onClose }: { facility: Facility; orig
           {facility.isPmrAccessible && ` · ${t("common.pmr")}`}
         </p>
       </div>
+      <FavoriteToggle active={favorite} onClick={onToggleFavorite} />
       <button type="button" onClick={onClose} aria-label={t("common.close")} className="inline-flex size-9 items-center justify-center rounded-full hover:bg-white/10">
         <X className="size-4" />
       </button>
+    </div>
+  );
+}
+
+function FavoriteToggle({ active, onClick }: { active: boolean; onClick(): void }) {
+  const t = useTranslations("favorites");
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      aria-label={active ? t("remove") : t("add")}
+      title={active ? t("remove") : t("add")}
+      className={cn("-mt-1 ml-auto inline-flex size-9 shrink-0 items-center justify-center rounded-full hover:bg-white/10", active ? "text-gold" : "text-muted-foreground")}
+    >
+      <Star className={cn("size-5", active && "fill-current")} />
+    </button>
+  );
+}
+
+function FavoriteSheet({ favorite, origin, onClose, onGuide, onRemove }: { favorite: Favorite; origin: LatLng; onClose(): void; onGuide(): void; onRemove(): void }) {
+  const t = useTranslations();
+  const locale = useLocale();
+  const d = distanceM(origin, favorite.location);
+  return (
+    <div role="dialog" aria-label={favorite.name} className="glass-strong pointer-events-auto rounded-[var(--radius-sheet)] p-4 card-shadow">
+      <div className="flex items-center gap-3">
+        <span className="inline-flex size-12 items-center justify-center rounded-2xl bg-gold/15 text-gold" aria-hidden>
+          <Star className="size-6 fill-current" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="truncate font-semibold">{favorite.name}</p>
+          <p className="text-sm text-muted-foreground">
+            {t("favorites.title")} · {formatDistance(d, locale)} · {walkingMinutes(d)} min
+          </p>
+        </div>
+        <button type="button" onClick={onClose} aria-label={t("common.close")} className="inline-flex size-9 items-center justify-center rounded-full hover:bg-white/10">
+          <X className="size-4" />
+        </button>
+      </div>
+      <div className="mt-3 grid grid-cols-2 gap-2">
+        <Button variant="secondary" onClick={onGuide}>
+          <Crosshair /> {t("favorites.showOnMap")}
+        </Button>
+        <Button variant="ghost" onClick={onRemove}>
+          <Trash2 /> {t("favorites.remove")}
+        </Button>
+      </div>
+      <p className="mt-2 text-[11px] text-muted-foreground">{t("favorites.privacy")}</p>
     </div>
   );
 }

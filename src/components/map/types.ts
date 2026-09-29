@@ -1,9 +1,12 @@
 import type { LatLng } from "@/lib/domain/types";
 import type { StepState } from "@/lib/game/trail-progress";
+import type { Ring } from "@/lib/map/nature";
+
+export type MarkerType = "spot" | "facility" | "start" | "park" | "favorite";
 
 export interface MapMarker {
   id: string;
-  type: "spot" | "facility" | "start" | "park";
+  type: MarkerType;
   location: LatLng;
   color: string;
   /** Clé d'icône : SpotKind ou FacilityType */
@@ -42,6 +45,8 @@ export interface MapHandle {
   flyTo(p: LatLng, zoom?: number): void;
   fitBounds(): void;
   resetNorth(): void;
+  /** Centre actuel de la vue (pour placer un point favori au viseur) */
+  getCenter(): LatLng | null;
 }
 
 export interface ParkMapProps {
@@ -66,6 +71,8 @@ export interface ParkMapProps {
    * des filtres) et étangs. Par défaut, déduit des marqueurs.
    */
   nature?: MapNature;
+  /** Zone de visite approximative du parc (anneau [lng, lat] fermé), dessinée en pointillés */
+  boundary?: Ring | null;
   /** Décor illustré (arbres, bois, étangs). Désactivé pour une carte à grande échelle (tous les parcs). */
   decor?: boolean;
   /** Moteur réellement utilisé (MapLibre, ou carte simplifiée en repli) */

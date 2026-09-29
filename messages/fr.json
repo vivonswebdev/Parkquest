@@ -172,7 +172,12 @@
     "nearbyShort": "Autour de vous",
     "seePlaces": "Voir les lieux",
     "startAdventure": "Démarrer une aventure",
-    "inPreparation": "Contenu en préparation"
+    "inPreparation": "Contenu en préparation",
+    "leaveTitle": "Tu t'éloignes du parc",
+    "leaveBody": "Tu sembles sortir de la zone de visite. Veux-tu revenir vers l'entrée ?",
+    "leaveDismiss": "Masquer l'alerte",
+    "backToEntrance": "Retour à l'entrée",
+    "boundaryNote": "Pointillés : zone de visite approximative, à confirmer avec le parc."
   },
   "gps": {
     "denied": "Position refusée",
@@ -537,6 +542,7 @@
     "modes": {
       "near": "Près du spot · GPS précis",
       "entrance": "À l'entrée du parc",
+      "outside": "Hors du parc (~450 m)",
       "low-accuracy": "Précision insuffisante (± 60 m)",
       "denied": "GPS refusé",
       "unavailable": "GPS indisponible",
@@ -935,5 +941,20 @@
     "illustrationsTitle": "Illustrations",
     "illustrationsBody": "Les illustrations des parcs, des lieux et du jeu sont des créations originales de démonstration, jamais des photos officielles.",
     "parkSourcesTitle": "Sources des parcs"
+  },
+  "favorites": {
+    "title": "Favori",
+    "add": "Ajouter aux favoris",
+    "remove": "Retirer des favoris",
+    "addPoint": "Ajouter un point favori",
+    "placeTitle": "Nouveau point favori",
+    "placeBody": "Déplace la carte pour placer l'étoile, puis valide.",
+    "placeHere": "Placer ici",
+    "useMyPosition": "Utiliser ma position",
+    "cancel": "Annuler",
+    "defaultName": "Mon point {n}",
+    "markerLabel": "Favori : {name}",
+    "showOnMap": "Centrer",
+    "privacy": "Tes favoris restent sur ce téléphone : ils ne sont jamais partagés."
   }
 }

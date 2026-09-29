@@ -172,7 +172,12 @@
     "nearbyShort": "Around you",
     "seePlaces": "See places",
     "startAdventure": "Start an adventure",
-    "inPreparation": "Content in preparation"
+    "inPreparation": "Content in preparation",
+    "leaveTitle": "You're leaving the park",
+    "leaveBody": "You seem to be leaving the visit area. Head back to the entrance?",
+    "leaveDismiss": "Hide alert",
+    "backToEntrance": "Back to the entrance",
+    "boundaryNote": "Dotted line: approximate visit area, to be confirmed with the park."
   },
   "gps": {
     "denied": "Location denied",
@@ -537,6 +542,7 @@
     "modes": {
       "near": "Near the spot · precise GPS",
       "entrance": "At the park entrance",
+      "outside": "Outside the park (~450 m)",
       "low-accuracy": "Low accuracy (± 60 m)",
       "denied": "GPS denied",
       "unavailable": "GPS unavailable",
@@ -935,5 +941,20 @@
     "illustrationsTitle": "Illustrations",
     "illustrationsBody": "Park, place and game illustrations are original demo artwork, never official photos.",
     "parkSourcesTitle": "Park sources"
+  },
+  "favorites": {
+    "title": "Favourite",
+    "add": "Add to favourites",
+    "remove": "Remove from favourites",
+    "addPoint": "Add a favourite point",
+    "placeTitle": "New favourite point",
+    "placeBody": "Move the map to place the star, then confirm.",
+    "placeHere": "Place here",
+    "useMyPosition": "Use my position",
+    "cancel": "Cancel",
+    "defaultName": "My point {n}",
+    "markerLabel": "Favourite: {name}",
+    "showOnMap": "Centre",
+    "privacy": "Your favourites stay on this phone and are never shared."
   }
 }
