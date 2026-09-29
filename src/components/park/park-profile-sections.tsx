@@ -49,11 +49,14 @@ export async function ParkProfileSections({ parkSlug }: { parkSlug: string }) {
 
       <section id="places" aria-labelledby="places-title" className="scroll-mt-24">
         <h2 id="places-title" className="text-xl font-bold">{t("placesTitle")}</h2>
-        {profile.contentInPreparation && places.length === 0 ? (
+        {/* Tant que lieux, coordonnées, horaires, accessibilité, photos, règles et limites ne sont pas
+            vérifiés avec le gestionnaire ou une source officielle : « Contenu en préparation ». */}
+        {profile.contentInPreparation && (
           <Card className="mt-3 flex items-center gap-3 p-5 text-muted-foreground">
             <Clock className="size-5 shrink-0 text-primary" /> {t("contentInPreparation")}
           </Card>
-        ) : places.length > 0 ? (
+        )}
+        {places.length > 0 && (
           <>
             <p className="mt-1 text-sm text-muted-foreground">{t("placesProposedNote")}</p>
             <ul className="mt-3 grid gap-2 sm:grid-cols-2">
@@ -71,7 +74,7 @@ export async function ParkProfileSections({ parkSlug }: { parkSlug: string }) {
               ))}
             </ul>
           </>
-        ) : null}
+        )}
       </section>
 
       <div className="grid gap-4 lg:grid-cols-2">

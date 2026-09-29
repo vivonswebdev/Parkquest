@@ -173,11 +173,11 @@
     "seePlaces": "Ver los lugares",
     "startAdventure": "Empezar una aventura",
     "inPreparation": "Contenido en preparación",
-    "leaveTitle": "Te alejas del parque",
-    "leaveBody": "Parece que sales de la zona de visita. ¿Quieres volver a la entrada?",
+    "leaveTitle": "Te alejas de la zona de visita",
+    "leaveBody": "Zona de visita aproximada, no oficial. Sigue siempre la señalización y las normas del parque.",
     "leaveDismiss": "Ocultar aviso",
     "backToEntrance": "Volver a la entrada",
-    "boundaryNote": "Línea discontinua: zona de visita aproximada, por confirmar con el parque."
+    "boundaryNote": "Línea discontinua: zona de visita aproximada — perímetro de demostración por validar con el parque, no un límite oficial."
   },
   "gps": {
     "denied": "Ubicación denegada",
@@ -542,8 +542,8 @@
     "modes": {
       "near": "Cerca del punto · GPS preciso",
       "entrance": "En la entrada del parque",
-      "outside": "Fuera del parque (~450 m)",
-      "vehicle": "En coche (~50 km/h)",
+      "outside": "Fuera de la zona de visita (~450 m)",
+      "fast": "Desplazamiento rápido (~50 km/h)",
       "low-accuracy": "Precisión insuficiente (± 60 m)",
       "denied": "GPS denegado",
       "unavailable": "GPS no disponible",
@@ -883,7 +883,7 @@
     "particularities": "Particularidades del parque",
     "placesTitle": "Lugares para descubrir",
     "placesProposedNote": "Lugares propuestos, pendientes de confirmar con el parque: aún no aparecen en el mapa.",
-    "contentInPreparation": "Contenido en preparación: los lugares y rutas de este parque se están verificando.",
+    "contentInPreparation": "Contenido en preparación: lugares, coordenadas, horarios, acceso, accesibilidad, fotos, normas y límites se están verificando con el gestor.",
     "hoursAccess": "Horarios y acceso",
     "hoursAccessBody": "Horarios, acceso y normas: consulta las fuentes oficiales. No se reproducen aquí hasta haberlos verificado.",
     "sources": "Fuentes",
@@ -959,9 +959,9 @@
     "privacy": "Tus favoritos se quedan en este teléfono y nunca se comparten."
   },
   "movement": {
-    "vehicleTitle": "Parece que vas en coche o en transporte",
-    "vehicleBody": "El progreso está en pausa: sin distancia ni descubrimientos en un vehículo. Se reanuda en cuanto vuelvas a caminar.",
-    "vehicleDiscover": "No se puede descubrir en un vehículo: detente y sigue a pie."
+    "pausedTitle": "Seguimiento de descubrimientos en pausa",
+    "pausedBody": "El seguimiento de descubrimientos está en pausa durante un desplazamiento rápido. Se reanuda en cuanto vuelves a ir despacio.",
+    "pausedDiscover": "El seguimiento de descubrimientos está en pausa durante un desplazamiento rápido."
   },
   "avatar": {
     "change": "Cambiar avatar",
@@ -969,8 +969,7 @@
     "close": "Cerrar",
     "presets": "Emblemas de naturaleza",
     "photo": "Elegir una foto",
-    "remove": "Quitar el avatar",
-    "privacy": "Tu avatar se queda en este teléfono. La foto se recorta, se reduce y se limpia de su información (incluida la ubicación); nunca se envía.",
+    "privacy": "Tu avatar se queda en este teléfono. La foto se recorta, se reduce y se limpia de su información (incluida la ubicación). Nunca se envía, nunca es pública y nunca la ven otras personas.",
     "errorType": "Formato no compatible (JPEG, PNG, WebP, HEIC).",
     "errorSize": "Foto demasiado pesada (máx. 25 MB).",
     "errorEmpty": "Archivo vacío.",
@@ -987,6 +986,7 @@
       "bird": "Pájaro",
       "squirrel": "Ardilla",
       "mountain": "Montaña"
-    }
+    },
+    "removePhoto": "Eliminar mi foto"
   }
 }

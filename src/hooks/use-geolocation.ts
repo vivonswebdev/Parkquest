@@ -114,9 +114,9 @@ export function useGeolocation({ highAccuracy = true }: GeoOptions = {}) {
   const simTarget = useDemoGeoTargetValue();
   const [sim, setSim] = useState<"idle" | "locating" | "ready">("idle");
   const simTimer = useRef<number | null>(null);
-  // Démo « en voiture » : la position avance chaque seconde (horloge locale du mode démo).
+  // Démo « déplacement rapide » : la position avance chaque seconde (horloge locale du mode démo).
   const [simClock, setSimClock] = useState<{ start: number; now: number } | null>(null);
-  const moving = simMode === "vehicle" && sim === "ready";
+  const moving = simMode === "fast" && sim === "ready";
   useEffect(() => {
     if (!moving) return;
     const t0 = Date.now();

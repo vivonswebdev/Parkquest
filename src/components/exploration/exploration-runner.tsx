@@ -16,7 +16,7 @@ import { ACTIVITY_ICON, QuestActivity } from "@/components/exploration/quest-ste
 import { SafetyScreen } from "@/components/exploration/safety-screen";
 import { GpsStatus } from "@/components/geo/gps-status";
 import { LeaveParkBanner, useLeaveAlert } from "@/components/geo/leave-park-banner";
-import { VehicleNotice } from "@/components/geo/vehicle-notice";
+import { FastTravelNotice } from "@/components/geo/fast-travel-notice";
 import { parkBoundary } from "@/lib/map/boundary";
 import { LocationConsentSheet } from "@/components/geo/location-consent-sheet";
 import { ParkMap } from "@/components/map/park-map";
@@ -182,8 +182,8 @@ export function ExplorationRunner({ quest, def, stops, legs, start, quizzes, bac
   // sinon confirmation manuelle (toujours possible : accessibilité, GPS indisponible).
   const onArrived = () => {
     if (!target) return;
-    // En véhicule : pas d'arrivée (ni GPS ni déclarée) tant qu'on n'a pas repris à pied.
-    if (movement.inVehicle) return;
+    // Déplacement rapide : pas d'arrivée (ni GPS ni déclarée) tant que l'allure n'est pas redevenue lente.
+    if (movement.fastTravel) return;
     const p = geo.position;
     if (p && p.accuracy <= GPS_RULES.maxAccuracyM && distanceM(p, target.location) <= target.radiusM) doArrive("gps");
     else setConfirmArrival(true);
@@ -310,7 +310,7 @@ export function ExplorationRunner({ quest, def, stops, legs, start, quizzes, bac
 
       {phase === "playing" && (
         <ExplorationBottomPanel>
-          {movement.inVehicle && !paused && <VehicleNotice />}
+          {movement.fastTravel && !paused && <FastTravelNotice />}
           {leave.active && (
             <LeaveParkBanner
               onDismiss={leave.dismiss}
@@ -396,7 +396,7 @@ export function ExplorationRunner({ quest, def, stops, legs, start, quizzes, bac
                         <Navigation /> {t("gps.enable")}
                       </Button>
                     )}
-                    <Button size="lg" block className="mt-3" onClick={onArrived} disabled={movement.inVehicle}>
+                    <Button size="lg" block className="mt-3" onClick={onArrived} disabled={movement.fastTravel}>
                       <MapPin /> {t("explore.step.arrived")}
                     </Button>
                     {step.optional && (

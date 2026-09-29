@@ -1,12 +1,12 @@
 "use client";
 
-import { Bird, Camera, Droplet, Flower2, Leaf, Loader2, Moon, Mountain, Squirrel, Sun, Trash2, TreePine, UserRound, Wind, X } from "lucide-react";
+import { Bird, Camera, Droplet, Flower2, Leaf, Loader2, Moon, Mountain, Squirrel, Sun, Trash2, TreePine, Wind, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { photoToAvatar, saveAvatar, useAvatar } from "@/features/profile/use-avatar";
-import { AVATAR_PRESETS, type Avatar, type AvatarPreset } from "@/lib/avatar";
+import { AVATAR_PRESETS, DEFAULT_AVATAR, type Avatar, type AvatarPreset } from "@/lib/avatar";
 import { ACCEPTED_PHOTO_TYPES, validatePhotoFile } from "@/lib/photos/prepare";
 import { cn } from "@/lib/utils";
 
@@ -24,24 +24,19 @@ const PRESET: Record<AvatarPreset, { Icon: typeof Leaf; color: string }> = {
   mountain: { Icon: Mountain, color: "#9DB8FF" },
 };
 
-export function AvatarImage({ avatar, className }: { avatar: Avatar | null; className?: string }) {
-  if (avatar?.kind === "photo") {
+/** Avatar affiché ; sans choix (ou après suppression de la photo) : l'emblème par défaut. */
+export function AvatarImage({ avatar: chosen, className }: { avatar: Avatar | null; className?: string }) {
+  const avatar = chosen ?? DEFAULT_AVATAR;
+  if (avatar.kind === "photo") {
     // eslint-disable-next-line @next/next/no-img-element -- image locale (data URL), jamais servie par Next
     return <img src={avatar.dataUrl} alt="" className={cn("size-full rounded-full object-cover", className)} />;
   }
-  if (avatar?.kind === "preset") {
-    const { Icon, color } = PRESET[avatar.preset];
-    return (
-      <span className={cn("inline-flex size-full items-center justify-center rounded-full bg-background", className)}>
-        <span className="inline-flex size-full items-center justify-center rounded-full" style={{ background: `${color}2e`, color }}>
-          <Icon className="size-1/2" />
-        </span>
-      </span>
-    );
-  }
+  const { Icon, color } = PRESET[avatar.preset];
   return (
     <span className={cn("inline-flex size-full items-center justify-center rounded-full bg-background", className)}>
-      <UserRound className="size-10 text-primary" />
+      <span className="inline-flex size-full items-center justify-center rounded-full" style={{ background: `${color}2e`, color }}>
+        <Icon className="size-1/2" />
+      </span>
     </span>
   );
 }
@@ -119,7 +114,8 @@ export function AvatarPicker() {
             <p className="mt-3 text-sm font-semibold">{t("presets")}</p>
             <ul className="mt-2 grid grid-cols-5 gap-2">
               {AVATAR_PRESETS.map((p) => {
-                const selected = avatar?.kind === "preset" && avatar.preset === p;
+                const current = avatar ?? DEFAULT_AVATAR;
+                const selected = current.kind === "preset" && current.preset === p;
                 return (
                   <li key={p}>
                     <button
@@ -140,9 +136,10 @@ export function AvatarPicker() {
             <Button block variant="secondary" className="mt-4" onClick={() => fileRef.current?.click()} disabled={busy}>
               {busy ? <Loader2 className="animate-spin" /> : <Camera />} {t("photo")}
             </Button>
-            {avatar && (
+            {avatar?.kind === "photo" && (
+              // Suppression définitive de la photo sur l'appareil ; retour à l'emblème par défaut.
               <Button block variant="ghost" className="mt-1" onClick={() => choose(null)}>
-                <Trash2 /> {t("remove")}
+                <Trash2 /> {t("removePhoto")}
               </Button>
             )}
             {error && <p role="alert" className="mt-2 text-sm text-gold">{error}</p>}
