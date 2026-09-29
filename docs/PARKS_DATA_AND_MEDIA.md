@@ -72,7 +72,7 @@ La page `/[locale]/credits` (« Crédits et licences », lien dans le pied de pa
 |---|---|---|---|
 | Plantentuin Meise | `demo` | Spots et aventure de démonstration existants ; particularités jardin, arbres, serres, étangs ; château de Bouchout (`proposed`). | Tous les spots, textes, positions. Les chiffres (92 ha, ~20 000 espèces) ne sont **pas** affichés tant qu'une source officielle n'est pas référencée. |
 | Dendermonde — Vallée de l'Escaut | `proposed`, contenu en préparation | Fiche générale : rivière, promenades, points de vue, patrimoine. **Aucun lieu précis**, aucun château inventé. | Périmètre exact, lieux, parcours. |
-| Domaine régional Solvay — Château de La Hulpe | `proposed` | Particularités et 7 lieux proposés **sans coordonnées** : château, étangs, bois, rhododendrons, pelouses, Fondation Folon (si incluse), parking. | Tout : lieux, positions, accès PMR, superficie (227 ha à confirmer), horaires, règles. |
+| Domaine régional Solvay — Château de La Hulpe | `proposed`, contenu en préparation | Particularités et 7 lieux proposés **sans coordonnées** : château, étangs, bois, rhododendrons, pelouses, Fondation Folon (si incluse), parking. | Tout : lieux, positions, accès PMR, superficie (227 ha à confirmer), horaires, règles. |
 
 Horaires, accès et règles ne sont **pas** recopiés : la fiche renvoie aux sources officielles, dont
 aucune n'est encore datée (« non vérifiée à ce jour »).

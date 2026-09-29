@@ -36,7 +36,7 @@ export function DiscoverSpotCard({
   serverDiscovered,
   onDiscovered,
   geo: externalGeo,
-  inVehicle = false,
+  fastTravel = false,
   className,
 }: {
   spotId: string;
@@ -48,8 +48,8 @@ export function DiscoverSpotCard({
   serverDiscovered?: boolean;
   onDiscovered?: (r: Extract<DiscoverResult, { ok: true }>) => void;
   geo?: ReturnType<typeof useGeolocation>;
-  /** Déplacement en véhicule détecté : découverte suspendue (anti-triche). */
-  inVehicle?: boolean;
+  /** Déplacement rapide détecté : suivi de découverte en pause. */
+  fastTravel?: boolean;
   className?: string;
 }) {
   const t = useTranslations();
@@ -118,10 +118,10 @@ export function DiscoverSpotCard({
     );
   }
 
-  if (inVehicle) {
+  if (fastTravel) {
     return (
       <div role="status" className={cn("rounded-[var(--radius-card)] border border-gold/40 bg-surface p-4 text-sm", className)}>
-        <span className="font-semibold text-gold">{t("movement.vehicleDiscover")}</span>
+        <span className="font-semibold text-gold">{t("movement.pausedDiscover")}</span>
       </div>
     );
   }

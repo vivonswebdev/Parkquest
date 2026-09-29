@@ -9,7 +9,8 @@ import { boundaryState, nextLeaveAlert, type LeaveAlertState } from "@/lib/map/b
 import type { Ring } from "@/lib/map/nature";
 
 /**
- * Alerte douce quand on sort de la zone du parc (éviter de se perdre) : confirmée sur plusieurs
+ * Alerte douce quand on s'éloigne de la zone de visite APPROXIMATIVE (éviter de se perdre) ;
+ * jamais présentée comme une limite officielle du parc, dont les consignes restent prioritaires : confirmée sur plusieurs
  * positions précises, une seule vibration courte, jamais répétée tant qu'on n'est pas revenu.
  */
 export function useLeaveAlert(ring: Ring | null, position: UserPosition | null | undefined, { simulated = false } = {}) {

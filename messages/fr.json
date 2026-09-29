@@ -173,11 +173,11 @@
     "seePlaces": "Voir les lieux",
     "startAdventure": "Démarrer une aventure",
     "inPreparation": "Contenu en préparation",
-    "leaveTitle": "Tu t'éloignes du parc",
-    "leaveBody": "Tu sembles sortir de la zone de visite. Veux-tu revenir vers l'entrée ?",
+    "leaveTitle": "Tu t'éloignes de la zone de visite",
+    "leaveBody": "Zone de visite approximative, non officielle. Suis toujours la signalisation et les consignes du parc.",
     "leaveDismiss": "Masquer l'alerte",
     "backToEntrance": "Retour à l'entrée",
-    "boundaryNote": "Pointillés : zone de visite approximative, à confirmer avec le parc."
+    "boundaryNote": "Pointillés : zone de visite approximative — périmètre de démonstration à valider avec le parc, pas une limite officielle."
   },
   "gps": {
     "denied": "Position refusée",
@@ -542,8 +542,8 @@
     "modes": {
       "near": "Près du spot · GPS précis",
       "entrance": "À l'entrée du parc",
-      "outside": "Hors du parc (~450 m)",
-      "vehicle": "En voiture (~50 km/h)",
+      "outside": "Hors de la zone de visite (~450 m)",
+      "fast": "Déplacement rapide (~50 km/h)",
       "low-accuracy": "Précision insuffisante (± 60 m)",
       "denied": "GPS refusé",
       "unavailable": "GPS indisponible",
@@ -883,7 +883,7 @@
     "particularities": "Particularités du parc",
     "placesTitle": "Lieux à découvrir",
     "placesProposedNote": "Lieux proposés, à confirmer avec le parc : ils n'apparaissent pas encore sur la carte.",
-    "contentInPreparation": "Contenu en préparation : les lieux et les parcours de ce parc sont en cours de vérification.",
+    "contentInPreparation": "Contenu en préparation : lieux, coordonnées, horaires, accès, accessibilité, photos, règles et limites du domaine sont en cours de vérification avec le gestionnaire.",
     "hoursAccess": "Horaires et accès",
     "hoursAccessBody": "Horaires, accès et règles : consultez les sources officielles ci-contre. Ils ne sont pas repris ici tant qu'ils n'ont pas été vérifiés.",
     "sources": "Sources",
@@ -959,8 +959,8 @@
     "privacy": "Tes favoris restent sur ce téléphone : ils ne sont jamais partagés."
   },
   "movement": {
-    "vehicleTitle": "Tu sembles être en voiture ou en transport",
-    "vehicleBody": "La progression est en pause : pas de distance ni de découverte en véhicule. Elle reprend dès que tu marches à nouveau.",
-    "vehicleDiscover": "Découverte impossible en véhicule : arrête-toi et continue à pied."
+    "pausedTitle": "Suivi de découverte en pause",
+    "pausedBody": "Le suivi de découverte est en pause pendant un déplacement rapide. Il reprend dès que ton allure redevient lente.",
+    "pausedDiscover": "Le suivi de découverte est en pause pendant un déplacement rapide."
   }
 }
