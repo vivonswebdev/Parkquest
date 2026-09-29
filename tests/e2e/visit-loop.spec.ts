@@ -18,7 +18,7 @@ async function grantConsent(page: Page, geo?: string) {
  * démarrer → voir le spot → découvrir (sans GPS) → quiz → défi → collection.
  */
 test("boucle de visite : découverte, quiz, défi", async ({ page }) => {
-  await page.goto("/fr");
+  await page.goto("/fr/parks/plantentuin-meise/trails/arbres-remarquables");
   await page.getByRole("link", { name: /Commencer la visite/ }).first().click();
   await expect(page).toHaveURL(/\/visit$/);
   // Écran de pré-autorisation : on continue sans position
@@ -71,8 +71,10 @@ test("GPS refusé : l'app reste utilisable", async ({ page }) => {
   // Mode démo : état GPS simulé « refusé »
   await grantConsent(page, "denied");
   await page.goto("/fr/parks/plantentuin-meise/map");
+  await expect(page.getByText("GPS refusé").first()).toBeVisible();
+  // « Autour de vous » reste disponible depuis un point de départ du parc (panneau réduit par défaut sur téléphone)
+  await page.getByRole("button", { name: "Ouvrir le panneau", exact: true }).first().click();
   await expect(page.getByText(/Position refusée|Position indisponible/).first()).toBeVisible();
-  // « Autour de vous » reste disponible depuis un point de départ du parc
   await expect(page.getByRole("heading", { name: "Autour de vous" })).toBeVisible();
   await page.getByRole("button", { name: /Voir les \d+ lieux/ }).first().click();
   await page.getByRole("button", { name: "Carte · Séquoia géant" }).click();
@@ -145,6 +147,7 @@ test("carte : pré-autorisation, « Autour de vous » et guidage", async ({ page
   await page.goto("/fr/parks/plantentuin-meise/map");
   await expect(page.getByText("Activez votre position")).toBeVisible();
   await page.getByRole("dialog").getByRole("button", { name: "Activer ma position" }).click();
+  await page.getByRole("button", { name: "Ouvrir le panneau", exact: true }).first().click();
   await expect(page.getByRole("heading", { name: "Autour de vous" })).toBeVisible();
   // Filtre « Services » : uniquement les services du parc
   await page.getByRole("button", { name: "Services", exact: true }).click();
@@ -313,4 +316,78 @@ test("Mode Exploration : « Le secret du Séquoia » de bout en bout, œuf de d�
   await expect(page.getByRole("heading", { name: "Œuf du Séquoia" })).toBeVisible();
   await page.getByRole("button", { name: "Rejouer" }).click();
   await expect(page.getByRole("heading", { name: "L'énigme du géant" })).toBeVisible();
+});
+
+test("carte générale : aucun parc sélectionné d'office, choix explicite d'un parc", async ({ page }) => {
+  await grantConsent(page, "denied");
+  // Bouton « Explorer » de la navigation → carte générale des parcs
+  await page.goto("/fr");
+  await page.getByRole("navigation").getByRole("link", { name: "Explorer" }).first().click();
+  await expect(page).toHaveURL(/\/fr\/map$/);
+  await expect(page.getByText("Carte des parcs").first()).toBeVisible();
+  // Meise n'est ni sélectionnée ni présentée : pas de titre de parc, pas de « Autour de vous »
+  await expect(page.getByRole("heading", { name: "Autour de vous" })).toHaveCount(0);
+  await expect(page.getByRole("dialog", { name: "Plantentuin Meise" })).toHaveCount(0);
+  // Position refusée : repli annoncé sur la zone de démonstration
+  await page.getByRole("button", { name: "Ouvrir le panneau", exact: true }).first().click();
+  await expect(page.getByRole("heading", { name: "Choisissez un parc" })).toBeVisible();
+  await expect(page.getByText(/zone de démonstration/)).toBeVisible();
+  // Sélection explicite dans la liste → fiche du parc et accès à sa carte
+  await page.getByRole("button", { name: /^Plantentuin Meise Meise/ }).click();
+  const card = page.getByRole("dialog", { name: "Plantentuin Meise" });
+  await expect(card).toBeVisible();
+  await card.getByRole("link", { name: "Carte du parc" }).click();
+  await expect(page).toHaveURL(/\/parks\/plantentuin-meise\/map$/);
+});
+
+test("carte : plein écran (pseudo plein écran CSS ou API native) et panneau réductible", async ({ page }) => {
+  await grantConsent(page, "denied");
+  await page.goto("/fr/parks/plantentuin-meise/map");
+  const html = page.locator("html");
+  // Plein écran : défilement bloqué, navigation recouverte, bouton « Quitter »
+  await page.getByRole("button", { name: "Ouvrir la carte en plein écran" }).click();
+  await expect(html).toHaveClass(/pq-immersive/);
+  await expect(page.getByRole("button", { name: "Quitter le plein écran" })).toBeVisible();
+  // Panneau : réduit → ouvert → réduit → masqué → rappelé
+  await page.getByRole("button", { name: "Ouvrir le panneau", exact: true }).first().click();
+  await expect(page.getByRole("heading", { name: "Autour de vous" })).toBeVisible();
+  await page.getByRole("button", { name: "Réduire le panneau" }).click();
+  await expect(page.getByRole("heading", { name: "Autour de vous" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Masquer le panneau" }).click();
+  await expect(page.getByRole("button", { name: "Ouvrir le panneau", exact: true })).toHaveCount(0);
+  await page.getByRole("button", { name: /Autour de vous · \d+ lieux/ }).click();
+  await expect(page.getByRole("button", { name: "Ouvrir le panneau", exact: true }).first()).toBeVisible();
+  // Sortie du plein écran : page normale
+  await page.getByRole("button", { name: "Quitter le plein écran" }).click();
+  await expect(html).not.toHaveClass(/pq-immersive/);
+  await expect(page.getByRole("button", { name: "Ouvrir la carte en plein écran" })).toBeVisible();
+});
+
+test("G1 : accueil du jeu, œuf actif, collection, Explorer et aventure de Meise", async ({ page }) => {
+  await grantConsent(page, "denied");
+  await page.goto("/fr");
+  await expect(page.getByRole("heading", { name: "Bonjour, explorateur" })).toBeVisible();
+  // Œuf actif (démonstration) : énergie de nature, estimation en découvertes
+  await expect(page.getByRole("heading", { name: "Œuf de la forêt" })).toBeVisible();
+  await expect(page.getByText("64 / 100 énergie de nature")).toBeVisible();
+  await expect(page.getByRole("progressbar", { name: "Énergie de nature" })).toHaveAttribute("aria-valuenow", "64");
+  await expect(page.getByText("Encore environ 2 découvertes")).toBeVisible();
+  // Compagnon vide, collection 0 / 7 avec les 7 éléments
+  await expect(page.getByText("Aucun compagnon pour le moment")).toBeVisible();
+  await expect(page.getByText("0 / 7 créatures découvertes")).toBeVisible();
+  await expect(page.getByRole("img", { name: /pas encore découverte/ })).toHaveCount(7);
+  // Navigation : Accueil · Parcs · Explorer · Collection · Profil, sans « Défis »
+  const nav = page.getByRole("navigation", { name: "Navigation principale" }).first();
+  await expect(nav.getByRole("link", { name: "Défis" })).toHaveCount(0);
+  for (const name of ["Accueil", "Parcs", "Explorer", "Collection", "Profil"]) await expect(nav.getByRole("link", { name })).toBeVisible();
+  // « Voir l'aventure » → aventure de Meise (écran de sécurité)
+  await page.getByRole("link", { name: "Voir l'aventure" }).click();
+  await expect(page).toHaveURL(/\/explore\/le-secret-du-sequoia$/);
+  await expect(page.getByRole("dialog", { name: "Avant de commencer" })).toBeVisible();
+  // « Explorer un parc » → carte générale, aucun parc sélectionné
+  await page.goto("/fr");
+  await page.getByRole("link", { name: "Explorer un parc" }).click();
+  await expect(page).toHaveURL(/\/fr\/map$/);
+  await expect(page.getByRole("dialog", { name: "Plantentuin Meise" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Autour de vous" })).toHaveCount(0);
 });

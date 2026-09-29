@@ -55,7 +55,10 @@
     "trails": "Routen",
     "tips": "Tipps",
     "community": "Community",
-    "mainNavigation": "Hauptnavigation"
+    "mainNavigation": "Hauptnavigation",
+    "parksTab": "Parks",
+    "explore": "Erkunden",
+    "collection": "Sammlung"
   },
   "home": {
     "heroLine1": "Entdecken.",
@@ -149,7 +152,27 @@
     "spotsCount": "{count} Orte",
     "walk": "{distance} · {minutes}",
     "view3d": "3D-Ansicht",
-    "view2d": "2D-Ansicht"
+    "view2d": "2D-Ansicht",
+    "generalTitle": "Parkkarte",
+    "parksTitle": "Entdecke Parks in deiner Nähe",
+    "chooseParkTitle": "Wähle einen Park",
+    "parksCount": "{count, plural, one {# Park} other {# Parks}}",
+    "placesCount": "{count, plural, one {# Ort} other {# Orte}}",
+    "fromYou": "Sortiert ab deinem Standort",
+    "enableToSort": "Aktiviere deinen Standort, um die nächsten Parks zu sehen.",
+    "demoZone": "Standort nicht verfügbar: Karte auf die Demozone (Brüssel) zentriert.",
+    "nearestPark": "Nächster Park",
+    "openParkMap": "Parkkarte",
+    "seePark": "Park ansehen",
+    "comingSoon": "Bald verfügbar",
+    "parkStats": "{spots} Orte · {trails} Routen",
+    "fullscreenEnter": "Karte im Vollbild öffnen",
+    "fullscreenExit": "Vollbild verlassen",
+    "panelCollapse": "Bereich verkleinern",
+    "panelExpand": "Bereich öffnen",
+    "panelHide": "Bereich ausblenden",
+    "panelShow": "{title} · {count}",
+    "nearbyShort": "In deiner Nähe"
   },
   "gps": {
     "denied": "Standort abgelehnt",
@@ -845,6 +868,55 @@
       "replay": "Nochmal spielen",
       "back": "Zurück zur Route",
       "announce": "Schatz gefunden: das Mammutbaum-Ei."
+    }
+  },
+  "game": {
+    "hello": "Hallo, Entdecker",
+    "activeEgg": "Mein aktives Ei",
+    "energy": "{value} / {max} Naturenergie",
+    "energyLabel": "Naturenergie",
+    "discoveriesLeft": "{count, plural, one {Noch etwa # Entdeckung} other {Noch etwa # Entdeckungen}}",
+    "readyTitle": "Bereit zum Schlüpfen!",
+    "readyBody": "Das Schlüpfen kommt bald.",
+    "firstTitle": "Dein erstes Ei wartet",
+    "firstBody": "Starte ein Abenteuer, damit es wächst.",
+    "chooseTitle": "Wähle dein nächstes Ei",
+    "noneTitle": "Gerade kein Ei",
+    "noneBody": "Dein nächstes Ei gibt es, wenn du ein Abenteuer abschließt.",
+    "exploreCta": "Einen Park erkunden",
+    "demoProgress": "Demo-Fortschritt, auf diesem Gerät gespeichert.",
+    "companionTitle": "Mein Begleiter",
+    "companionEmpty": "Noch kein Begleiter",
+    "companionEmptyBody": "Vielleicht wartet ein Wesen in deinem nächsten Ei.",
+    "collectionTitle": "Meine Sammlung",
+    "seeCollection": "Ansehen",
+    "collectionCount": "{count} / {total} Wesen entdeckt",
+    "elementLocked": "{element}: noch nicht entdeckt",
+    "provisional": "Vorläufige Embleme, bis die offiziellen Illustrationen kommen.",
+    "nearTitle": "In deiner Nähe",
+    "adventureSteps": "{count} Schritte",
+    "seeAdventure": "Abenteuer ansehen",
+    "allParks": "Alle Parks ansehen",
+    "eventsTitle": "Veranstaltungen",
+    "collectionPageTitle": "Meine Sammlung",
+    "albumSoon": "Das vollständige Album, die Wesenkarten und der Begleiter kommen bald.",
+    "elements": {
+      "leaf": "Blatt",
+      "water": "Wasser",
+      "flower": "Blume",
+      "air": "Luft",
+      "forest": "Wald",
+      "moon": "Mond",
+      "sun": "Sonne"
+    },
+    "eggNames": {
+      "leaf": "Blatt-Ei",
+      "water": "Wasser-Ei",
+      "flower": "Blumen-Ei",
+      "air": "Wind-Ei",
+      "forest": "Wald-Ei",
+      "moon": "Mond-Ei",
+      "sun": "Sonnen-Ei"
     }
   }
 }

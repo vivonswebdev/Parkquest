@@ -55,7 +55,10 @@
     "trails": "Parcours",
     "tips": "Conseils",
     "community": "Communauté",
-    "mainNavigation": "Navigation principale"
+    "mainNavigation": "Navigation principale",
+    "parksTab": "Parcs",
+    "explore": "Explorer",
+    "collection": "Collection"
   },
   "home": {
     "heroLine1": "Explorez.",
@@ -149,7 +152,27 @@
     "spotsCount": "{count} lieux",
     "walk": "{distance} · {minutes}",
     "view3d": "Vue 3D",
-    "view2d": "Vue 2D"
+    "view2d": "Vue 2D",
+    "generalTitle": "Carte des parcs",
+    "parksTitle": "Découvrez les parcs autour de vous",
+    "chooseParkTitle": "Choisissez un parc",
+    "parksCount": "{count, plural, one {# parc} other {# parcs}}",
+    "placesCount": "{count, plural, one {# lieu} other {# lieux}}",
+    "fromYou": "Triés depuis votre position",
+    "enableToSort": "Activez votre position pour voir les parcs les plus proches.",
+    "demoZone": "Position indisponible : carte centrée sur la zone de démonstration (Bruxelles).",
+    "nearestPark": "Parc le plus proche",
+    "openParkMap": "Carte du parc",
+    "seePark": "Voir le parc",
+    "comingSoon": "Bientôt disponible",
+    "parkStats": "{spots} lieux · {trails} parcours",
+    "fullscreenEnter": "Ouvrir la carte en plein écran",
+    "fullscreenExit": "Quitter le plein écran",
+    "panelCollapse": "Réduire le panneau",
+    "panelExpand": "Ouvrir le panneau",
+    "panelHide": "Masquer le panneau",
+    "panelShow": "{title} · {count}",
+    "nearbyShort": "Autour de vous"
   },
   "gps": {
     "denied": "Position refusée",
@@ -845,6 +868,55 @@
       "replay": "Rejouer",
       "back": "Retour au parcours",
       "announce": "Trésor trouvé : l'Œuf du Séquoia."
+    }
+  },
+  "game": {
+    "hello": "Bonjour, explorateur",
+    "activeEgg": "Mon œuf actif",
+    "energy": "{value} / {max} énergie de nature",
+    "energyLabel": "Énergie de nature",
+    "discoveriesLeft": "{count, plural, one {Encore environ # découverte} other {Encore environ # découvertes}}",
+    "readyTitle": "Prêt à éclore !",
+    "readyBody": "L'éclosion arrive bientôt.",
+    "firstTitle": "Ton premier œuf t'attend",
+    "firstBody": "Commence une aventure pour le faire grandir.",
+    "chooseTitle": "Choisis ton prochain œuf",
+    "noneTitle": "Pas d'œuf pour le moment",
+    "noneBody": "Ton prochain œuf arrive en terminant une aventure.",
+    "exploreCta": "Explorer un parc",
+    "demoProgress": "Progression de démonstration, enregistrée sur cet appareil.",
+    "companionTitle": "Mon compagnon",
+    "companionEmpty": "Aucun compagnon pour le moment",
+    "companionEmptyBody": "Une créature t'attend peut-être dans ton prochain œuf.",
+    "collectionTitle": "Ma collection",
+    "seeCollection": "Voir",
+    "collectionCount": "{count} / {total} créatures découvertes",
+    "elementLocked": "{element} : pas encore découverte",
+    "provisional": "Emblèmes provisoires, en attendant les illustrations officielles.",
+    "nearTitle": "Près de toi",
+    "adventureSteps": "{count} étapes",
+    "seeAdventure": "Voir l'aventure",
+    "allParks": "Voir tous les parcs",
+    "eventsTitle": "Événements",
+    "collectionPageTitle": "Ma collection",
+    "albumSoon": "L'album complet, les fiches des créatures et le compagnon arrivent bientôt.",
+    "elements": {
+      "leaf": "Feuille",
+      "water": "Eau",
+      "flower": "Fleur",
+      "air": "Air",
+      "forest": "Forêt",
+      "moon": "Lunaire",
+      "sun": "Solaire"
+    },
+    "eggNames": {
+      "leaf": "Œuf de la feuille",
+      "water": "Œuf de l'eau",
+      "flower": "Œuf des fleurs",
+      "air": "Œuf du vent",
+      "forest": "Œuf de la forêt",
+      "moon": "Œuf de lune",
+      "sun": "Œuf du soleil"
     }
   }
 }
