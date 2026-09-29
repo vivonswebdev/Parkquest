@@ -232,6 +232,22 @@ const scenes: Record<string, string> = {
       `<path d="M0 470 C 200 430 500 520 800 450 V520 C 500 580 200 500 0 540Z" fill="#2E7F9A" opacity="0.8"/>` +
       forest(241, 26, 370, 600, greens, 0.45),
   ),
+  // Illustrations de démonstration (aucune photo officielle) — Dendermonde : fleuve et prairies.
+  "parks/dendermonde.svg": svg(
+    base(palettes.day) +
+      `<path d="M0 470 C 180 440 320 500 480 470 S 700 430 800 460 V520 C 620 500 460 540 300 520 S 90 500 0 530Z" fill="#2E7F9A" opacity="0.85"/>` +
+      `<path d="M0 500 C 200 480 420 515 800 490" fill="none" stroke="#F5FFFA" stroke-opacity="0.35" stroke-width="3" stroke-dasharray="22 16"/>` +
+      forest(261, 10, 380, 440, greens, 0.4) +
+      forest(262, 8, 540, 600, greens, 0.5),
+  ),
+  // La Hulpe : silhouette de château, étang, rhododendrons.
+  "parks/la-hulpe.svg": svg(
+    base(palettes.golden) +
+      `<g fill="#1F3F2E" opacity="0.95"><rect x="300" y="300" width="200" height="120"/><rect x="290" y="250" width="36" height="170"/><path d="M290 250 l18 -34 l18 34z"/><rect x="474" y="250" width="36" height="170"/><path d="M474 250 l18 -34 l18 34z"/><path d="M300 300 l100 -50 l100 50z"/></g>` +
+      `<ellipse cx="400" cy="470" rx="260" ry="34" fill="#2E7F9A" opacity="0.75"/>` +
+      Array.from({ length: 7 }, (_, i) => `<circle cx="${80 + i * 110}" cy="${540 - (i % 2) * 14}" r="${26 + (i % 3) * 6}" fill="${i % 2 ? "#C2508A" : "#E27FA8"}" opacity="0.8"/>`).join("") +
+      forest(271, 12, 360, 420, greens, 0.35),
+  ),
   "parks/placeholder.svg": svg(base(palettes.night) + forest(251, 26, 380, 600, greens, 0.45)),
 
   // --- Parcours ---

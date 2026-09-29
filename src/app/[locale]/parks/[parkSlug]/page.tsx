@@ -16,6 +16,8 @@ import { getPark, listSpots, listTrails } from "@/lib/data";
 import { requirePark } from "@/lib/data/loaders";
 import { getServerProgress } from "@/server/progress";
 import { WeatherCard } from "@/components/weather/weather-card";
+import { ParkProfileSections } from "@/components/park/park-profile-sections";
+import { placesRepo } from "@/lib/places/data";
 import { getVisitWeather } from "@/lib/weather";
 
 
@@ -42,6 +44,9 @@ export default async function ParkPage({ params }: Params) {
     getVisitWeather(park.location, park.timezone, 120),
   ]);
   const main = trails[0];
+  const profile = placesRepo.getProfile(park.slug);
+  // Parc en préparation (aucun spot) : pas de carte de spots ni de planification, fiche générale.
+  const hasSpots = spots.length > 0;
 
   return (
     <>
@@ -50,6 +55,10 @@ export default async function ParkPage({ params }: Params) {
           <div className="relative h-[52vh] min-h-[360px] md:h-[440px]">
             <Image src={park.coverImageUrl} alt="" fill priority sizes="100vw" className="object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-background/10" />
+            {/* Illustration originale, jamais présentée comme une photo du parc */}
+            <p className="absolute right-3 top-[calc(max(env(safe-area-inset-top),1rem)+3.25rem)] max-w-[70%] rounded-full bg-black/55 px-2.5 py-1 text-[10px] text-white/90 backdrop-blur md:top-3">
+              {t("parkInfo.illustrationNotice")}
+            </p>
           </div>
           <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4 pt-[max(env(safe-area-inset-top),1rem)] md:hidden">
             <Link href="/parks" aria-label={t("common.back")} className="inline-flex size-11 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur">
@@ -75,18 +84,24 @@ export default async function ParkPage({ params }: Params) {
                 </Link>
               </Button>
             )}
-            <Button asChild size="lg" variant="secondary">
-              <Link href={`/parks/${park.slug}/map`}><Map /> {t("park.openMap")}</Link>
-            </Button>
-            <Button asChild size="lg" variant="secondary">
-              <Link href={`/parks/${park.slug}/practical-info`}><Info /> {t("park.practicalInfo")}</Link>
-            </Button>
-            <Button asChild size="lg" variant="ghost">
-              <Link href={`/parks/${park.slug}/plan`}><Sparkles /> {t("home.planVisit")}</Link>
-            </Button>
+            {hasSpots && (
+              <Button asChild size="lg" variant="secondary">
+                <Link href={`/parks/${park.slug}/map`}><Map /> {t("park.openMap")}</Link>
+              </Button>
+            )}
+            {hasSpots && (
+              <Button asChild size="lg" variant="secondary">
+                <Link href={`/parks/${park.slug}/practical-info`}><Info /> {t("park.practicalInfo")}</Link>
+              </Button>
+            )}
+            {hasSpots && (
+              <Button asChild size="lg" variant="ghost">
+                <Link href={`/parks/${park.slug}/plan`}><Sparkles /> {t("home.planVisit")}</Link>
+              </Button>
+            )}
           </div>
 
-          {park.isDemoData && <DemoNotice />}
+          {profile ? <ParkProfileSections parkSlug={park.slug} /> : park.isDemoData && <DemoNotice />}
 
           <WeatherCard weather={weather} />
 

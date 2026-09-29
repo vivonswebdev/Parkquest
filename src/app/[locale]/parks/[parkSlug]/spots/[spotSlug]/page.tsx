@@ -91,6 +91,12 @@ export default async function SpotPage({ params }: Params) {
               <Image src={spot.coverImageUrl} alt="" fill priority sizes="(max-width: 1024px) 100vw, 1000px" className="object-cover" />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-background/30" />
+            {/* Nature de l'image, toujours dite : photo du lieu, photo de l'espèce ou illustration de démonstration */}
+            {cover ? (
+              <p className="absolute bottom-24 right-3 z-10 rounded-full bg-black/60 px-2.5 py-1 text-[10px] text-white/90 backdrop-blur md:bottom-3">{t("parkInfo.placePhotoLabel")}</p>
+            ) : !speciesHero ? (
+              <p className="absolute bottom-24 right-3 z-10 max-w-[75%] rounded-full bg-black/60 px-2.5 py-1 text-[10px] text-white/90 backdrop-blur md:bottom-3">{t("parkInfo.illustrationNotice")}</p>
+            ) : null}
             {speciesHero && (
               <a
                 href={speciesHero.sourceUrl}
