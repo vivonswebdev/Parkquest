@@ -543,6 +543,7 @@
       "near": "Near the spot · precise GPS",
       "entrance": "At the park entrance",
       "outside": "Outside the visit area (~450 m)",
+      "fast": "Fast travel (~50 km/h)",
       "low-accuracy": "Low accuracy (± 60 m)",
       "denied": "GPS denied",
       "unavailable": "GPS unavailable",
@@ -956,5 +957,10 @@
     "markerLabel": "Favourite: {name}",
     "showOnMap": "Centre",
     "privacy": "Your favourites stay on this phone and are never shared."
+  },
+  "movement": {
+    "pausedTitle": "Discovery tracking paused",
+    "pausedBody": "Discovery tracking is paused during fast travel. It resumes as soon as you slow down again.",
+    "pausedDiscover": "Discovery tracking is paused during fast travel."
   }
 }

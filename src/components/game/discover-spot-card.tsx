@@ -36,6 +36,7 @@ export function DiscoverSpotCard({
   serverDiscovered,
   onDiscovered,
   geo: externalGeo,
+  fastTravel = false,
   className,
 }: {
   spotId: string;
@@ -47,6 +48,8 @@ export function DiscoverSpotCard({
   serverDiscovered?: boolean;
   onDiscovered?: (r: Extract<DiscoverResult, { ok: true }>) => void;
   geo?: ReturnType<typeof useGeolocation>;
+  /** Déplacement rapide détecté : suivi de découverte en pause. */
+  fastTravel?: boolean;
   className?: string;
 }) {
   const t = useTranslations();
@@ -111,6 +114,14 @@ export function DiscoverSpotCard({
         </p>
         <PointsBurst points={result.pointsAwarded} badges={result.newBadges} />
         <ModeNotice mode={result.mode} />
+      </div>
+    );
+  }
+
+  if (fastTravel) {
+    return (
+      <div role="status" className={cn("rounded-[var(--radius-card)] border border-gold/40 bg-surface p-4 text-sm", className)}>
+        <span className="font-semibold text-gold">{t("movement.pausedDiscover")}</span>
       </div>
     );
   }

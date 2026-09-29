@@ -543,6 +543,7 @@
       "near": "Bij de spot · nauwkeurige gps",
       "entrance": "Aan de ingang van het park",
       "outside": "Buiten de bezoekzone (~450 m)",
+      "fast": "Snelle verplaatsing (~50 km/u)",
       "low-accuracy": "Onvoldoende nauwkeurig (± 60 m)",
       "denied": "Gps geweigerd",
       "unavailable": "Gps niet beschikbaar",
@@ -956,5 +957,10 @@
     "markerLabel": "Favoriet: {name}",
     "showOnMap": "Centreren",
     "privacy": "Je favorieten blijven op deze telefoon en worden nooit gedeeld."
+  },
+  "movement": {
+    "pausedTitle": "Ontdekkingen gepauzeerd",
+    "pausedBody": "Het volgen van ontdekkingen staat op pauze tijdens een snelle verplaatsing. Het gaat verder zodra je weer rustiger beweegt.",
+    "pausedDiscover": "Het volgen van ontdekkingen staat op pauze tijdens een snelle verplaatsing."
   }
 }

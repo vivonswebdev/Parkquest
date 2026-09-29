@@ -543,6 +543,7 @@
       "near": "Cerca del punto · GPS preciso",
       "entrance": "En la entrada del parque",
       "outside": "Fuera de la zona de visita (~450 m)",
+      "fast": "Desplazamiento rápido (~50 km/h)",
       "low-accuracy": "Precisión insuficiente (± 60 m)",
       "denied": "GPS denegado",
       "unavailable": "GPS no disponible",
@@ -956,5 +957,10 @@
     "markerLabel": "Favorito: {name}",
     "showOnMap": "Centrar",
     "privacy": "Tus favoritos se quedan en este teléfono y nunca se comparten."
+  },
+  "movement": {
+    "pausedTitle": "Seguimiento de descubrimientos en pausa",
+    "pausedBody": "El seguimiento de descubrimientos está en pausa durante un desplazamiento rápido. Se reanuda en cuanto vuelves a ir despacio.",
+    "pausedDiscover": "El seguimiento de descubrimientos está en pausa durante un desplazamiento rápido."
   }
 }

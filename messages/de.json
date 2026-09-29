@@ -543,6 +543,7 @@
       "near": "Am Spot · genaues GPS",
       "entrance": "Am Parkeingang",
       "outside": "Außerhalb des Besuchsbereichs (~450 m)",
+      "fast": "Schnelle Fortbewegung (~50 km/h)",
       "low-accuracy": "Ungenau (± 60 m)",
       "denied": "GPS abgelehnt",
       "unavailable": "GPS nicht verfügbar",
@@ -956,5 +957,10 @@
     "markerLabel": "Favorit: {name}",
     "showOnMap": "Zentrieren",
     "privacy": "Deine Favoriten bleiben auf diesem Telefon und werden nie geteilt."
+  },
+  "movement": {
+    "pausedTitle": "Entdeckungen pausiert",
+    "pausedBody": "Die Entdeckungsverfolgung ist während einer schnellen Fortbewegung pausiert. Sie geht weiter, sobald du wieder langsamer unterwegs bist.",
+    "pausedDiscover": "Die Entdeckungsverfolgung ist während einer schnellen Fortbewegung pausiert."
   }
 }

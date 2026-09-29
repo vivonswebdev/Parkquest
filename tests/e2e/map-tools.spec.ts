@@ -66,3 +66,14 @@ test("indicateur GPS : se réduit tout seul, se rouvre au toucher", async ({ pag
   await chip.click();
   await expect(chip).toHaveAttribute("aria-expanded", "true");
 });
+
+test("déplacement rapide (~50 km/h) : suivi de découverte en pause, message neutre", async ({ page }) => {
+  test.setTimeout(90_000);
+  await openParkMap(page, "fast");
+  // Détection après une vitesse soutenue (≥ 15 s), jamais sur un saut isolé
+  const notice = page.getByRole("status").filter({ hasText: "Suivi de découverte en pause" });
+  await expect(notice).toBeVisible({ timeout: 40_000 });
+  await expect(notice.getByText("Le suivi de découverte est en pause pendant un déplacement rapide.", { exact: false })).toBeVisible();
+  // Jamais de reproche ni de supposition sur le moyen de transport
+  await expect(page.getByText(/triche|voiture/i)).toHaveCount(0);
+});
