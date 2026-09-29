@@ -63,3 +63,10 @@ test("indicateur GPS : se réduit tout seul, se rouvre au toucher", async ({ pag
   await chip.click();
   await expect(chip).toHaveAttribute("aria-expanded", "true");
 });
+
+test("en voiture (~50 km/h) : progression et découvertes en pause", async ({ page }) => {
+  test.setTimeout(90_000);
+  await openParkMap(page, "vehicle");
+  // Détection après une vitesse soutenue (≥ 15 s), jamais sur un saut isolé
+  await expect(page.getByRole("status").filter({ hasText: "Tu sembles être en voiture ou en transport" })).toBeVisible({ timeout: 40_000 });
+});

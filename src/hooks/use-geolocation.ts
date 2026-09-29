@@ -11,6 +11,10 @@ export interface GeoPosition {
   lat: number;
   lng: number;
   accuracy: number;
+  /** Horodatage du relevé (ms), fourni par le GPS. */
+  timestamp?: number;
+  /** Vitesse mesurée par le GPS (m/s, effet Doppler) quand l'appareil la fournit. */
+  speed?: number | null;
 }
 
 export interface GeoState {
@@ -55,12 +59,18 @@ export function useGeolocation({ highAccuracy = true }: GeoOptions = {}) {
     setState((s) => ({ ...s, status: s.position ? "active" : "locating" }));
     watchId.current = navigator.geolocation.watchPosition(
       (p) => {
-        const next: GeoPosition = { lat: p.coords.latitude, lng: p.coords.longitude, accuracy: Math.round(p.coords.accuracy) };
+        const next: GeoPosition = {
+          lat: p.coords.latitude,
+          lng: p.coords.longitude,
+          accuracy: Math.round(p.coords.accuracy),
+          timestamp: p.timestamp,
+          speed: p.coords.speed,
+        };
         const prev = last.current;
         // Lissage : un point moins précis et proche du précédent est moyenné (évite les sauts).
         const smoothed =
           prev && next.accuracy >= prev.accuracy && distanceM(prev, next) < next.accuracy
-            ? { lat: (prev.lat + next.lat) / 2, lng: (prev.lng + next.lng) / 2, accuracy: next.accuracy }
+            ? { ...next, lat: (prev.lat + next.lat) / 2, lng: (prev.lng + next.lng) / 2 }
             : next;
         last.current = smoothed;
         setState({ status: "active", position: smoothed });
@@ -104,6 +114,15 @@ export function useGeolocation({ highAccuracy = true }: GeoOptions = {}) {
   const simTarget = useDemoGeoTargetValue();
   const [sim, setSim] = useState<"idle" | "locating" | "ready">("idle");
   const simTimer = useRef<number | null>(null);
+  // Démo « en voiture » : la position avance chaque seconde (horloge locale du mode démo).
+  const [simClock, setSimClock] = useState<{ start: number; now: number } | null>(null);
+  const moving = simMode === "vehicle" && sim === "ready";
+  useEffect(() => {
+    if (!moving) return;
+    const t0 = Date.now();
+    const id = window.setInterval(() => setSimClock({ start: t0, now: Date.now() }), 1000);
+    return () => window.clearInterval(id);
+  }, [moving]);
   useEffect(() => () => {
     if (simTimer.current) window.clearTimeout(simTimer.current);
   }, []);
@@ -113,7 +132,7 @@ export function useGeolocation({ highAccuracy = true }: GeoOptions = {}) {
       sim === "idle" ? "idle" : sim === "locating" ? "locating" : simMode === "denied" ? "denied" : simMode === "unavailable" ? "unavailable" : "active";
     return {
       status,
-      position: status === "active" ? simulatedPosition(simMode, simTarget) : null,
+      position: status === "active" ? simulatedPosition(simMode, simTarget, simClock ? simClock.now - simClock.start : 0, simClock?.now) : null,
       simulated: true as const,
       start: () => {
         setSim("locating");

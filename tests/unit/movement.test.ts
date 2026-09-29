@@ -49,3 +49,49 @@ describe("Tableau de déplacement", () => {
     assert.equal(speedKmh(1.25), 4.5);
   });
 });
+
+describe("Précision de la distance et détection de véhicule", () => {
+  it("GPS moins précis : les petits écarts (bruit) ne comptent pas", () => {
+    // Précision 20 m : des écarts de 8 m sont du bruit, pas des pas.
+    let s = run([at(0, 0, 20)]);
+    for (let i = 1; i <= 10; i++) s = addFix(s, at(i % 2 ? 8 : 0, i * 5, 20));
+    assert.equal(s.distanceM, 0);
+  });
+
+  it("marche réelle avec GPS moyen : la distance finit par compter", () => {
+    let s = run([at(0, 0, 20)]);
+    for (let i = 1; i <= 10; i++) s = addFix(s, at(i * 6, i * 5, 20));
+    assert.ok(s.distanceM >= 48 && s.distanceM <= 61, `distance ${s.distanceM}`);
+  });
+
+  it("voiture : vitesse soutenue > 25 km/h → véhicule, distance non comptée", () => {
+    let s = run([at(0, 0)]);
+    for (let i = 1; i <= 10; i++) s = addFix(s, at(i * 28, i * 2)); // 14 m/s ≈ 50 km/h
+    assert.equal(s.inVehicle, true);
+    assert.equal(s.distanceM, 0);
+  });
+
+  it("un saut GPS isolé n'est pas un véhicule", () => {
+    const s = run([at(0, 0), at(300, 5), at(310, 13), at(320, 21)]);
+    assert.equal(s.inVehicle, false);
+  });
+
+  it("reprise à pied (ou arrêt) soutenue → sortie du mode véhicule", () => {
+    let s = run([at(0, 0)]);
+    for (let i = 1; i <= 10; i++) s = addFix(s, at(i * 28, i * 2));
+    assert.equal(s.inVehicle, true);
+    const base = 280;
+    for (let i = 1; i <= 6; i++) s = addFix(s, at(base + i * 6, 20 + i * 5));
+    assert.equal(s.inVehicle, false);
+    // La distance à pied recompte après la sortie
+    s = addFix(s, at(base + 42, 55));
+    assert.ok(s.distanceM > 0);
+  });
+
+  it("vélo tranquille (~15 km/h) : pas considéré comme un véhicule", () => {
+    let s = run([at(0, 0)]);
+    for (let i = 1; i <= 15; i++) s = addFix(s, at(i * 8.3, i * 2));
+    assert.equal(s.inVehicle, false);
+    assert.ok(s.distanceM > 100);
+  });
+});

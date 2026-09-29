@@ -17,7 +17,7 @@ function reducer(state: MovementState, action: Action): MovementState {
 export function useMovement(position: GeoPosition | null, active: boolean): MovementState {
   const [state, dispatch] = useReducer(reducer, undefined, initialMovement);
   useEffect(() => {
-    if (active && position) dispatch({ type: "fix", fix: { ...position, t: Date.now() } });
+    if (active && position) dispatch({ type: "fix", fix: { ...position, t: position.timestamp ?? Date.now() } });
   }, [position, active]);
   useEffect(() => {
     if (!active) dispatch({ type: "pause" });

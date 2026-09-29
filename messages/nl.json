@@ -543,6 +543,7 @@
       "near": "Bij de spot · nauwkeurige gps",
       "entrance": "Aan de ingang van het park",
       "outside": "Buiten het park (~450 m)",
+      "vehicle": "In de auto (~50 km/u)",
       "low-accuracy": "Onvoldoende nauwkeurig (± 60 m)",
       "denied": "Gps geweigerd",
       "unavailable": "Gps niet beschikbaar",
@@ -956,5 +957,10 @@
     "markerLabel": "Favoriet: {name}",
     "showOnMap": "Centreren",
     "privacy": "Je favorieten blijven op deze telefoon en worden nooit gedeeld."
+  },
+  "movement": {
+    "vehicleTitle": "Je lijkt in een auto of ander vervoer te zitten",
+    "vehicleBody": "De voortgang staat op pauze: geen afstand of ontdekkingen in een voertuig. Hij gaat verder zodra je weer wandelt.",
+    "vehicleDiscover": "Ontdekken kan niet in een voertuig: stop en ga te voet verder."
   }
 }

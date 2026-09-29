@@ -543,6 +543,7 @@
       "near": "Am Spot · genaues GPS",
       "entrance": "Am Parkeingang",
       "outside": "Außerhalb des Parks (~450 m)",
+      "vehicle": "Im Auto (~50 km/h)",
       "low-accuracy": "Ungenau (± 60 m)",
       "denied": "GPS abgelehnt",
       "unavailable": "GPS nicht verfügbar",
@@ -956,5 +957,10 @@
     "markerLabel": "Favorit: {name}",
     "showOnMap": "Zentrieren",
     "privacy": "Deine Favoriten bleiben auf diesem Telefon und werden nie geteilt."
+  },
+  "movement": {
+    "vehicleTitle": "Du scheinst im Auto oder in einem Verkehrsmittel zu sein",
+    "vehicleBody": "Der Fortschritt ist pausiert: keine Strecke und keine Entdeckungen im Fahrzeug. Er geht weiter, sobald du wieder gehst.",
+    "vehicleDiscover": "Im Fahrzeug ist keine Entdeckung möglich: halte an und geh zu Fuß weiter."
   }
 }

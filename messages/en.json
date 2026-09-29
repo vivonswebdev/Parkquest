@@ -543,6 +543,7 @@
       "near": "Near the spot · precise GPS",
       "entrance": "At the park entrance",
       "outside": "Outside the park (~450 m)",
+      "vehicle": "In a car (~50 km/h)",
       "low-accuracy": "Low accuracy (± 60 m)",
       "denied": "GPS denied",
       "unavailable": "GPS unavailable",
@@ -956,5 +957,10 @@
     "markerLabel": "Favourite: {name}",
     "showOnMap": "Centre",
     "privacy": "Your favourites stay on this phone and are never shared."
+  },
+  "movement": {
+    "vehicleTitle": "You seem to be in a car or on transport",
+    "vehicleBody": "Progress is paused: no distance or discoveries while in a vehicle. It resumes as soon as you walk again.",
+    "vehicleDiscover": "Discoveries aren't possible in a vehicle: stop and continue on foot."
   }
 }

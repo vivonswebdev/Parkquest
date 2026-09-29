@@ -9,6 +9,7 @@ import { demoGeo, type DemoGeoMode } from "./demo-data";
  *  - near         : à ~8 m du spot ciblé, précision 6 m → découverte validée par GPS
  *  - approximate  : à ~16 m, précision 18 m → « Vous semblez proche », confirmation
  *  - entrance     : à l'entrée du parc, précision 10 m
+ *  - vehicle      : trajet en voiture (~50 km/h) → progression suspendue (anti-triche)
  *  - outside      : ~450 m hors de la zone de visite, précision 8 m → alerte « Tu t'éloignes du parc »
  *  - low-accuracy : près du spot mais précision 60 m → pas de validation GPS
  *  - denied       : permission refusée
@@ -18,7 +19,7 @@ import { demoGeo, type DemoGeoMode } from "./demo-data";
  */
 
 export type { DemoGeoMode };
-export const DEMO_GEO_MODES: DemoGeoMode[] = ["near", "approximate", "low-accuracy", "entrance", "outside", "denied", "unavailable", "real"];
+export const DEMO_GEO_MODES: DemoGeoMode[] = ["near", "approximate", "low-accuracy", "entrance", "outside", "vehicle", "denied", "unavailable", "real"];
 
 const KEY = "parkquest.demo-geo.v1";
 const listeners = new Set<() => void>();
@@ -80,7 +81,17 @@ export function useDemoGeoTargetValue(): LatLng | null {
 }
 
 /** Position simulée pour un mode donné. */
-export function simulatedPosition(mode: DemoGeoMode, near: LatLng | null): { lat: number; lng: number; accuracy: number } | null {
+export function simulatedPosition(
+  mode: DemoGeoMode,
+  near: LatLng | null,
+  elapsedMs = 0,
+  timestamp?: number,
+): { lat: number; lng: number; accuracy: number; speed?: number; timestamp?: number } | null {
+  if (mode === "vehicle") {
+    // Vers le nord à 14 m/s (~50 km/h), depuis l'entrée ; relevé horodaté comme un vrai GPS.
+    const m = (elapsedMs / 1000) * 14;
+    return { lat: demoGeo.entrance.lat + m / 111_195, lng: demoGeo.entrance.lng, accuracy: 6, speed: 14, timestamp };
+  }
   if (mode === "entrance") return { ...demoGeo.entrance, accuracy: demoGeo.entranceAccuracyM };
   if (mode === "outside") return { lat: demoGeo.entrance.lat + 0.0065, lng: demoGeo.entrance.lng, accuracy: 8 };
   if (mode === "approximate") {
