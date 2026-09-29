@@ -4,7 +4,7 @@ import { ArrowLeft, Compass, Crosshair, Layers, LocateFixed, MapPinPlus, Maximiz
 import { GpsStatus } from "@/components/geo/gps-status";
 import { GuidePanel } from "@/components/geo/guide-panel";
 import { LeaveParkBanner, useLeaveAlert } from "@/components/geo/leave-park-banner";
-import { VehicleNotice } from "@/components/geo/vehicle-notice";
+import { FastTravelNotice } from "@/components/geo/fast-travel-notice";
 import { useMovement } from "@/hooks/use-movement";
 import { LocationConsentSheet } from "@/components/geo/location-consent-sheet";
 import { facilityMatchesFilter, NearbyList, spotMatchesFilter, type NearbyFilter } from "@/components/geo/nearby-list";
@@ -82,7 +82,7 @@ export function ParkMapExplorer({
     [spots, facilities, trailSegments],
   );
   const leave = useLeaveAlert(boundary, geo.position, { simulated: geo.simulated });
-  // Anti-triche : en véhicule, pas de découverte (calcul local, rien n'est envoyé).
+  // Déplacement rapide : suivi de découverte en pause (calcul local, rien n'est envoyé).
   const movement = useMovement(geo.position, geo.status === "active");
   // Panneau « Autour de vous » : ouvert, réduit (petite barre) ou masqué (carte maximale).
   const [chosenPanel, setPanel] = useState<PanelMode | null>(null);
@@ -301,7 +301,7 @@ export function ParkMapExplorer({
           <p className="glass-strong pointer-events-auto rounded-2xl px-4 py-2.5 text-xs text-muted-foreground">{t("geo.declinedNotice")}</p>
         )}
 
-        {movement.inVehicle && <VehicleNotice />}
+        {movement.fastTravel && <FastTravelNotice />}
         {leave.active && !placing && (
           <LeaveParkBanner
             onDismiss={leave.dismiss}
@@ -339,7 +339,7 @@ export function ParkMapExplorer({
         ) : guideTarget ? (
           <GuidePanel name={guideTarget.name} target={guideTarget.location} origin={origin} onStop={() => setGuideId(null)}>
             {"slug" in guideTarget && distanceM(origin, guideTarget.location) <= 60 && (
-              <DiscoverSpotCard spotId={guideTarget.id} spotName={guideTarget.name} spotLocation={guideTarget.location} radiusM={35} geo={geo} inVehicle={movement.inVehicle} serverDiscovered={discovered.has(guideTarget.id)} />
+              <DiscoverSpotCard spotId={guideTarget.id} spotName={guideTarget.name} spotLocation={guideTarget.location} radiusM={35} geo={geo} fastTravel={movement.fastTravel} serverDiscovered={discovered.has(guideTarget.id)} />
             )}
             {"slug" in guideTarget && (
               <Button asChild variant="secondary" block className="mt-2">

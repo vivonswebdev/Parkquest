@@ -1,12 +1,16 @@
 /**
  * Avatar du profil : un emblème nature (dessin original) ou une photo personnelle.
- * Stocké UNIQUEMENT sur l'appareil ; la photo est recadrée, réduite (256 px) et ré-encodée
+ * Stocké UNIQUEMENT sur l'appareil : jamais envoyé, jamais public, jamais montré à d'autres
+ * utilisateurs (MVP). La photo est recadrée, réduite (256 px) et ré-encodée
  * en JPEG, ce qui supprime ses métadonnées (dont la position GPS de la prise de vue).
  */
 export const AVATAR_PRESETS = ["leaf", "water", "flower", "air", "forest", "moon", "sun", "bird", "squirrel", "mountain"] as const;
 export type AvatarPreset = (typeof AVATAR_PRESETS)[number];
 
 export type Avatar = { kind: "preset"; preset: AvatarPreset } | { kind: "photo"; dataUrl: string };
+
+/** Emblème affiché sans choix, ou après suppression de la photo. */
+export const DEFAULT_AVATAR: Avatar = { kind: "preset", preset: "leaf" };
 
 export const AVATAR_KEY = "parkquest.avatar.v1";
 export const AVATAR_PHOTO_SIDE = 256;

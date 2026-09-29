@@ -173,11 +173,11 @@
     "seePlaces": "Plekken bekijken",
     "startAdventure": "Een avontuur starten",
     "inPreparation": "Inhoud in voorbereiding",
-    "leaveTitle": "Je verlaat het park",
-    "leaveBody": "Je lijkt de bezoekzone te verlaten. Wil je terug naar de ingang?",
+    "leaveTitle": "Je verwijdert je van de bezoekzone",
+    "leaveBody": "Bezoekzone bij benadering, niet officieel. Volg altijd de bewegwijzering en de regels van het park.",
     "leaveDismiss": "Melding verbergen",
     "backToEntrance": "Terug naar de ingang",
-    "boundaryNote": "Stippellijn: bezoekzone bij benadering, te bevestigen met het park."
+    "boundaryNote": "Stippellijn: bezoekzone bij benadering — demonstratieperimeter, te bevestigen met het park, geen officiële grens."
   },
   "gps": {
     "denied": "Locatie geweigerd",
@@ -542,8 +542,8 @@
     "modes": {
       "near": "Bij de spot · nauwkeurige gps",
       "entrance": "Aan de ingang van het park",
-      "outside": "Buiten het park (~450 m)",
-      "vehicle": "In de auto (~50 km/u)",
+      "outside": "Buiten de bezoekzone (~450 m)",
+      "fast": "Snelle verplaatsing (~50 km/u)",
       "low-accuracy": "Onvoldoende nauwkeurig (± 60 m)",
       "denied": "Gps geweigerd",
       "unavailable": "Gps niet beschikbaar",
@@ -883,7 +883,7 @@
     "particularities": "Kenmerken van het park",
     "placesTitle": "Plekken om te ontdekken",
     "placesProposedNote": "Voorgestelde plekken, nog te bevestigen met het park: ze staan nog niet op de kaart.",
-    "contentInPreparation": "Inhoud in voorbereiding: de plekken en routes van dit park worden nagekeken.",
+    "contentInPreparation": "Inhoud in voorbereiding: plekken, coördinaten, openingsuren, toegang, toegankelijkheid, foto's, regels en grenzen van het domein worden met de beheerder nagekeken.",
     "hoursAccess": "Openingsuren en toegang",
     "hoursAccessBody": "Openingsuren, toegang en regels: raadpleeg de officiële bronnen hiernaast. Ze worden hier pas vermeld na controle.",
     "sources": "Bronnen",
@@ -959,9 +959,9 @@
     "privacy": "Je favorieten blijven op deze telefoon en worden nooit gedeeld."
   },
   "movement": {
-    "vehicleTitle": "Je lijkt in een auto of ander vervoer te zitten",
-    "vehicleBody": "De voortgang staat op pauze: geen afstand of ontdekkingen in een voertuig. Hij gaat verder zodra je weer wandelt.",
-    "vehicleDiscover": "Ontdekken kan niet in een voertuig: stop en ga te voet verder."
+    "pausedTitle": "Ontdekkingen gepauzeerd",
+    "pausedBody": "Het volgen van ontdekkingen staat op pauze tijdens een snelle verplaatsing. Het gaat verder zodra je weer rustiger beweegt.",
+    "pausedDiscover": "Het volgen van ontdekkingen staat op pauze tijdens een snelle verplaatsing."
   },
   "avatar": {
     "change": "Avatar wijzigen",
@@ -969,8 +969,7 @@
     "close": "Sluiten",
     "presets": "Natuuremblemen",
     "photo": "Een foto kiezen",
-    "remove": "Avatar verwijderen",
-    "privacy": "Je avatar blijft op deze telefoon. De foto wordt bijgesneden, verkleind en ontdaan van gegevens (waaronder locatie); hij wordt nooit verstuurd.",
+    "privacy": "Je avatar blijft op deze telefoon. De foto wordt bijgesneden, verkleind en ontdaan van gegevens (waaronder locatie). Hij wordt nooit verstuurd, nooit openbaar gemaakt en is nooit zichtbaar voor anderen.",
     "errorType": "Formaat niet ondersteund (JPEG, PNG, WebP, HEIC).",
     "errorSize": "Foto te groot (max. 25 MB).",
     "errorEmpty": "Leeg bestand.",
@@ -987,6 +986,7 @@
       "bird": "Vogel",
       "squirrel": "Eekhoorn",
       "mountain": "Berg"
-    }
+    },
+    "removePhoto": "Mijn foto verwijderen"
   }
 }

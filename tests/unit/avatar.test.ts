@@ -22,3 +22,10 @@ describe("Avatar du profil (sur l'appareil)", () => {
     assert.equal(parseAvatar(JSON.stringify({ kind: "photo", dataUrl: "data:image/jpeg;base64," + "A".repeat(MAX_AVATAR_DATA_URL) })), null);
   });
 });
+
+describe("Avatar par défaut", () => {
+  it("emblème Feuille (après suppression de la photo ou sans choix)", async () => {
+    const { DEFAULT_AVATAR } = await import("../../src/lib/avatar");
+    assert.deepEqual(DEFAULT_AVATAR, { kind: "preset", preset: "leaf" });
+  });
+});

@@ -6,6 +6,9 @@ test("profil : choisir un emblème, puis une photo, puis retirer l'avatar", asyn
   await page.getByRole("button", { name: "Changer d'avatar" }).click();
   const dialog = page.getByRole("dialog", { name: "Ton avatar" });
   await expect(dialog.getByText(/reste sur ce téléphone/)).toBeVisible();
+  await expect(dialog.getByText(/jamais visible par d'autres personnes/)).toBeVisible();
+  // Emblème par défaut sans choix
+  await expect(dialog.getByRole("button", { name: "Feuille" })).toHaveAttribute("aria-pressed", "true");
   await dialog.getByRole("button", { name: "Lune" }).click();
   await expect(dialog).toHaveCount(0);
 
@@ -31,9 +34,15 @@ test("profil : choisir un emblème, puis une photo, puis retirer l'avatar", asyn
   expect(stored).toContain("data:image/jpeg;base64,");
   await expect(page.getByRole("button", { name: "Changer d'avatar" }).locator("img")).toHaveCount(1);
 
+  // « Supprimer ma photo » : photo effacée de l'appareil, retour à l'emblème par défaut (Feuille)
   await page.getByRole("button", { name: "Changer d'avatar" }).click();
-  await page.getByRole("button", { name: "Retirer l'avatar" }).click();
+  await page.getByRole("button", { name: "Supprimer ma photo" }).click();
   expect(await page.evaluate(() => localStorage.getItem("parkquest.avatar.v1"))).toBeNull();
+  await expect(page.getByRole("button", { name: "Changer d'avatar" }).locator("img")).toHaveCount(0);
+  await page.getByRole("button", { name: "Changer d'avatar" }).click();
+  await expect(page.getByRole("button", { name: "Feuille" })).toHaveAttribute("aria-pressed", "true");
+  // Pas de photo : pas de bouton de suppression
+  await expect(page.getByRole("button", { name: "Supprimer ma photo" })).toHaveCount(0);
 });
 
 test("profil : format de fichier refusé avec un message clair", async ({ page }) => {

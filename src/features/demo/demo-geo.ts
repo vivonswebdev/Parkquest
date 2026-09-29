@@ -9,8 +9,8 @@ import { demoGeo, type DemoGeoMode } from "./demo-data";
  *  - near         : à ~8 m du spot ciblé, précision 6 m → découverte validée par GPS
  *  - approximate  : à ~16 m, précision 18 m → « Vous semblez proche », confirmation
  *  - entrance     : à l'entrée du parc, précision 10 m
- *  - vehicle      : trajet en voiture (~50 km/h) → progression suspendue (anti-triche)
- *  - outside      : ~450 m hors de la zone de visite, précision 8 m → alerte « Tu t'éloignes du parc »
+ *  - outside      : ~450 m hors de la zone de visite, précision 8 m → alerte « Tu t'éloignes de la zone de visite »
+ *  - fast         : déplacement rapide (~50 km/h) → suivi de découverte en pause
  *  - low-accuracy : près du spot mais précision 60 m → pas de validation GPS
  *  - denied       : permission refusée
  *  - unavailable  : position indisponible
@@ -19,7 +19,7 @@ import { demoGeo, type DemoGeoMode } from "./demo-data";
  */
 
 export type { DemoGeoMode };
-export const DEMO_GEO_MODES: DemoGeoMode[] = ["near", "approximate", "low-accuracy", "entrance", "outside", "vehicle", "denied", "unavailable", "real"];
+export const DEMO_GEO_MODES: DemoGeoMode[] = ["near", "approximate", "low-accuracy", "entrance", "outside", "fast", "denied", "unavailable", "real"];
 
 const KEY = "parkquest.demo-geo.v1";
 const listeners = new Set<() => void>();
@@ -87,7 +87,7 @@ export function simulatedPosition(
   elapsedMs = 0,
   timestamp?: number,
 ): { lat: number; lng: number; accuracy: number; speed?: number; timestamp?: number } | null {
-  if (mode === "vehicle") {
+  if (mode === "fast") {
     // Vers le nord à 14 m/s (~50 km/h), depuis l'entrée ; relevé horodaté comme un vrai GPS.
     const m = (elapsedMs / 1000) * 14;
     return { lat: demoGeo.entrance.lat + m / 111_195, lng: demoGeo.entrance.lng, accuracy: 6, speed: 14, timestamp };
