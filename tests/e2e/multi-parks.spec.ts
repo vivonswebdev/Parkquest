@@ -45,7 +45,7 @@ test("carte générale : sélection de Dendermonde → contenu en préparation, 
   await expect(card.getByRole("link", { name: "Démarrer une aventure" })).toHaveCount(0);
   await card.getByRole("link", { name: "Voir le parc" }).click();
   await expect(page).toHaveURL(/\/parks\/dendermonde-vallee-escaut$/);
-  await expect(page.getByText(/Contenu en préparation : les lieux/)).toBeVisible();
+  await expect(page.getByText(/Contenu en préparation : lieux, coordonnées/)).toBeVisible();
   await expect(page.getByText("Donnée de démonstration à valider avec le parc.").first()).toBeVisible();
   await expect(page.getByText("Illustration de démonstration — photo officielle à confirmer avec le parc.").first()).toBeVisible();
 });
@@ -61,8 +61,9 @@ test("carte générale : sélection de La Hulpe → fiche générique, lieux pro
   const features = page.locator("section[aria-labelledby=features-title]");
   await expect(features.getByText("Château")).toBeVisible();
   await expect(features.getByText("Étangs")).toBeVisible();
-  // Lieux proposés, jamais présentés comme vérifiés
+  // Lieux proposés, jamais présentés comme vérifiés ; contenu toujours « en préparation »
   const places = page.locator("#places");
+  await expect(places.getByText(/Contenu en préparation : lieux, coordonnées/)).toBeVisible();
   await expect(places.getByText("Château de La Hulpe")).toBeVisible();
   await expect(places.getByText("Proposé").first()).toBeVisible();
   await expect(places.getByText("Vérifié par le parc")).toHaveCount(0);
