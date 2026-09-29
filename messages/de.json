@@ -172,7 +172,12 @@
     "nearbyShort": "In deiner Nähe",
     "seePlaces": "Orte ansehen",
     "startAdventure": "Abenteuer starten",
-    "inPreparation": "Inhalte in Vorbereitung"
+    "inPreparation": "Inhalte in Vorbereitung",
+    "leaveTitle": "Du entfernst dich vom Besuchsbereich",
+    "leaveBody": "Ungefährer, nicht offizieller Besuchsbereich. Folge immer der Beschilderung und den Regeln des Parks.",
+    "leaveDismiss": "Hinweis ausblenden",
+    "backToEntrance": "Zurück zum Eingang",
+    "boundaryNote": "Gestrichelt: ungefährer Besuchsbereich — Demonstrationsperimeter, mit dem Park zu bestätigen, keine offizielle Grenze."
   },
   "gps": {
     "denied": "Standort abgelehnt",
@@ -537,6 +542,7 @@
     "modes": {
       "near": "Am Spot · genaues GPS",
       "entrance": "Am Parkeingang",
+      "outside": "Außerhalb des Besuchsbereichs (~450 m)",
       "low-accuracy": "Ungenau (± 60 m)",
       "denied": "GPS abgelehnt",
       "unavailable": "GPS nicht verfügbar",
@@ -935,5 +941,20 @@
     "illustrationsTitle": "Illustrationen",
     "illustrationsBody": "Die Illustrationen von Parks, Orten und dem Spiel sind originale Demo-Werke, niemals offizielle Fotos.",
     "parkSourcesTitle": "Quellen der Parks"
+  },
+  "favorites": {
+    "title": "Favorit",
+    "add": "Zu Favoriten hinzufügen",
+    "remove": "Aus Favoriten entfernen",
+    "addPoint": "Favoritenpunkt hinzufügen",
+    "placeTitle": "Neuer Favoritenpunkt",
+    "placeBody": "Verschiebe die Karte, um den Stern zu platzieren, und bestätige.",
+    "placeHere": "Hier platzieren",
+    "useMyPosition": "Meine Position verwenden",
+    "cancel": "Abbrechen",
+    "defaultName": "Mein Punkt {n}",
+    "markerLabel": "Favorit: {name}",
+    "showOnMap": "Zentrieren",
+    "privacy": "Deine Favoriten bleiben auf diesem Telefon und werden nie geteilt."
   }
 }

@@ -15,6 +15,8 @@ import {
 import { ACTIVITY_ICON, QuestActivity } from "@/components/exploration/quest-step-panel";
 import { SafetyScreen } from "@/components/exploration/safety-screen";
 import { GpsStatus } from "@/components/geo/gps-status";
+import { LeaveParkBanner, useLeaveAlert } from "@/components/geo/leave-park-banner";
+import { parkBoundary } from "@/lib/map/boundary";
 import { LocationConsentSheet } from "@/components/geo/location-consent-sheet";
 import { ParkMap } from "@/components/map/park-map";
 import type { MapEngine, MapHandle, MapMarker, MapPath } from "@/components/map/types";
@@ -127,6 +129,10 @@ export function ExplorationRunner({ quest, def, stops, legs, start, quizzes, bac
       }),
     ];
   }, [def.steps, states, stops, start, cur, total, t]);
+
+  // Zone de l'aventure (départ, étapes, tracés + marge) : alerte douce si l'on s'en éloigne.
+  const boundary = useMemo(() => parkBoundary([start, ...stops.map((s) => s.spot.location)], legs, 80), [start, stops, legs]);
+  const leave = useLeaveAlert(phase === "playing" && !paused ? boundary : null, geo.position, { simulated: geo.simulated });
 
   const paths: MapPath[] = useMemo(() => legs.map((coords, i) => ({ id: `leg-${i}`, coordinates: coords, variant: segmentVariant(states[i]) })), [legs, states]);
 
@@ -241,6 +247,7 @@ export function ExplorationRunner({ quest, def, stops, legs, start, quizzes, bac
         paddingBottom={340}
         attributionTop={150}
         view3d={view3d}
+        boundary={boundary}
         onEngine={setEngine}
       />
 
@@ -300,6 +307,15 @@ export function ExplorationRunner({ quest, def, stops, legs, start, quizzes, bac
 
       {phase === "playing" && (
         <ExplorationBottomPanel>
+          {leave.active && (
+            <LeaveParkBanner
+              onDismiss={leave.dismiss}
+              onBackToEntrance={() => {
+                leave.dismiss();
+                mapRef.current?.flyTo(start);
+              }}
+            />
+          )}
           {(geo.status === "denied" || geo.status === "unavailable") && !paused && curPhase === "arrive" && (
             <p role="status" className="glass-strong rounded-2xl px-4 py-3 text-sm">
               <span className="font-semibold text-gold">{t("gps.unavailable")}</span> <span className="text-muted-foreground">{t("explore.step.gpsFallback")}</span>

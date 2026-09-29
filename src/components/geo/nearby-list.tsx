@@ -69,6 +69,7 @@ export function NearbyList({
   expanded,
   onExpandedChange,
   headerAction,
+  footer,
   className,
 }: {
   parkSlug: string;
@@ -90,6 +91,8 @@ export function NearbyList({
   onExpandedChange(v: boolean): void;
   /** Action d'en-tête (ex. réduire le panneau de la carte). */
   headerAction?: React.ReactNode;
+  /** Note affichée en bas de la liste dépliée (ex. zone de visite approximative). */
+  footer?: React.ReactNode;
   className?: string;
 }) {
   const t = useTranslations("geo");
@@ -210,6 +213,7 @@ export function NearbyList({
           <ChevronDown className={cn("size-4 transition-transform", !expanded && "rotate-180")} />
         </button>
       )}
+      {expanded && footer}
     </section>
   );
 }

@@ -22,6 +22,8 @@ const markerZ = (mk: MapMarker) => (mk.step?.state === "next" ? "3" : mk.step?.s
 /** Délai max pour charger le fond : au-delà, repli sur la carte simplifiée. */
 const LOAD_TIMEOUT_MS = 12_000;
 const PITCH_3D = 60;
+/** Durée d'affichage des crédits de carte avant réduction au bouton « i ». */
+const ATTRIBUTION_VISIBLE_MS = 5000;
 
 /** Thème résolu courant (posé sur <html> par le script de thème). */
 function useResolvedTheme(): MapTheme {
@@ -70,6 +72,7 @@ export function MapLibreParkMap({
   focus,
   nature,
   decor = true,
+  boundary,
   attributionTop,
   onFail,
   ref,
@@ -116,9 +119,14 @@ export function MapLibreParkMap({
     const timer = window.setTimeout(() => {
       if (!styleReceived) onFailRef.current();
     }, LOAD_TIMEOUT_MS);
+    // Crédits : affichés à l'ouverture, puis réduits au bouton « i » (toujours consultables).
+    let collapseTimer = 0;
     m.on("load", () => {
       window.clearTimeout(timer);
       setReady(true);
+      collapseTimer = window.setTimeout(() => {
+        container.current?.querySelector(".maplibregl-ctrl-attrib.maplibregl-compact")?.classList.remove("maplibregl-compact-show");
+      }, ATTRIBUTION_VISIBLE_MS);
     });
     m.on("error", (e) => {
       if (!styleReceived) {
@@ -132,6 +140,7 @@ export function MapLibreParkMap({
     const entries = markerRefs.current;
     return () => {
       window.clearTimeout(timer);
+      window.clearTimeout(collapseTimer);
       entries.forEach(({ marker, root }) => {
         marker.remove();
         queueMicrotask(() => root.unmount());
@@ -392,6 +401,37 @@ export function MapLibreParkMap({
     // eslint-disable-next-line react-hooks/exhaustive-deps -- dépendances sérialisées (natureKey, trailKey)
   }, [ready, theme, natureKey, trailKey, decor]);
 
+  // Zone de visite du parc (approximative) : pointillés discrets sous les libellés
+  const boundaryKey = JSON.stringify(boundary ?? null);
+  useEffect(() => {
+    const m = map.current;
+    if (!m || !ready) return;
+    const ring = JSON.parse(boundaryKey) as Ring | null;
+    const data: FeatureCollection = {
+      type: "FeatureCollection",
+      features: ring ? [{ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: ring } }] : [],
+    };
+    const src = m.getSource("pq-boundary") as GeoJSONSource | undefined;
+    const color = theme === "dark" ? "#f4c95d" : "#9a6b00";
+    if (src) {
+      src.setData(data);
+      m.setPaintProperty("pq-boundary", "line-color", color);
+      return;
+    }
+    const beforeId = firstSymbolLayerId((m.getStyle().layers ?? []) as StyleLayerLike[]);
+    m.addSource("pq-boundary", { type: "geojson", data });
+    m.addLayer(
+      {
+        id: "pq-boundary",
+        type: "line",
+        source: "pq-boundary",
+        layout: { "line-join": "round", "line-cap": "round" },
+        paint: { "line-color": color, "line-width": 2.5, "line-opacity": 0.85, "line-dasharray": [2, 2] },
+      },
+      beforeId,
+    );
+  }, [boundaryKey, ready, theme]);
+
   // Marqueurs React rendus dans des éléments MapLibre
   useEffect(() => {
     const m = map.current;
@@ -451,6 +491,10 @@ export function MapLibreParkMap({
     flyTo: (pt, zoom) => map.current?.flyTo({ center: [pt.lng, pt.lat], zoom: zoom ?? Math.max(map.current.getZoom(), 17) }),
     fitBounds: () => map.current?.fitBounds(lngLatBounds(), { padding }),
     resetNorth: () => map.current?.easeTo({ bearing: 0, pitch: view3d ? PITCH_3D : 0 }),
+    getCenter: () => {
+      const c = map.current?.getCenter();
+      return c ? { lat: c.lat, lng: c.lng } : null;
+    },
   }));
 
   return (

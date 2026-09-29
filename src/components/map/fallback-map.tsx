@@ -51,7 +51,7 @@ function blob(cx: number, cy: number, r: number, rand: () => number): string {
   return d + "Z";
 }
 
-export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onSelect, layer = "plan", className, paddingBottom = 0, nature, focus, decor: withDecor = true, ref }: ParkMapProps) {
+export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onSelect, layer = "plan", className, paddingBottom = 0, nature, focus, decor: withDecor = true, boundary, ref }: ParkMapProps) {
   const [sw, ne] = bounds;
   const midLat = (sw.lat + ne.lat) / 2;
   const kx = Math.cos((midLat * Math.PI) / 180);
@@ -111,6 +111,13 @@ export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onS
     flyTo: (p, zoom) => centerOn(p, zoom ? Math.min(4, Math.max(1, 2 ** (zoom - 16.6))) : undefined),
     fitBounds: () => setView({ scale: 1, tx: 0, ty: 0 }),
     resetNorth: () => setView({ scale: 1, tx: 0, ty: 0 }),
+    getCenter: () => {
+      if (!size.w) return null;
+      const sc = baseScale * view.scale;
+      const x = (size.w / 2 - originX(sc)) / sc;
+      const y = (size.h / 2 - originY(sc)) / sc;
+      return { lat: ne.lat - (y / VIEW_H) * spanY, lng: sw.lng + ((x / VIEW_W) * spanX) / kx };
+    },
   }));
 
   // --- Gestes (pan + pinch + molette) ---
@@ -263,6 +270,20 @@ export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onS
             {natureLayer}
             {!sat &&
               decor.topo.map((d, i) => <path key={`c${i}`} d={d} fill="none" stroke="var(--map-topo)" strokeWidth={1.5 / s} />)}
+            {boundary && boundary.length > 2 && (
+              <path
+                d={boundary.map(([lng, lat], i) => {
+                  const q = project({ lat, lng });
+                  return `${i ? "L" : "M"}${q.x.toFixed(1)} ${q.y.toFixed(1)}`;
+                }).join(" ")}
+                fill="none"
+                stroke="var(--map-boundary, #f4c95d)"
+                strokeOpacity={0.85}
+                strokeWidth={2.5 / s}
+                strokeDasharray={`${8 / s} ${8 / s}`}
+                strokeLinejoin="round"
+              />
+            )}
             {paths.map((p) => {
               const pts = p.coordinates.map(([lng, lat]) => project({ lat, lng }));
               const d = pts.map((q, i) => `${i ? "L" : "M"}${q.x.toFixed(1)} ${q.y.toFixed(1)}`).join(" ");
