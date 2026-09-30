@@ -19,8 +19,8 @@
     "goHome": "Retour à l'accueil",
     "demo": "Démo",
     "demoData": "Données de démonstration",
-    "demoDataNotice": "Contenus de démonstration, non validés par le parc. Ne pas considérer comme officiels.",
-    "demoModeNotice": "Mode démo : aucune base connectée, votre progression n'est pas enregistrée.",
+    "demoDataNotice": "Donnée de démonstration à valider avec le parc.",
+    "demoModeNotice": "Données de démonstration : votre progression est enregistrée uniquement sur cet appareil.",
     "points": "{count, plural, one {# point} other {# points}}",
     "pointsGain": "+{count} points",
     "minutes": "{count} min",
@@ -43,7 +43,8 @@
     "pmr": "Accessible PMR",
     "pmrPartial": "Partiellement accessible",
     "themeSystem": "Système",
-    "themeToggle": "Changer de thème"
+    "themeToggle": "Changer de thème",
+    "previewBanner": "Aperçu de développement — données de démonstration."
   },
   "nav": {
     "home": "Accueil",
@@ -303,7 +304,7 @@
     "privacy": "Confidentialité",
     "privacyBody": "Pseudonyme par défaut. Votre position n'est jamais publique ni partagée.",
     "demoProfile": "Profil de démonstration",
-    "demoProfileBody": "Connectez Supabase pour créer un vrai compte et enregistrer votre progression.",
+    "demoProfileBody": "Les comptes arrivent bientôt. En attendant, votre progression reste sur cet appareil.",
     "signInCta": "Se connecter pour sauvegarder"
   },
   "practical": {
@@ -462,7 +463,7 @@
     "send": "Envoyer le lien",
     "sent": "Lien envoyé ! Consultez votre boîte mail.",
     "error": "Impossible d'envoyer le lien. Vérifiez l'adresse.",
-    "demoUnavailable": "La connexion sera disponible dès que Supabase sera configuré. Le prototype fonctionne en mode démo.",
+    "demoUnavailable": "La connexion n'est pas encore ouverte. Vous pouvez découvrir l'application avec des données de démonstration ; votre progression reste sur cet appareil.",
     "invalidEmail": "Adresse e-mail invalide."
   },
   "admin": {
@@ -484,7 +485,7 @@
       "analytics": "Analytics"
     },
     "restricted": "Accès réservé aux équipes des parcs.",
-    "demoReadOnly": "Aperçu en lecture seule (mode démo).",
+    "demoReadOnly": "Aperçu en lecture seule (données de démonstration).",
     "toValidate": "À valider par le parc",
     "count": "{count} éléments"
   },
@@ -506,7 +507,7 @@
     "installBody": "Ajoutez ParkQuest à votre écran d'accueil."
   },
   "demo": {
-    "title": "Mode démonstration",
+    "title": "Outils de démonstration",
     "open": "Ouvrir le panneau démo",
     "subtitle": "Données locales, aucune clé ni connexion requise. Rien n'est envoyé sur Internet.",
     "gps": "Position simulée",
@@ -602,7 +603,7 @@
   },
   "weather": {
     "title": "Météo pendant votre visite",
-    "simulated": "Météo simulée (mode démo)",
+    "simulated": "Météo simulée (données de démonstration)",
     "source": "Données météo : Open-Meteo.com",
     "now": "Maintenant",
     "rainAt": "Pluie probable vers {hour}",
@@ -655,7 +656,7 @@
     "sending": "Envoi…",
     "thanksTitle": "Merci !",
     "thanksBody": "Votre photo sera publiée après vérification par l'équipe du parc (+5 points une fois validée).",
-    "demoNote": "Mode démo : la photo reste sur cet appareil. Validez-la depuis le panneau DÉMO pour la voir publiée.",
+    "demoNote": "Données de démonstration : la photo reste sur cet appareil et n'est pas publiée.",
     "pending": "En attente de vérification",
     "you": "Vous",
     "community": "Communauté ParkQuest",

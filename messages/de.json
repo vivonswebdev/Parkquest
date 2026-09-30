@@ -19,8 +19,8 @@
     "goHome": "Zur Startseite",
     "demo": "Demo",
     "demoData": "Demodaten",
-    "demoDataNotice": "Demo-Inhalte, nicht vom Park geprüft. Nicht als offiziell betrachten.",
-    "demoModeNotice": "Demomodus: keine Datenbank verbunden, dein Fortschritt wird nicht gespeichert.",
+    "demoDataNotice": "Demodaten, noch mit dem Park abzustimmen.",
+    "demoModeNotice": "Demodaten: Dein Fortschritt wird nur auf diesem Gerät gespeichert.",
     "points": "{count, plural, one {# Punkt} other {# Punkte}}",
     "pointsGain": "+{count} Punkte",
     "minutes": "{count} Min.",
@@ -43,7 +43,8 @@
     "pmr": "Rollstuhlgerecht",
     "pmrPartial": "Teilweise barrierefrei",
     "themeSystem": "System",
-    "themeToggle": "Design wechseln"
+    "themeToggle": "Design wechseln",
+    "previewBanner": "Entwicklungsvorschau — Demodaten."
   },
   "nav": {
     "home": "Start",
@@ -303,7 +304,7 @@
     "privacy": "Datenschutz",
     "privacyBody": "Standardmäßig ein Pseudonym. Dein Standort ist nie öffentlich oder geteilt.",
     "demoProfile": "Demoprofil",
-    "demoProfileBody": "Verbinde Supabase, um ein echtes Konto anzulegen und deinen Fortschritt zu speichern.",
+    "demoProfileBody": "Konten kommen bald. Bis dahin bleibt dein Fortschritt auf diesem Gerät.",
     "signInCta": "Anmelden zum Speichern"
   },
   "practical": {
@@ -462,7 +463,7 @@
     "send": "Link senden",
     "sent": "Link gesendet! Sieh in dein Postfach.",
     "error": "Der Link konnte nicht gesendet werden. Prüfe die Adresse.",
-    "demoUnavailable": "Die Anmeldung ist verfügbar, sobald Supabase eingerichtet ist. Der Prototyp läuft im Demomodus.",
+    "demoUnavailable": "Die Anmeldung ist noch nicht geöffnet. Du kannst die App mit Demodaten entdecken; dein Fortschritt bleibt auf diesem Gerät.",
     "invalidEmail": "Ungültige E-Mail-Adresse."
   },
   "admin": {
@@ -484,7 +485,7 @@
       "analytics": "Analytics"
     },
     "restricted": "Zugang nur für Parkteams.",
-    "demoReadOnly": "Nur-Lese-Vorschau (Demomodus).",
+    "demoReadOnly": "Nur-Lese-Vorschau (Demodaten).",
     "toValidate": "Vom Park zu bestätigen",
     "count": "{count} Einträge"
   },
@@ -506,7 +507,7 @@
     "installBody": "Füge ParkQuest zu deinem Startbildschirm hinzu."
   },
   "demo": {
-    "title": "Demomodus",
+    "title": "Demo-Werkzeuge",
     "open": "Demo-Panel öffnen",
     "subtitle": "Lokale Daten, keine Schlüssel oder Verbindung nötig. Nichts wird ins Internet gesendet.",
     "gps": "Simulierter Standort",
@@ -602,7 +603,7 @@
   },
   "weather": {
     "title": "Wetter während deines Besuchs",
-    "simulated": "Simuliertes Wetter (Demomodus)",
+    "simulated": "Simuliertes Wetter (Demodaten)",
     "source": "Wetterdaten: Open-Meteo.com",
     "now": "Jetzt",
     "rainAt": "Regen wahrscheinlich gegen {hour}",
@@ -655,7 +656,7 @@
     "sending": "Wird gesendet…",
     "thanksTitle": "Danke!",
     "thanksBody": "Dein Foto wird nach Prüfung durch das Parkteam veröffentlicht (+5 Punkte nach Freigabe).",
-    "demoNote": "Demo-Modus: Das Foto bleibt auf diesem Gerät. Gib es im DEMO-Panel frei, um es veröffentlicht zu sehen.",
+    "demoNote": "Demodaten: Das Foto bleibt auf diesem Gerät und wird nicht veröffentlicht.",
     "pending": "Wird geprüft",
     "you": "Du",
     "community": "ParkQuest-Community",
