@@ -708,11 +708,46 @@
     "cardBody": "Una aventura guiada, solo por los caminos del parque.",
     "cardCta": "Empezar la aventura",
     "demoData": "Dato de demostración, pendiente de validar con el parque.",
-    "objective": "Objetivo",
     "quests": {
       "secretSequoia": {
         "title": "El secreto de la secuoya",
-        "intro": "Ve a la secuoya gigante: allí te espera el primer enigma."
+        "intro": "Ve a la secuoya gigante: allí te espera el primer enigma.",
+        "steps": {
+          "s1": {
+            "title": "El enigma del gigante",
+            "body": "Estás al pie del árbol más alto de esta ruta. Este es su enigma:\n«Busca un árbol de hojas con lóbulos redondeados. Sus frutos llevan un pequeño sombrero. Te espera más adelante en el camino.»",
+            "fact": "En su California natal, las secuoyas gigantes están entre los seres vivos más grandes y antiguos: algunas tienen más de 3.000 años."
+          },
+          "s2": {
+            "title": "El roble de los sombreritos",
+            "body": "¡Bien encontrado! Observa sus hojas y su corteza sin salir del camino y responde a la pregunta.",
+            "fact": "Un solo roble puede albergar cientos de especies de insectos, aves, líquenes y hongos."
+          },
+          "s3": {
+            "title": "El bosque de tallos",
+            "body": "Acércate al bambú sin salir del camino y sin entrar en los macizos. Observa los tallos: ¿ves los nudos regulares que los dividen en segmentos?",
+            "fact": "Algunos bambúes están entre las plantas que crecen más rápido del mundo: varias decenas de centímetros en un día."
+          },
+          "s4": {
+            "title": "El susurro del cedro",
+            "body": "Escucha la pista del cedro, o léela:\n«Mis ramas se extienden en amplios pisos. Vengo de las montañas del Líbano. Después, ve adonde la vista llega lejos.»",
+            "fact": "El cedro del Líbano aparece en la bandera de ese país. Su madera perfumada ya era muy apreciada en la Antigüedad."
+          },
+          "s5": {
+            "title": "La mirada del paseante",
+            "body": "Tómate tu tiempo para mirar el paisaje. Si quieres, haz una foto con la cámara de tu teléfono. Esta etapa es opcional.",
+            "fact": "En los jardines históricos, los miradores se diseñaban a menudo para realzar un árbol, un edificio o una perspectiva."
+          },
+          "s6": {
+            "title": "El secreto de la secuoya",
+            "body": "Has seguido todas las pistas. Vuelve al pie de la secuoya gigante: su secreto está listo para ser revelado.",
+            "fact": "La corteza gruesa y fibrosa de la secuoya gigante la protege de los incendios forestales."
+          }
+        },
+        "reward": {
+          "name": "Huevo de la Secuoya",
+          "body": "Un huevo especial de demostración, por descubrir el secreto de la secuoya. Podrá eclosionar más adelante, cuando lleguen las criaturas de la colección."
+        }
       }
     },
     "safety": {
@@ -763,10 +798,54 @@
     "resume": "Continuar",
     "quit": "Salir",
     "quitTitle": "¿Salir de la aventura?",
-    "quitBody": "Podrás empezarla de nuevo más tarde.",
+    "quitBody": "Tu progreso queda guardado en este teléfono.",
     "continue": "Seguir",
-    "announceStart": "Aventura iniciada. Objetivo: {name}, a {distance}.",
     "announceResumed": "Aventura reanudada.",
-    "announceObjective": "Nuevo objetivo: {name}."
+    "announceStep": "Etapa {n}: {title}. Ve a: {spot}.",
+    "arrivedVia": {
+      "gps": "Llegada validada por GPS: {spot}.",
+      "qr": "Llegada validada por código QR: {spot}.",
+      "manual": "Llegada confirmada: {spot}."
+    },
+    "step": {
+      "progress": "{done} de {total} etapas completadas",
+      "optional": "Opcional",
+      "goTo": "Ve a: {spot}",
+      "here": "Estás en: {spot}",
+      "arrived": "Ya estoy aquí",
+      "skip": "Saltar esta etapa",
+      "gpsFallback": "No pasa nada: puedes confirmar tú mismo tu llegada en cada etapa.",
+      "confirmTitle": "¿Estás en: {spot}?",
+      "confirmBody": "Tu GPS no puede comprobarlo con precisión. Confirma tu llegada (los códigos QR del parque llegarán más adelante).",
+      "confirmYes": "Lo confirmo"
+    },
+    "activity": {
+      "kind": {
+        "riddle": "Enigma",
+        "quiz": "Quiz",
+        "observe": "Observación",
+        "audioHint": "Pista de audio",
+        "photo": "Foto",
+        "reward": "Tesoro"
+      },
+      "riddleDone": "He leído el enigma",
+      "observeDone": "Ya he observado",
+      "didYouKnow": "¿Sabías que…?",
+      "audioListen": "Escuchar la pista",
+      "audioStop": "Detener",
+      "audioUnavailable": "El audio no está disponible en este dispositivo: la pista está escrita abajo.",
+      "transcript": "Transcripción",
+      "audioDone": "He entendido la pista",
+      "photoNote": "No se envía nada: tu foto se queda en tu teléfono.",
+      "photoDone": "Hecho",
+      "openTreasure": "Revelar el secreto"
+    },
+    "reward": {
+      "title": "¡Tesoro encontrado!",
+      "rules": "Huevo de demostración · no intercambiable · no se vende · sin sorteo",
+      "replay": "Volver a jugar",
+      "back": "Volver a la ruta",
+      "announce": "Tesoro encontrado: el Huevo de la Secuoya."
+    }
   }
 }
