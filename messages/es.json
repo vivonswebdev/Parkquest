@@ -19,8 +19,8 @@
     "goHome": "Volver al inicio",
     "demo": "Demo",
     "demoData": "Datos de demostración",
-    "demoDataNotice": "Contenido de demostración, no validado por el parque. No es oficial.",
-    "demoModeNotice": "Modo demo: sin base de datos conectada, tu progreso no se guarda.",
+    "demoDataNotice": "Dato de demostración, pendiente de validar con el parque.",
+    "demoModeNotice": "Datos de demostración: tu progreso se guarda solo en este dispositivo.",
     "points": "{count, plural, one {# punto} other {# puntos}}",
     "pointsGain": "+{count} puntos",
     "minutes": "{count} min",
@@ -43,7 +43,8 @@
     "pmr": "Accesible en silla de ruedas",
     "pmrPartial": "Parcialmente accesible",
     "themeSystem": "Sistema",
-    "themeToggle": "Cambiar tema"
+    "themeToggle": "Cambiar tema",
+    "previewBanner": "Vista previa de desarrollo — datos de demostración."
   },
   "nav": {
     "home": "Inicio",
@@ -303,7 +304,7 @@
     "privacy": "Privacidad",
     "privacyBody": "Seudónimo por defecto. Tu ubicación nunca es pública ni se comparte.",
     "demoProfile": "Perfil de demostración",
-    "demoProfileBody": "Conecta Supabase para crear una cuenta real y guardar tu progreso.",
+    "demoProfileBody": "Las cuentas llegarán pronto. Mientras tanto, tu progreso se queda en este dispositivo.",
     "signInCta": "Iniciar sesión para guardar"
   },
   "practical": {
@@ -462,7 +463,7 @@
     "send": "Enviar el enlace",
     "sent": "¡Enlace enviado! Revisa tu correo.",
     "error": "No se pudo enviar el enlace. Comprueba la dirección.",
-    "demoUnavailable": "El inicio de sesión estará disponible cuando se configure Supabase. El prototipo funciona en modo demo.",
+    "demoUnavailable": "El inicio de sesión aún no está disponible. Puedes descubrir la aplicación con datos de demostración; tu progreso se queda en este dispositivo.",
     "invalidEmail": "Correo electrónico no válido."
   },
   "admin": {
@@ -484,7 +485,7 @@
       "analytics": "Analítica"
     },
     "restricted": "Acceso reservado a los equipos de los parques.",
-    "demoReadOnly": "Vista previa de solo lectura (modo demo).",
+    "demoReadOnly": "Vista previa de solo lectura (datos de demostración).",
     "toValidate": "Pendiente de validación por el parque",
     "count": "{count} elementos"
   },
@@ -506,7 +507,7 @@
     "installBody": "Añade ParkQuest a tu pantalla de inicio."
   },
   "demo": {
-    "title": "Modo demostración",
+    "title": "Herramientas de demostración",
     "open": "Abrir el panel demo",
     "subtitle": "Datos locales, sin claves ni conexión. No se envía nada por Internet.",
     "gps": "Ubicación simulada",
@@ -602,7 +603,7 @@
   },
   "weather": {
     "title": "El tiempo durante tu visita",
-    "simulated": "Tiempo simulado (modo demo)",
+    "simulated": "Tiempo simulado (datos de demostración)",
     "source": "Datos meteorológicos: Open-Meteo.com",
     "now": "Ahora",
     "rainAt": "Lluvia probable hacia las {hour}",
@@ -655,7 +656,7 @@
     "sending": "Enviando…",
     "thanksTitle": "¡Gracias!",
     "thanksBody": "Tu foto se publicará tras la revisión del equipo del parque (+5 puntos al aprobarse).",
-    "demoNote": "Modo demo: la foto se queda en este dispositivo. Apruébala desde el panel DEMO para verla publicada.",
+    "demoNote": "Datos de demostración: la foto se queda en este dispositivo y no se publica.",
     "pending": "Pendiente de revisión",
     "you": "Tú",
     "community": "Comunidad ParkQuest",

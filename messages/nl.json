@@ -19,8 +19,8 @@
     "goHome": "Terug naar start",
     "demo": "Demo",
     "demoData": "Demogegevens",
-    "demoDataNotice": "Demo-inhoud, niet gevalideerd door het park. Niet als officieel beschouwen.",
-    "demoModeNotice": "Demomodus: geen database verbonden, je voortgang wordt niet opgeslagen.",
+    "demoDataNotice": "Demogegevens, nog te valideren met het park.",
+    "demoModeNotice": "Demogegevens: je voortgang wordt alleen op dit toestel bewaard.",
     "points": "{count, plural, one {# punt} other {# punten}}",
     "pointsGain": "+{count} punten",
     "minutes": "{count} min",
@@ -43,7 +43,8 @@
     "pmr": "Rolstoeltoegankelijk",
     "pmrPartial": "Gedeeltelijk toegankelijk",
     "themeSystem": "Systeem",
-    "themeToggle": "Thema wijzigen"
+    "themeToggle": "Thema wijzigen",
+    "previewBanner": "Ontwikkelingsvoorbeeld — demogegevens."
   },
   "nav": {
     "home": "Start",
@@ -303,7 +304,7 @@
     "privacy": "Privacy",
     "privacyBody": "Standaard een schuilnaam. Je locatie is nooit openbaar of gedeeld.",
     "demoProfile": "Demoprofiel",
-    "demoProfileBody": "Verbind Supabase om een echt account te maken en je voortgang op te slaan.",
+    "demoProfileBody": "Accounts komen binnenkort. Tot dan blijft je voortgang op dit toestel.",
     "signInCta": "Aanmelden om op te slaan"
   },
   "practical": {
@@ -462,7 +463,7 @@
     "send": "Link verzenden",
     "sent": "Link verzonden! Kijk in je mailbox.",
     "error": "Kon de link niet verzenden. Controleer het adres.",
-    "demoUnavailable": "Aanmelden is mogelijk zodra Supabase is ingesteld. Het prototype werkt in demomodus.",
+    "demoUnavailable": "Aanmelden is nog niet mogelijk. Je kunt de app ontdekken met demogegevens; je voortgang blijft op dit toestel.",
     "invalidEmail": "Ongeldig e-mailadres."
   },
   "admin": {
@@ -484,7 +485,7 @@
       "analytics": "Analytics"
     },
     "restricted": "Toegang voorbehouden aan parkteams.",
-    "demoReadOnly": "Voorbeeld, alleen lezen (demomodus).",
+    "demoReadOnly": "Voorbeeld, alleen lezen (demogegevens).",
     "toValidate": "Te valideren door het park",
     "count": "{count} items"
   },
@@ -506,7 +507,7 @@
     "installBody": "Zet ParkQuest op je startscherm."
   },
   "demo": {
-    "title": "Demomodus",
+    "title": "Demohulpmiddelen",
     "open": "Demopaneel openen",
     "subtitle": "Lokale gegevens, geen sleutels of verbinding nodig. Er wordt niets via internet verzonden.",
     "gps": "Gesimuleerde locatie",
@@ -602,7 +603,7 @@
   },
   "weather": {
     "title": "Weer tijdens je bezoek",
-    "simulated": "Gesimuleerd weer (demomodus)",
+    "simulated": "Gesimuleerd weer (demogegevens)",
     "source": "Weergegevens: Open-Meteo.com",
     "now": "Nu",
     "rainAt": "Regen verwacht rond {hour}",
@@ -655,7 +656,7 @@
     "sending": "Versturen…",
     "thanksTitle": "Bedankt!",
     "thanksBody": "Je foto wordt gepubliceerd na controle door het parkteam (+5 punten na goedkeuring).",
-    "demoNote": "Demomodus: de foto blijft op dit toestel. Keur hem goed via het DEMO-paneel om hem gepubliceerd te zien.",
+    "demoNote": "Demogegevens: de foto blijft op dit toestel en wordt niet gepubliceerd.",
     "pending": "Wacht op controle",
     "you": "Jij",
     "community": "ParkQuest-community",

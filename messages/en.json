@@ -19,8 +19,8 @@
     "goHome": "Back to home",
     "demo": "Demo",
     "demoData": "Demo data",
-    "demoDataNotice": "Demo content, not validated by the park. Do not treat as official.",
-    "demoModeNotice": "Demo mode: no database connected, your progress is not saved.",
+    "demoDataNotice": "Demo data, to be validated with the park.",
+    "demoModeNotice": "Demo data: your progress is saved on this device only.",
     "points": "{count, plural, one {# point} other {# points}}",
     "pointsGain": "+{count} points",
     "minutes": "{count} min",
@@ -43,7 +43,8 @@
     "pmr": "Wheelchair accessible",
     "pmrPartial": "Partially accessible",
     "themeSystem": "System",
-    "themeToggle": "Change theme"
+    "themeToggle": "Change theme",
+    "previewBanner": "Development preview — demo data."
   },
   "nav": {
     "home": "Home",
@@ -303,7 +304,7 @@
     "privacy": "Privacy",
     "privacyBody": "Pseudonym by default. Your location is never public or shared.",
     "demoProfile": "Demo profile",
-    "demoProfileBody": "Connect Supabase to create a real account and save your progress.",
+    "demoProfileBody": "Accounts are coming soon. Meanwhile, your progress stays on this device.",
     "signInCta": "Sign in to save"
   },
   "practical": {
@@ -462,7 +463,7 @@
     "send": "Send the link",
     "sent": "Link sent! Check your inbox.",
     "error": "Couldn't send the link. Check the address.",
-    "demoUnavailable": "Sign-in will be available once Supabase is configured. The prototype runs in demo mode.",
+    "demoUnavailable": "Sign-in isn't open yet. You can explore the app with demo data; your progress stays on this device.",
     "invalidEmail": "Invalid email address."
   },
   "admin": {
@@ -484,7 +485,7 @@
       "analytics": "Analytics"
     },
     "restricted": "Access restricted to park teams.",
-    "demoReadOnly": "Read-only preview (demo mode).",
+    "demoReadOnly": "Read-only preview (demo data).",
     "toValidate": "To be validated by the park",
     "count": "{count} items"
   },
@@ -506,7 +507,7 @@
     "installBody": "Add ParkQuest to your home screen."
   },
   "demo": {
-    "title": "Demo mode",
+    "title": "Demo tools",
     "open": "Open the demo panel",
     "subtitle": "Local data, no keys or connection required. Nothing is sent over the Internet.",
     "gps": "Simulated location",
@@ -602,7 +603,7 @@
   },
   "weather": {
     "title": "Weather during your visit",
-    "simulated": "Simulated weather (demo mode)",
+    "simulated": "Simulated weather (demo data)",
     "source": "Weather data: Open-Meteo.com",
     "now": "Now",
     "rainAt": "Rain likely around {hour}",
@@ -655,7 +656,7 @@
     "sending": "Sending…",
     "thanksTitle": "Thank you!",
     "thanksBody": "Your photo will be published once the park team has checked it (+5 points when approved).",
-    "demoNote": "Demo mode: the photo stays on this device. Approve it from the DEMO panel to see it published.",
+    "demoNote": "Demo data: the photo stays on this device and isn't published.",
     "pending": "Awaiting review",
     "you": "You",
     "community": "ParkQuest community",
