@@ -56,7 +56,10 @@
     "trails": "Trails",
     "tips": "Tips",
     "community": "Community",
-    "mainNavigation": "Main navigation"
+    "mainNavigation": "Main navigation",
+    "parksTab": "Parks",
+    "explore": "Explore",
+    "collection": "Collection"
   },
   "home": {
     "heroLine1": "Explore.",
@@ -866,6 +869,55 @@
       "replay": "Play again",
       "back": "Back to the trail",
       "announce": "Treasure found: the Sequoia Egg."
+    }
+  },
+  "game": {
+    "hello": "Hello, explorer",
+    "activeEgg": "My active egg",
+    "energy": "{value} / {max} nature energy",
+    "energyLabel": "Nature energy",
+    "discoveriesLeft": "{count, plural, one {About # discovery to go} other {About # discoveries to go}}",
+    "readyTitle": "Ready to hatch!",
+    "readyBody": "Hatching is coming soon.",
+    "firstTitle": "Your first egg is waiting",
+    "firstBody": "Start an adventure to help it grow.",
+    "chooseTitle": "Choose your next egg",
+    "noneTitle": "No egg right now",
+    "noneBody": "Your next egg comes from finishing an adventure.",
+    "exploreCta": "Explore a park",
+    "demoProgress": "Demo progress, saved on this device.",
+    "companionTitle": "My companion",
+    "companionEmpty": "No companion yet",
+    "companionEmptyBody": "A creature may be waiting in your next egg.",
+    "collectionTitle": "My collection",
+    "seeCollection": "View",
+    "collectionCount": "{count} / {total} creatures discovered",
+    "elementLocked": "{element}: not discovered yet",
+    "provisional": "Provisional emblems, until the official illustrations arrive.",
+    "nearTitle": "Near you",
+    "adventureSteps": "{count} steps",
+    "seeAdventure": "View adventure",
+    "allParks": "See all parks",
+    "eventsTitle": "Events",
+    "collectionPageTitle": "My collection",
+    "albumSoon": "The full album, creature cards and companion are coming soon.",
+    "elements": {
+      "leaf": "Leaf",
+      "water": "Water",
+      "flower": "Flower",
+      "air": "Air",
+      "forest": "Forest",
+      "moon": "Moon",
+      "sun": "Sun"
+    },
+    "eggNames": {
+      "leaf": "Leaf Egg",
+      "water": "Water Egg",
+      "flower": "Flower Egg",
+      "air": "Wind Egg",
+      "forest": "Forest Egg",
+      "moon": "Moon Egg",
+      "sun": "Sun Egg"
     }
   }
 }

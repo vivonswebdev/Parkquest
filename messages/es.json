@@ -56,7 +56,10 @@
     "trails": "Rutas",
     "tips": "Consejos",
     "community": "Comunidad",
-    "mainNavigation": "Navegación principal"
+    "mainNavigation": "Navegación principal",
+    "parksTab": "Parques",
+    "explore": "Explorar",
+    "collection": "Colección"
   },
   "home": {
     "heroLine1": "Explora.",
@@ -866,6 +869,55 @@
       "replay": "Volver a jugar",
       "back": "Volver a la ruta",
       "announce": "Tesoro encontrado: el Huevo de la Secuoya."
+    }
+  },
+  "game": {
+    "hello": "Hola, explorador",
+    "activeEgg": "Mi huevo activo",
+    "energy": "{value} / {max} energía de la naturaleza",
+    "energyLabel": "Energía de la naturaleza",
+    "discoveriesLeft": "{count, plural, one {Falta aproximadamente # descubrimiento} other {Faltan aproximadamente # descubrimientos}}",
+    "readyTitle": "¡Listo para eclosionar!",
+    "readyBody": "La eclosión llegará pronto.",
+    "firstTitle": "Tu primer huevo te espera",
+    "firstBody": "Empieza una aventura para hacerlo crecer.",
+    "chooseTitle": "Elige tu próximo huevo",
+    "noneTitle": "Ningún huevo por ahora",
+    "noneBody": "Tu próximo huevo llegará al terminar una aventura.",
+    "exploreCta": "Explorar un parque",
+    "demoProgress": "Progreso de demostración, guardado en este dispositivo.",
+    "companionTitle": "Mi compañero",
+    "companionEmpty": "Aún no tienes compañero",
+    "companionEmptyBody": "Quizá una criatura te espera en tu próximo huevo.",
+    "collectionTitle": "Mi colección",
+    "seeCollection": "Ver",
+    "collectionCount": "{count} / {total} criaturas descubiertas",
+    "elementLocked": "{element}: aún no descubierta",
+    "provisional": "Emblemas provisionales, hasta las ilustraciones oficiales.",
+    "nearTitle": "Cerca de ti",
+    "adventureSteps": "{count} etapas",
+    "seeAdventure": "Ver la aventura",
+    "allParks": "Ver todos los parques",
+    "eventsTitle": "Eventos",
+    "collectionPageTitle": "Mi colección",
+    "albumSoon": "El álbum completo, las fichas de criaturas y el compañero llegarán pronto.",
+    "elements": {
+      "leaf": "Hoja",
+      "water": "Agua",
+      "flower": "Flor",
+      "air": "Aire",
+      "forest": "Bosque",
+      "moon": "Lunar",
+      "sun": "Solar"
+    },
+    "eggNames": {
+      "leaf": "Huevo de la hoja",
+      "water": "Huevo del agua",
+      "flower": "Huevo de las flores",
+      "air": "Huevo del viento",
+      "forest": "Huevo del bosque",
+      "moon": "Huevo de la luna",
+      "sun": "Huevo del sol"
     }
   }
 }
