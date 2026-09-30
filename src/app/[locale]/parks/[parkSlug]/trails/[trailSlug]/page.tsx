@@ -1,4 +1,4 @@
-import { Accessibility, ArrowLeft, Award, Clock, Gauge, Map as MapIcon, MapPin, Play, Route, Users } from "lucide-react";
+import { Accessibility, ArrowLeft, Award, Clock, Compass, Gauge, Map as MapIcon, MapPin, Play, Route, Users } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -18,6 +18,7 @@ import { WeatherCard } from "@/components/weather/weather-card";
 import { getVisitWeather } from "@/lib/weather";
 import { getServerProgress } from "@/server/progress";
 import { TrailProgressCard } from "@/components/trail/trail-progress-card";
+import { questsForTrail } from "@/lib/quests/catalog";
 
 type Params = { params: Promise<{ locale: string; parkSlug: string; trailSlug: string }> };
 
@@ -84,6 +85,25 @@ export default async function TrailPage({ params }: Params) {
             completionPoints={trail.completionPoints}
             serverDiscovered={progress?.discoveredSpotIds ?? null}
           />
+
+          {/* Mode Exploration : aventure sur les chemins de ce parcours (données de démonstration) */}
+          {questsForTrail(park.slug, trail.slug).map((q) => (
+            <Card key={q.slug} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
+              <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-2xl bg-primary/15 text-primary" aria-hidden>
+                <Compass className="size-6" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
+                  {t("explore.title")} {q.status === "demo" && <DemoBadge />}
+                </p>
+                <p className="font-display text-lg font-bold">{t(`explore.quests.${q.key}.title`)}</p>
+                <p className="text-sm text-muted-foreground">{t("explore.cardBody")}</p>
+              </div>
+              <Button asChild variant="secondary">
+                <Link href={`/parks/${park.slug}/explore/${q.slug}`}>{t("explore.cardCta")}</Link>
+              </Button>
+            </Card>
+          ))}
 
           <div className="hidden gap-3 md:flex">
             <Button asChild size="lg">

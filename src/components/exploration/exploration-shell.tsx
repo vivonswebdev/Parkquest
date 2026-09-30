@@ -25,8 +25,8 @@ export function ExplorationTopBar({ children }: { children: ReactNode }) {
 }
 
 /** Colonne de contrôles flottants à droite, centrée verticalement. */
-export function ExplorationControls({ children }: { children: ReactNode }) {
-  return <div className="absolute right-3 top-1/2 z-20 flex -translate-y-1/2 flex-col gap-2">{children}</div>;
+export function ExplorationControls({ children, className }: { children: ReactNode; className?: string }) {
+  return <div className={cn("absolute right-3 top-1/2 z-20 flex -translate-y-1/2 flex-col gap-2", className)}>{children}</div>;
 }
 
 /** Bouton rond de contrôle de carte (recentrer, 2D/3D, orientation…). */
