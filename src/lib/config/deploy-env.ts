@@ -9,8 +9,15 @@ import "server-only";
  */
 export type DeployEnv = "production" | "preview" | "local";
 
+/**
+ * APERÇU TEMPORAIRE UNIQUEMENT (branche `feature/release-preview-wave-1`, jamais fusionnée) :
+ * cet aperçu combiné se comporte comme la production (ni bannière ni panneau de démonstration),
+ * pour tester sur téléphone la première tranche telle qu'elle apparaîtra sur `main`.
+ */
+const productionLikePreview = process.env.VERCEL_GIT_COMMIT_REF === "feature/release-preview-wave-1";
+
 export const deployEnv: DeployEnv =
-  process.env.VERCEL_ENV === "production" ? "production" : process.env.VERCEL_ENV === "preview" ? "preview" : "local";
+  process.env.VERCEL_ENV === "production" || productionLikePreview ? "production" : process.env.VERCEL_ENV === "preview" ? "preview" : "local";
 
 /** Outils de démonstration (position simulée, remise à zéro…) : jamais en production. */
 export const showDemoTools = deployEnv !== "production";

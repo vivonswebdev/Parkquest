@@ -69,6 +69,7 @@ export function MapLibreParkMap({
   view3d = false,
   focus,
   nature,
+  decor = true,
   attributionTop,
   onFail,
   ref,
@@ -280,7 +281,8 @@ export function MapLibreParkMap({
   const treesRef = useRef<Tree[] | null>(null);
   useEffect(() => {
     const m = map.current;
-    if (!m || !ready) return;
+    // Carte à grande échelle (tous les parcs) : pas d'arbres 3D ni d'étangs de décor.
+    if (!m || !ready || !decor) return;
     const spec: MapNature = JSON.parse(natureKey);
     const layers = (m.getStyle().layers ?? []) as StyleLayerLike[];
     const beforeId = firstSymbolLayerId(layers);
@@ -388,7 +390,7 @@ export function MapLibreParkMap({
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- dépendances sérialisées (natureKey, trailKey)
-  }, [ready, theme, natureKey, trailKey]);
+  }, [ready, theme, natureKey, trailKey, decor]);
 
   // Marqueurs React rendus dans des éléments MapLibre
   useEffect(() => {
@@ -446,7 +448,7 @@ export function MapLibreParkMap({
   }, [user]);
 
   useImperativeHandle(ref, () => ({
-    flyTo: (pt, zoom) => map.current?.flyTo({ center: [pt.lng, pt.lat], zoom: zoom ?? Math.max(map.current.getZoom(), 17), essential: true }),
+    flyTo: (pt, zoom) => map.current?.flyTo({ center: [pt.lng, pt.lat], zoom: zoom ?? Math.max(map.current.getZoom(), 17) }),
     fitBounds: () => map.current?.fitBounds(lngLatBounds(), { padding }),
     resetNorth: () => map.current?.easeTo({ bearing: 0, pitch: view3d ? PITCH_3D : 0 }),
   }));

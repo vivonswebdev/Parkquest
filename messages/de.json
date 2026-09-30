@@ -56,7 +56,10 @@
     "trails": "Routen",
     "tips": "Tipps",
     "community": "Community",
-    "mainNavigation": "Hauptnavigation"
+    "mainNavigation": "Hauptnavigation",
+    "parksTab": "Parks",
+    "explore": "Erkunden",
+    "collection": "Sammlung"
   },
   "home": {
     "heroLine1": "Entdecken.",
@@ -150,7 +153,27 @@
     "spotsCount": "{count} Orte",
     "walk": "{distance} · {minutes}",
     "view3d": "3D-Ansicht",
-    "view2d": "2D-Ansicht"
+    "view2d": "2D-Ansicht",
+    "generalTitle": "Parkkarte",
+    "parksTitle": "Entdecke Parks in deiner Nähe",
+    "chooseParkTitle": "Wähle einen Park",
+    "parksCount": "{count, plural, one {# Park} other {# Parks}}",
+    "placesCount": "{count, plural, one {# Ort} other {# Orte}}",
+    "fromYou": "Sortiert ab deinem Standort",
+    "enableToSort": "Aktiviere deinen Standort, um die nächsten Parks zu sehen.",
+    "demoZone": "Standort nicht verfügbar: Karte auf die Demozone (Brüssel) zentriert.",
+    "nearestPark": "Nächster Park",
+    "openParkMap": "Parkkarte",
+    "seePark": "Park ansehen",
+    "comingSoon": "Bald verfügbar",
+    "parkStats": "{spots} Orte · {trails} Routen",
+    "fullscreenEnter": "Karte im Vollbild öffnen",
+    "fullscreenExit": "Vollbild verlassen",
+    "panelCollapse": "Bereich verkleinern",
+    "panelExpand": "Bereich öffnen",
+    "panelHide": "Bereich ausblenden",
+    "panelShow": "{title} · {count}",
+    "nearbyShort": "In deiner Nähe"
   },
   "gps": {
     "denied": "Standort abgelehnt",
@@ -700,6 +723,201 @@
       "EW": "In der Natur ausgestorben",
       "EX": "Ausgestorben",
       "DD": "Ungenügende Datengrundlage"
+    }
+  },
+  "explore": {
+    "title": "Erkundungsmodus",
+    "loading": "Abenteuer wird vorbereitet…",
+    "cardBody": "Ein geführtes Abenteuer, nur auf den Wegen des Parks.",
+    "cardCta": "Abenteuer starten",
+    "demoData": "Demodaten, noch mit dem Park abzustimmen.",
+    "quests": {
+      "secretSequoia": {
+        "title": "Das Geheimnis des Mammutbaums",
+        "intro": "Geh zum Riesenmammutbaum: Dort wartet das erste Rätsel.",
+        "steps": {
+          "s1": {
+            "title": "Das Rätsel des Riesen",
+            "body": "Du stehst am Fuß des größten Baums dieser Route. Hier ist sein Rätsel:\n„Suche einen Baum mit rund gelappten Blättern. Seine Früchte tragen ein kleines Hütchen. Er wartet weiter vorne am Weg.“",
+            "fact": "In ihrer Heimat Kalifornien gehören Riesenmammutbäume zu den größten und ältesten Lebewesen: Manche sind über 3.000 Jahre alt."
+          },
+          "s2": {
+            "title": "Die Eiche mit den Hütchen",
+            "body": "Gut gefunden! Betrachte Blätter und Rinde, ohne den Weg zu verlassen, und beantworte dann die Frage.",
+            "fact": "Eine einzige Eiche kann Hunderten Arten von Insekten, Vögeln, Flechten und Pilzen Lebensraum bieten."
+          },
+          "s3": {
+            "title": "Der Wald aus Halmen",
+            "body": "Geh näher an den Bambushain heran, bleib aber auf dem Weg und geh nicht in die Beete. Schau dir die Halme an: Siehst du die regelmäßigen Knoten, die sie in Abschnitte teilen?",
+            "fact": "Manche Bambusarten gehören zu den am schnellsten wachsenden Pflanzen der Welt: mehrere Dutzend Zentimeter an einem Tag."
+          },
+          "s4": {
+            "title": "Das Flüstern der Zeder",
+            "body": "Hör dir den Hinweis der Zeder an oder lies ihn:\n„Meine Äste breiten sich in weiten Etagen aus. Ich komme aus den Bergen des Libanon. Geh als Nächstes dorthin, wo der Blick weit reicht.“",
+            "fact": "Die Libanon-Zeder ist auf der Flagge des Libanon abgebildet. Ihr duftendes Holz war schon in der Antike begehrt."
+          },
+          "s5": {
+            "title": "Der Blick des Spaziergängers",
+            "body": "Nimm dir Zeit, die Landschaft anzuschauen. Wenn du möchtest, mach ein Foto mit der Kamera deines Handys. Dieser Schritt ist optional.",
+            "fact": "In historischen Gärten wurden Aussichtspunkte oft so angelegt, dass sie einen Baum, ein Gebäude oder eine Sichtachse in Szene setzen."
+          },
+          "s6": {
+            "title": "Das Geheimnis des Mammutbaums",
+            "body": "Du bist allen Spuren gefolgt. Geh zurück zum Fuß des Riesenmammutbaums: Sein Geheimnis ist bereit, gelüftet zu werden.",
+            "fact": "Die dicke, faserige Rinde des Riesenmammutbaums schützt ihn vor Waldbränden."
+          }
+        },
+        "reward": {
+          "name": "Mammutbaum-Ei",
+          "body": "Ein besonderes Demo-Ei, weil du das Geheimnis des Mammutbaums gelüftet hast. Es kann später schlüpfen, wenn die Wesen der Sammlung da sind."
+        }
+      }
+    },
+    "safety": {
+      "title": "Bevor du startest",
+      "l1": "{app} spielt man draußen. Achte auf deine Umgebung.",
+      "l2": "Verlasse nie die erlaubten Wege und beachte die Schilder.",
+      "l3": "Bleib stehen, bevor du auf den Bildschirm schaust.",
+      "l4": "Achte auf Fahrräder, andere Besucher und Hindernisse.",
+      "l5": "Kinder spielen mit einem Erwachsenen.",
+      "accept": "Ich habe diese Hinweise verstanden",
+      "start": "Abenteuer starten",
+      "back": "Zurück",
+      "parkRules": "{app} ersetzt nicht die Regeln und Hinweise des Parks."
+    },
+    "dashboard": {
+      "title": "Bewegung",
+      "remaining": "Noch",
+      "minutes": "≈ {minutes} Min.",
+      "direction": "Richtung",
+      "walked": "Gegangen",
+      "speed": "Tempo",
+      "speedValue": "{value} km/h",
+      "note": "Auf deinem Handy berechnet, nie gesendet. Nur zur Info: Schnelligkeit bringt nichts."
+    },
+    "cardinals": {
+      "N": "Norden",
+      "NE": "Nordosten",
+      "E": "Osten",
+      "SE": "Südosten",
+      "S": "Süden",
+      "SW": "Südwesten",
+      "W": "Westen",
+      "NW": "Nordwesten"
+    },
+    "cardinalsShort": {
+      "N": "N",
+      "NE": "NO",
+      "E": "O",
+      "SE": "SO",
+      "S": "S",
+      "SW": "SW",
+      "W": "W",
+      "NW": "NW"
+    },
+    "pause": "Pause",
+    "paused": "Abenteuer pausiert",
+    "pausedBody": "Die Standortverfolgung ist gestoppt. Mach weiter, wenn du bereit bist.",
+    "resume": "Weiter",
+    "quit": "Beenden",
+    "quitTitle": "Abenteuer beenden?",
+    "quitBody": "Dein Fortschritt bleibt auf diesem Handy gespeichert.",
+    "continue": "Weiterspielen",
+    "announceResumed": "Abenteuer fortgesetzt.",
+    "announceStep": "Schritt {n}: {title}. Geh zu: {spot}.",
+    "arrivedVia": {
+      "gps": "Ankunft per GPS bestätigt: {spot}.",
+      "qr": "Ankunft per QR-Code bestätigt: {spot}.",
+      "manual": "Ankunft bestätigt: {spot}."
+    },
+    "step": {
+      "progress": "{done} von {total} Schritten geschafft",
+      "optional": "Optional",
+      "goTo": "Geh zu: {spot}",
+      "here": "Du bist bei: {spot}",
+      "arrived": "Ich bin da",
+      "skip": "Diesen Schritt überspringen",
+      "gpsFallback": "Kein Problem: Du kannst deine Ankunft bei jedem Schritt selbst bestätigen.",
+      "confirmTitle": "Bist du wirklich bei: {spot}?",
+      "confirmBody": "Dein GPS kann das nicht genau prüfen. Bestätige einfach deine Ankunft (QR-Codes im Park kommen später).",
+      "confirmYes": "Ich bestätige"
+    },
+    "activity": {
+      "kind": {
+        "riddle": "Rätsel",
+        "quiz": "Quiz",
+        "observe": "Beobachtung",
+        "audioHint": "Audio-Hinweis",
+        "photo": "Foto",
+        "reward": "Schatz"
+      },
+      "riddleDone": "Ich habe das Rätsel gelesen",
+      "observeDone": "Ich habe genau hingeschaut",
+      "didYouKnow": "Wusstest du?",
+      "audioListen": "Hinweis anhören",
+      "audioStop": "Stopp",
+      "audioUnavailable": "Audio ist auf diesem Gerät nicht verfügbar: Der Hinweis steht unten.",
+      "transcript": "Text",
+      "audioDone": "Ich habe den Hinweis verstanden",
+      "photoNote": "Es wird nichts gesendet: Dein Foto bleibt auf deinem Handy.",
+      "photoDone": "Erledigt",
+      "openTreasure": "Das Geheimnis lüften"
+    },
+    "reward": {
+      "title": "Schatz gefunden!",
+      "rules": "Demo-Ei · nicht tauschbar · nicht verkäuflich · keine Zufallsziehung",
+      "replay": "Nochmal spielen",
+      "back": "Zurück zur Route",
+      "announce": "Schatz gefunden: das Mammutbaum-Ei."
+    }
+  },
+  "game": {
+    "hello": "Hallo, Entdecker",
+    "activeEgg": "Mein aktives Ei",
+    "energy": "{value} / {max} Naturenergie",
+    "energyLabel": "Naturenergie",
+    "discoveriesLeft": "{count, plural, one {Noch etwa # Entdeckung} other {Noch etwa # Entdeckungen}}",
+    "readyTitle": "Bereit zum Schlüpfen!",
+    "readyBody": "Das Schlüpfen kommt bald.",
+    "firstTitle": "Dein erstes Ei wartet",
+    "firstBody": "Starte ein Abenteuer, damit es wächst.",
+    "chooseTitle": "Wähle dein nächstes Ei",
+    "noneTitle": "Gerade kein Ei",
+    "noneBody": "Dein nächstes Ei gibt es, wenn du ein Abenteuer abschließt.",
+    "exploreCta": "Einen Park erkunden",
+    "demoProgress": "Demo-Fortschritt, auf diesem Gerät gespeichert.",
+    "companionTitle": "Mein Begleiter",
+    "companionEmpty": "Noch kein Begleiter",
+    "companionEmptyBody": "Vielleicht wartet ein Wesen in deinem nächsten Ei.",
+    "collectionTitle": "Meine Sammlung",
+    "seeCollection": "Ansehen",
+    "collectionCount": "{count} / {total} Wesen entdeckt",
+    "elementLocked": "{element}: noch nicht entdeckt",
+    "provisional": "Vorläufige Embleme, bis die offiziellen Illustrationen kommen.",
+    "nearTitle": "In deiner Nähe",
+    "adventureSteps": "{count} Schritte",
+    "seeAdventure": "Abenteuer ansehen",
+    "allParks": "Alle Parks ansehen",
+    "eventsTitle": "Veranstaltungen",
+    "collectionPageTitle": "Meine Sammlung",
+    "albumSoon": "Das vollständige Album, die Wesenkarten und der Begleiter kommen bald.",
+    "elements": {
+      "leaf": "Blatt",
+      "water": "Wasser",
+      "flower": "Blume",
+      "air": "Luft",
+      "forest": "Wald",
+      "moon": "Mond",
+      "sun": "Sonne"
+    },
+    "eggNames": {
+      "leaf": "Blatt-Ei",
+      "water": "Wasser-Ei",
+      "flower": "Blumen-Ei",
+      "air": "Wind-Ei",
+      "forest": "Wald-Ei",
+      "moon": "Mond-Ei",
+      "sun": "Sonnen-Ei"
     }
   }
 }

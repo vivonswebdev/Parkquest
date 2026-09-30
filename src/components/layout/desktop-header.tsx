@@ -2,19 +2,19 @@ import { Search, UserRound } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Logo } from "@/components/brand/logo";
 import { Link } from "@/i18n/navigation";
-import { FEATURED_PARK_SLUG_PUBLIC } from "@/lib/constants";
 import { ThemeToggle } from "@/components/theme/theme-switcher";
 import { LocaleSwitcher } from "./locale-switcher";
 
 export async function DesktopHeader() {
   const t = await getTranslations("nav");
   const tc = await getTranslations("common");
+  // Même navigation que la barre mobile : Accueil · Parcs · Explorer · Collection (+ Conseils) ; Profil à droite.
   const links = [
-    { href: "/parks", label: t("parks") },
-    { href: `/parks/${FEATURED_PARK_SLUG_PUBLIC}#trails`, label: t("trails") },
-    { href: `/parks/${FEATURED_PARK_SLUG_PUBLIC}/map`, label: t("map") },
+    { href: "/", label: t("home") },
+    { href: "/parks", label: t("parksTab") },
+    { href: "/map", label: t("explore") },
+    { href: "/collection", label: t("collection") },
     { href: "/blog", label: t("tips") },
-    { href: "/community", label: t("community") },
   ];
   return (
     <header className="sticky top-0 z-40 hidden border-b border-border bg-background/80 backdrop-blur-xl md:block">

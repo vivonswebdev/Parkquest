@@ -56,7 +56,10 @@
     "trails": "Routes",
     "tips": "Tips",
     "community": "Community",
-    "mainNavigation": "Hoofdnavigatie"
+    "mainNavigation": "Hoofdnavigatie",
+    "parksTab": "Parken",
+    "explore": "Verkennen",
+    "collection": "Collectie"
   },
   "home": {
     "heroLine1": "Ontdek.",
@@ -150,7 +153,27 @@
     "spotsCount": "{count} plekken",
     "walk": "{distance} · {minutes}",
     "view3d": "3D-weergave",
-    "view2d": "2D-weergave"
+    "view2d": "2D-weergave",
+    "generalTitle": "Parkenkaart",
+    "parksTitle": "Ontdek de parken om je heen",
+    "chooseParkTitle": "Kies een park",
+    "parksCount": "{count, plural, one {# park} other {# parken}}",
+    "placesCount": "{count, plural, one {# plek} other {# plekken}}",
+    "fromYou": "Gesorteerd vanaf je locatie",
+    "enableToSort": "Zet je locatie aan om de dichtstbijzijnde parken te zien.",
+    "demoZone": "Locatie niet beschikbaar: kaart gecentreerd op de demozone (Brussel).",
+    "nearestPark": "Dichtstbijzijnde park",
+    "openParkMap": "Parkkaart",
+    "seePark": "Park bekijken",
+    "comingSoon": "Binnenkort beschikbaar",
+    "parkStats": "{spots} plekken · {trails} routes",
+    "fullscreenEnter": "Kaart op volledig scherm openen",
+    "fullscreenExit": "Volledig scherm sluiten",
+    "panelCollapse": "Paneel verkleinen",
+    "panelExpand": "Paneel openen",
+    "panelHide": "Paneel verbergen",
+    "panelShow": "{title} · {count}",
+    "nearbyShort": "In de buurt"
   },
   "gps": {
     "denied": "Locatie geweigerd",
@@ -700,6 +723,201 @@
       "EW": "Uitgestorven in het wild",
       "EX": "Uitgestorven",
       "DD": "Onvoldoende gegevens"
+    }
+  },
+  "explore": {
+    "title": "Verkenningsmodus",
+    "loading": "Avontuur wordt voorbereid…",
+    "cardBody": "Een begeleid avontuur, alleen op de paden van het park.",
+    "cardCta": "Start het avontuur",
+    "demoData": "Demogegevens, nog te valideren met het park.",
+    "quests": {
+      "secretSequoia": {
+        "title": "Het geheim van de sequoia",
+        "intro": "Ga naar de reuzensequoia: daar wacht het eerste raadsel.",
+        "steps": {
+          "s1": {
+            "title": "Het raadsel van de reus",
+            "body": "Je staat aan de voet van de grootste boom van deze route. Hier is zijn raadsel:\n“Zoek een boom met bladeren met ronde lobben. Zijn vruchten dragen een klein hoedje. Hij wacht verderop langs het pad.”",
+            "fact": "In hun thuisland Californië behoren reuzensequoia's tot de grootste en oudste levende wezens: sommige zijn meer dan 3.000 jaar oud."
+          },
+          "s2": {
+            "title": "De eik met de hoedjes",
+            "body": "Goed gevonden! Bekijk zijn bladeren en schors zonder het pad te verlaten en beantwoord dan de vraag.",
+            "fact": "Eén eik kan honderden soorten insecten, vogels, korstmossen en paddenstoelen herbergen."
+          },
+          "s3": {
+            "title": "Het stengelwoud",
+            "body": "Kom dichter bij het bamboebos, maar blijf op het pad en ga de struiken niet in. Bekijk de stengels: zie je de regelmatige knopen die ze in stukken verdelen?",
+            "fact": "Sommige bamboesoorten behoren tot de snelst groeiende planten ter wereld: tientallen centimeters per dag."
+          },
+          "s4": {
+            "title": "Het gefluister van de ceder",
+            "body": "Luister naar de tip van de ceder, of lees hem:\n“Mijn takken spreiden zich uit in brede etages. Ik kom uit de bergen van Libanon. Ga daarna naar een plek waar je ver kunt kijken.”",
+            "fact": "De libanonceder staat op de vlag van Libanon. Zijn geurige hout was al in de oudheid gegeerd."
+          },
+          "s5": {
+            "title": "De blik van de wandelaar",
+            "body": "Neem de tijd om naar het landschap te kijken. Als je wilt, maak je een foto met de camera van je telefoon. Deze stap is optioneel.",
+            "fact": "In historische tuinen werden uitkijkpunten vaak ontworpen om een boom, een gebouw of een zichtas in de verf te zetten."
+          },
+          "s6": {
+            "title": "Het geheim van de sequoia",
+            "body": "Je hebt alle sporen gevolgd. Ga terug naar de voet van de reuzensequoia: zijn geheim wordt nu onthuld.",
+            "fact": "De dikke, vezelige schors van de reuzensequoia beschermt hem tegen bosbranden."
+          }
+        },
+        "reward": {
+          "name": "Sequoia-ei",
+          "body": "Een speciaal demo-ei, omdat je het geheim van de sequoia hebt ontrafeld. Het kan later uitkomen, wanneer de wezens van de collectie er zijn."
+        }
+      }
+    },
+    "safety": {
+      "title": "Voor je begint",
+      "l1": "{app} speel je buiten. Let op je omgeving.",
+      "l2": "Verlaat nooit de toegelaten paden en volg de borden.",
+      "l3": "Sta stil voor je op je scherm kijkt.",
+      "l4": "Let op fietsers, andere bezoekers en obstakels.",
+      "l5": "Kinderen spelen samen met een volwassene.",
+      "accept": "Ik heb deze richtlijnen begrepen",
+      "start": "Start het avontuur",
+      "back": "Terug",
+      "parkRules": "{app} vervangt de regels en richtlijnen van het park niet."
+    },
+    "dashboard": {
+      "title": "Verplaatsing",
+      "remaining": "Nog",
+      "minutes": "≈ {minutes} min",
+      "direction": "Richting",
+      "walked": "Afgelegd",
+      "speed": "Snelheid",
+      "speedValue": "{value} km/u",
+      "note": "Berekend op je telefoon, nooit verstuurd. Ter info: snel gaan levert niets op."
+    },
+    "cardinals": {
+      "N": "Noord",
+      "NE": "Noordoost",
+      "E": "Oost",
+      "SE": "Zuidoost",
+      "S": "Zuid",
+      "SW": "Zuidwest",
+      "W": "West",
+      "NW": "Noordwest"
+    },
+    "cardinalsShort": {
+      "N": "N",
+      "NE": "NO",
+      "E": "O",
+      "SE": "ZO",
+      "S": "Z",
+      "SW": "ZW",
+      "W": "W",
+      "NW": "NW"
+    },
+    "pause": "Pauze",
+    "paused": "Avontuur gepauzeerd",
+    "pausedBody": "Je locatie wordt niet meer gevolgd. Ga verder wanneer je klaar bent.",
+    "resume": "Verder",
+    "quit": "Stoppen",
+    "quitTitle": "Avontuur stoppen?",
+    "quitBody": "Je voortgang blijft bewaard op deze telefoon.",
+    "continue": "Doorgaan",
+    "announceResumed": "Avontuur hervat.",
+    "announceStep": "Stap {n}: {title}. Ga naar: {spot}.",
+    "arrivedVia": {
+      "gps": "Aankomst bevestigd via gps: {spot}.",
+      "qr": "Aankomst bevestigd via QR-code: {spot}.",
+      "manual": "Aankomst bevestigd: {spot}."
+    },
+    "step": {
+      "progress": "{done} van {total} stappen klaar",
+      "optional": "Optioneel",
+      "goTo": "Ga naar: {spot}",
+      "here": "Je bent bij: {spot}",
+      "arrived": "Ik ben er",
+      "skip": "Deze stap overslaan",
+      "gpsFallback": "Geen probleem: je kunt je aankomst bij elke stap zelf bevestigen.",
+      "confirmTitle": "Ben je echt bij: {spot}?",
+      "confirmBody": "Je gps kan dit niet precies controleren. Bevestig gewoon je aankomst (QR-codes in het park komen later).",
+      "confirmYes": "Ik bevestig"
+    },
+    "activity": {
+      "kind": {
+        "riddle": "Raadsel",
+        "quiz": "Quiz",
+        "observe": "Observatie",
+        "audioHint": "Audiotip",
+        "photo": "Foto",
+        "reward": "Schat"
+      },
+      "riddleDone": "Ik heb het raadsel gelezen",
+      "observeDone": "Ik heb goed gekeken",
+      "didYouKnow": "Wist je dat?",
+      "audioListen": "Tip beluisteren",
+      "audioStop": "Stoppen",
+      "audioUnavailable": "Audio is niet beschikbaar op dit toestel: de tip staat hieronder.",
+      "transcript": "Tekst",
+      "audioDone": "Ik heb de tip begrepen",
+      "photoNote": "Er wordt niets verstuurd: je foto blijft op je telefoon.",
+      "photoDone": "Gedaan",
+      "openTreasure": "Het geheim onthullen"
+    },
+    "reward": {
+      "title": "Schat gevonden!",
+      "rules": "Demo-ei · niet ruilbaar · niet te koop · geen loting",
+      "replay": "Opnieuw spelen",
+      "back": "Terug naar de route",
+      "announce": "Schat gevonden: het Sequoia-ei."
+    }
+  },
+  "game": {
+    "hello": "Hallo, ontdekker",
+    "activeEgg": "Mijn actieve ei",
+    "energy": "{value} / {max} natuurenergie",
+    "energyLabel": "Natuurenergie",
+    "discoveriesLeft": "{count, plural, one {Nog ongeveer # ontdekking} other {Nog ongeveer # ontdekkingen}}",
+    "readyTitle": "Klaar om uit te komen!",
+    "readyBody": "Het uitkomen komt binnenkort.",
+    "firstTitle": "Je eerste ei wacht op je",
+    "firstBody": "Start een avontuur om het te laten groeien.",
+    "chooseTitle": "Kies je volgende ei",
+    "noneTitle": "Nog geen ei",
+    "noneBody": "Je volgende ei krijg je door een avontuur af te ronden.",
+    "exploreCta": "Een park verkennen",
+    "demoProgress": "Demovoortgang, bewaard op dit toestel.",
+    "companionTitle": "Mijn metgezel",
+    "companionEmpty": "Nog geen metgezel",
+    "companionEmptyBody": "Misschien wacht er een wezen in je volgende ei.",
+    "collectionTitle": "Mijn collectie",
+    "seeCollection": "Bekijken",
+    "collectionCount": "{count} / {total} wezens ontdekt",
+    "elementLocked": "{element}: nog niet ontdekt",
+    "provisional": "Voorlopige emblemen, in afwachting van de officiële illustraties.",
+    "nearTitle": "In je buurt",
+    "adventureSteps": "{count} stappen",
+    "seeAdventure": "Avontuur bekijken",
+    "allParks": "Alle parken bekijken",
+    "eventsTitle": "Evenementen",
+    "collectionPageTitle": "Mijn collectie",
+    "albumSoon": "Het volledige album, de wezenfiches en de metgezel komen binnenkort.",
+    "elements": {
+      "leaf": "Blad",
+      "water": "Water",
+      "flower": "Bloem",
+      "air": "Lucht",
+      "forest": "Bos",
+      "moon": "Maan",
+      "sun": "Zon"
+    },
+    "eggNames": {
+      "leaf": "Blad-ei",
+      "water": "Water-ei",
+      "flower": "Bloemen-ei",
+      "air": "Wind-ei",
+      "forest": "Bos-ei",
+      "moon": "Maan-ei",
+      "sun": "Zonne-ei"
     }
   }
 }

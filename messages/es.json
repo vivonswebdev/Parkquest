@@ -56,7 +56,10 @@
     "trails": "Rutas",
     "tips": "Consejos",
     "community": "Comunidad",
-    "mainNavigation": "Navegación principal"
+    "mainNavigation": "Navegación principal",
+    "parksTab": "Parques",
+    "explore": "Explorar",
+    "collection": "Colección"
   },
   "home": {
     "heroLine1": "Explora.",
@@ -150,7 +153,27 @@
     "spotsCount": "{count} lugares",
     "walk": "{distance} · {minutes}",
     "view3d": "Vista 3D",
-    "view2d": "Vista 2D"
+    "view2d": "Vista 2D",
+    "generalTitle": "Mapa de parques",
+    "parksTitle": "Descubre los parques a tu alrededor",
+    "chooseParkTitle": "Elige un parque",
+    "parksCount": "{count, plural, one {# parque} other {# parques}}",
+    "placesCount": "{count, plural, one {# lugar} other {# lugares}}",
+    "fromYou": "Ordenados desde tu ubicación",
+    "enableToSort": "Activa tu ubicación para ver los parques más cercanos.",
+    "demoZone": "Ubicación no disponible: mapa centrado en la zona de demostración (Bruselas).",
+    "nearestPark": "Parque más cercano",
+    "openParkMap": "Mapa del parque",
+    "seePark": "Ver el parque",
+    "comingSoon": "Próximamente",
+    "parkStats": "{spots} lugares · {trails} rutas",
+    "fullscreenEnter": "Abrir el mapa a pantalla completa",
+    "fullscreenExit": "Salir de pantalla completa",
+    "panelCollapse": "Reducir el panel",
+    "panelExpand": "Abrir el panel",
+    "panelHide": "Ocultar el panel",
+    "panelShow": "{title} · {count}",
+    "nearbyShort": "A tu alrededor"
   },
   "gps": {
     "denied": "Ubicación denegada",
@@ -700,6 +723,201 @@
       "EW": "Extinta en estado silvestre",
       "EX": "Extinta",
       "DD": "Datos insuficientes"
+    }
+  },
+  "explore": {
+    "title": "Modo Exploración",
+    "loading": "Preparando la aventura…",
+    "cardBody": "Una aventura guiada, solo por los caminos del parque.",
+    "cardCta": "Empezar la aventura",
+    "demoData": "Dato de demostración, pendiente de validar con el parque.",
+    "quests": {
+      "secretSequoia": {
+        "title": "El secreto de la secuoya",
+        "intro": "Ve a la secuoya gigante: allí te espera el primer enigma.",
+        "steps": {
+          "s1": {
+            "title": "El enigma del gigante",
+            "body": "Estás al pie del árbol más alto de esta ruta. Este es su enigma:\n«Busca un árbol de hojas con lóbulos redondeados. Sus frutos llevan un pequeño sombrero. Te espera más adelante en el camino.»",
+            "fact": "En su California natal, las secuoyas gigantes están entre los seres vivos más grandes y antiguos: algunas tienen más de 3.000 años."
+          },
+          "s2": {
+            "title": "El roble de los sombreritos",
+            "body": "¡Bien encontrado! Observa sus hojas y su corteza sin salir del camino y responde a la pregunta.",
+            "fact": "Un solo roble puede albergar cientos de especies de insectos, aves, líquenes y hongos."
+          },
+          "s3": {
+            "title": "El bosque de tallos",
+            "body": "Acércate al bambú sin salir del camino y sin entrar en los macizos. Observa los tallos: ¿ves los nudos regulares que los dividen en segmentos?",
+            "fact": "Algunos bambúes están entre las plantas que crecen más rápido del mundo: varias decenas de centímetros en un día."
+          },
+          "s4": {
+            "title": "El susurro del cedro",
+            "body": "Escucha la pista del cedro, o léela:\n«Mis ramas se extienden en amplios pisos. Vengo de las montañas del Líbano. Después, ve adonde la vista llega lejos.»",
+            "fact": "El cedro del Líbano aparece en la bandera de ese país. Su madera perfumada ya era muy apreciada en la Antigüedad."
+          },
+          "s5": {
+            "title": "La mirada del paseante",
+            "body": "Tómate tu tiempo para mirar el paisaje. Si quieres, haz una foto con la cámara de tu teléfono. Esta etapa es opcional.",
+            "fact": "En los jardines históricos, los miradores se diseñaban a menudo para realzar un árbol, un edificio o una perspectiva."
+          },
+          "s6": {
+            "title": "El secreto de la secuoya",
+            "body": "Has seguido todas las pistas. Vuelve al pie de la secuoya gigante: su secreto está listo para ser revelado.",
+            "fact": "La corteza gruesa y fibrosa de la secuoya gigante la protege de los incendios forestales."
+          }
+        },
+        "reward": {
+          "name": "Huevo de la Secuoya",
+          "body": "Un huevo especial de demostración, por descubrir el secreto de la secuoya. Podrá eclosionar más adelante, cuando lleguen las criaturas de la colección."
+        }
+      }
+    },
+    "safety": {
+      "title": "Antes de empezar",
+      "l1": "{app} se juega al aire libre. Presta atención a tu entorno.",
+      "l2": "No salgas nunca de los caminos autorizados y respeta las señales.",
+      "l3": "Detente antes de mirar la pantalla.",
+      "l4": "Cuidado con las bicis, los demás visitantes y los obstáculos.",
+      "l5": "Los niños juegan con un adulto.",
+      "accept": "He entendido estas indicaciones",
+      "start": "Empezar la aventura",
+      "back": "Volver",
+      "parkRules": "{app} no sustituye las normas e indicaciones del parque."
+    },
+    "dashboard": {
+      "title": "Desplazamiento",
+      "remaining": "Falta",
+      "minutes": "≈ {minutes} min",
+      "direction": "Dirección",
+      "walked": "Recorrido",
+      "speed": "Velocidad",
+      "speedValue": "{value} km/h",
+      "note": "Calculado en tu teléfono, nunca enviado. Indicativo: ir rápido no da nada."
+    },
+    "cardinals": {
+      "N": "Norte",
+      "NE": "Noreste",
+      "E": "Este",
+      "SE": "Sureste",
+      "S": "Sur",
+      "SW": "Suroeste",
+      "W": "Oeste",
+      "NW": "Noroeste"
+    },
+    "cardinalsShort": {
+      "N": "N",
+      "NE": "NE",
+      "E": "E",
+      "SE": "SE",
+      "S": "S",
+      "SW": "SO",
+      "W": "O",
+      "NW": "NO"
+    },
+    "pause": "Pausa",
+    "paused": "Aventura en pausa",
+    "pausedBody": "El seguimiento de tu ubicación está detenido. Continúa cuando quieras.",
+    "resume": "Continuar",
+    "quit": "Salir",
+    "quitTitle": "¿Salir de la aventura?",
+    "quitBody": "Tu progreso queda guardado en este teléfono.",
+    "continue": "Seguir",
+    "announceResumed": "Aventura reanudada.",
+    "announceStep": "Etapa {n}: {title}. Ve a: {spot}.",
+    "arrivedVia": {
+      "gps": "Llegada validada por GPS: {spot}.",
+      "qr": "Llegada validada por código QR: {spot}.",
+      "manual": "Llegada confirmada: {spot}."
+    },
+    "step": {
+      "progress": "{done} de {total} etapas completadas",
+      "optional": "Opcional",
+      "goTo": "Ve a: {spot}",
+      "here": "Estás en: {spot}",
+      "arrived": "Ya estoy aquí",
+      "skip": "Saltar esta etapa",
+      "gpsFallback": "No pasa nada: puedes confirmar tú mismo tu llegada en cada etapa.",
+      "confirmTitle": "¿Estás en: {spot}?",
+      "confirmBody": "Tu GPS no puede comprobarlo con precisión. Confirma tu llegada (los códigos QR del parque llegarán más adelante).",
+      "confirmYes": "Lo confirmo"
+    },
+    "activity": {
+      "kind": {
+        "riddle": "Enigma",
+        "quiz": "Quiz",
+        "observe": "Observación",
+        "audioHint": "Pista de audio",
+        "photo": "Foto",
+        "reward": "Tesoro"
+      },
+      "riddleDone": "He leído el enigma",
+      "observeDone": "Ya he observado",
+      "didYouKnow": "¿Sabías que…?",
+      "audioListen": "Escuchar la pista",
+      "audioStop": "Detener",
+      "audioUnavailable": "El audio no está disponible en este dispositivo: la pista está escrita abajo.",
+      "transcript": "Transcripción",
+      "audioDone": "He entendido la pista",
+      "photoNote": "No se envía nada: tu foto se queda en tu teléfono.",
+      "photoDone": "Hecho",
+      "openTreasure": "Revelar el secreto"
+    },
+    "reward": {
+      "title": "¡Tesoro encontrado!",
+      "rules": "Huevo de demostración · no intercambiable · no se vende · sin sorteo",
+      "replay": "Volver a jugar",
+      "back": "Volver a la ruta",
+      "announce": "Tesoro encontrado: el Huevo de la Secuoya."
+    }
+  },
+  "game": {
+    "hello": "Hola, explorador",
+    "activeEgg": "Mi huevo activo",
+    "energy": "{value} / {max} energía de la naturaleza",
+    "energyLabel": "Energía de la naturaleza",
+    "discoveriesLeft": "{count, plural, one {Falta aproximadamente # descubrimiento} other {Faltan aproximadamente # descubrimientos}}",
+    "readyTitle": "¡Listo para eclosionar!",
+    "readyBody": "La eclosión llegará pronto.",
+    "firstTitle": "Tu primer huevo te espera",
+    "firstBody": "Empieza una aventura para hacerlo crecer.",
+    "chooseTitle": "Elige tu próximo huevo",
+    "noneTitle": "Ningún huevo por ahora",
+    "noneBody": "Tu próximo huevo llegará al terminar una aventura.",
+    "exploreCta": "Explorar un parque",
+    "demoProgress": "Progreso de demostración, guardado en este dispositivo.",
+    "companionTitle": "Mi compañero",
+    "companionEmpty": "Aún no tienes compañero",
+    "companionEmptyBody": "Quizá una criatura te espera en tu próximo huevo.",
+    "collectionTitle": "Mi colección",
+    "seeCollection": "Ver",
+    "collectionCount": "{count} / {total} criaturas descubiertas",
+    "elementLocked": "{element}: aún no descubierta",
+    "provisional": "Emblemas provisionales, hasta las ilustraciones oficiales.",
+    "nearTitle": "Cerca de ti",
+    "adventureSteps": "{count} etapas",
+    "seeAdventure": "Ver la aventura",
+    "allParks": "Ver todos los parques",
+    "eventsTitle": "Eventos",
+    "collectionPageTitle": "Mi colección",
+    "albumSoon": "El álbum completo, las fichas de criaturas y el compañero llegarán pronto.",
+    "elements": {
+      "leaf": "Hoja",
+      "water": "Agua",
+      "flower": "Flor",
+      "air": "Aire",
+      "forest": "Bosque",
+      "moon": "Lunar",
+      "sun": "Solar"
+    },
+    "eggNames": {
+      "leaf": "Huevo de la hoja",
+      "water": "Huevo del agua",
+      "flower": "Huevo de las flores",
+      "air": "Huevo del viento",
+      "forest": "Huevo del bosque",
+      "moon": "Huevo de la luna",
+      "sun": "Huevo del sol"
     }
   }
 }
