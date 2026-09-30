@@ -1,4 +1,6 @@
-# ParkQuest
+# TYLIA (ex-ParkQuest)
+
+> **Discover Nature.** Nouveau nom de marque en préparation : la disponibilité de la marque (EUIPO, BOIP, INPI), des domaines et des noms sur les stores reste à vérifier. Le dépôt et les identifiants techniques restent `parkquest`. Identité : `src/config/brand.ts`, logo `public/brand/`.
 
 **Explorez. Apprenez. Jouez.** — le compagnon de visite des parcs, jardins botaniques et arboretums.
 

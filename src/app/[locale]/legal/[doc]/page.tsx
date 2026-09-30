@@ -20,12 +20,12 @@ const BODY: Record<Doc, string> = {
 - Publier une photo ou un commentaire sans modération.
 
 ## Vos droits (RGPD)
-Accès, rectification, suppression, portabilité : contactez l'équipe ParkQuest (adresse à définir).
+Accès, rectification, suppression, portabilité : contactez l'équipe TYLIA (adresse à définir).
 
 ## Mineurs
 Les fonctions communautaires pour les mineurs nécessiteront un consentement parental (à venir).`,
   terms: `## Objet
-ParkQuest est un compagnon de visite de parcs. Les contenus marqués « Démo » sont des exemples non validés par les parcs.
+TYLIA est un compagnon de visite de parcs. Les contenus marqués « Démo » sont des exemples non validés par les parcs.
 
 ## Règles de conduite
 Respectez les règles de chaque parc, restez sur les chemins, ne cueillez pas les plantes.
