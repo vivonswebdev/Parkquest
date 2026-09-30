@@ -205,6 +205,20 @@ test("visite plein écran : défilement de la page bloqué, restauré à la sort
   await expect(page.locator("html")).not.toHaveClass(/pq-immersive/);
 });
 
+test("interface publique : jamais le mot « Démo » seul, seulement « Donnée de démonstration à valider avec le parc. »", async ({ page }) => {
+  for (const path of ["/fr", "/fr/parks", "/fr/parks/plantentuin-meise", "/fr/parks/plantentuin-meise/trails/arbres-remarquables", "/fr/parks/plantentuin-meise/spots/sequoia-geant"]) {
+    await page.goto(path);
+    // Texte réellement affiché (hors scripts), panneau d'outils de démonstration retiré de la page
+    const text = await page.evaluate(() => {
+      document.querySelectorAll("[data-demo-tools]").forEach((n) => n.remove());
+      return document.body.innerText;
+    });
+    expect(text, path).not.toMatch(/(^|[^\p{L}])démo([^\p{L}]|$)/iu);
+  }
+  await page.goto("/fr");
+  await expect(page.getByText("Donnée de démonstration à valider avec le parc.").first()).toBeVisible();
+});
+
 test("interface publique : aucun texte technique (test, mock, debug, prototype, Supabase)", async ({ page }) => {
   const forbidden = /mode (démo|test)|\btest\b|mock|debug|prototype|supabase/i;
   for (const path of ["/fr", "/fr/parks/plantentuin-meise", "/fr/parks/plantentuin-meise/trails/arbres-remarquables", "/fr/parks/plantentuin-meise/spots/sequoia-geant", "/fr/profile", "/fr/auth/sign-in", "/en", "/nl"]) {
