@@ -1,9 +1,9 @@
 import { Compass, Home, Map, Trophy, UserRound } from "lucide-react";
-import { FEATURED_PARK_SLUG_PUBLIC } from "@/lib/constants";
 
 export const NAV_ITEMS = [
   { key: "home", href: "/", icon: Home, match: (p: string) => p === "/" },
-  { key: "map", href: `/parks/${FEATURED_PARK_SLUG_PUBLIC}/map`, icon: Map, match: (p: string) => p.endsWith("/map") },
+  // Carte générale (tous les parcs) : aucun parc sélectionné d'office.
+  { key: "map", href: "/map", icon: Map, match: (p: string) => p.endsWith("/map") },
   {
     key: "discover",
     href: "/parks",
