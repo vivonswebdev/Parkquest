@@ -86,8 +86,9 @@ export const CREATURES: Creature[] = [
     lore: "Elle reflète le ciel du moment où on la rencontre.",
     unlock: "Faire éclore l'Œuf de la rivière, ou trouver 3 découvertes",
     details: [
-      { label: "Reflet du ciel", box: "60 40 80 80" },
-      { label: "Socle de galet", box: "30 150 140 50" },
+      { label: "Vague en boucle", box: "70 10 70 60" },
+      { label: "Branchies-frondes", box: "118 70 70 70" },
+      { label: "Bulles et reflets", box: "50 120 100 70" },
     ],
   },
   {
@@ -100,8 +101,9 @@ export const CREATURES: Creature[] = [
     lore: "Sa lanterne s'allume doucement pour éclairer les chemins du retour.",
     unlock: "Faire éclore l'Œuf du crépuscule, ou explorer au crépuscule",
     details: [
-      { label: "Lanterne organique", box: "100 10 80 80" },
-      { label: "Ailes de voile", box: "30 60 140 70" },
+      { label: "Antennes lumineuses", box: "110 30 80 80" },
+      { label: "Ailes de voile", box: "120 60 80 80" },
+      { label: "Collerette dorée", box: "55 125 90 60" },
     ],
   },
   {

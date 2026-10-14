@@ -4,6 +4,8 @@ import { CREATURES } from "@/features/lab/creatures";
 /* Sommaire du laboratoire : uniquement pour tester le prototype (non relié à l'application officielle). */
 const SCREENS: [string, string][] = [
   ["Mossy · planche de validation", "/fr/lab/mossy"],
+  ["Perline · planche de validation", "/fr/lab/perline"],
+  ["Lumo · planche de validation", "/fr/lab/lumo"],
   ["Bienvenue", "/fr/lab/welcome"],
   ["Tutoriel · étape 1", "/fr/lab/onboarding/1"],
   ["Tutoriel · étape 4 (œuf)", "/fr/lab/onboarding/4"],

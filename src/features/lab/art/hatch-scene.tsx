@@ -2,7 +2,7 @@ import { useId } from "react";
 import type { CreatureId, EggId } from "../creatures";
 import { EggArt } from "./egg";
 import { GuardianFigure } from "./guardians";
-import { MossyFigure } from "./mossy";
+import { CompanionFigure, isFigurine } from "./companion";
 
 /*
  * Scène d'éclosion : l'œuf et le compagnon partagent le même sol (même ombre portée).
@@ -47,6 +47,14 @@ const PIECES: { id: string; clip: string; to: string }[] = [
   { id: "chip", clip: "M134 104 L148 118 L166 110 L200 110 V140 L170 140 L150 136 Z", to: "translate(30px, 16px) rotate(40deg)" },
   { id: "cup", clip: "M0 240 H200 V140 L170 140 L150 136 L134 104 L120 118 L106 102 L92 120 L78 106 L62 124 L50 112 L34 122 L0 122 Z", to: "translateY(8px)" },
 ];
+
+/* Sol et particules propres à chaque œuf */
+const GROUND: Record<EggId, string> = { forest: "#cfe0a8", river: "#bfe4f2", dusk: "#d8d2f0" };
+const PARTICLE: Record<EggId, string[]> = {
+  forest: ["#9fca6c", "#c3df8a", "#f6c76a", "#86ad55"],
+  river: ["#bfe4f2", "#7cc1da", "#ffffff", "#9fd8ec"],
+  dusk: ["#f6c76a", "#ffe2a6", "#c9bff0", "#f6b54a"],
+};
 
 const LEAVES = [
   { x: 96, y: 150, dx: "-38px", rot: "-160deg", c: "#9fca6c", delay: 0 },
@@ -122,7 +130,7 @@ export function HatchScene({
 
       {/* Sol commun : petite clairière + ombre portée qui passe de l'œuf au compagnon */}
       <ellipse cx="120" cy="226" rx="96" ry="16" fill="#e7dcbc" opacity="0.7" />
-      <ellipse cx="120" cy="224" rx="74" ry="10" fill="#cfe0a8" opacity="0.7" />
+      <ellipse cx="120" cy="224" rx="74" ry="10" fill={GROUND[egg]} opacity="0.75" />
       <ellipse
         cx="120"
         cy="221"
@@ -158,7 +166,7 @@ export function HatchScene({
             key={i}
             d="M0 0 C 4 -5, 4 -12, 0 -16 C -4 -12, -4 -5, 0 0 Z"
             transform={`translate(${l.x} ${l.y})`}
-            fill={l.c}
+            fill={PARTICLE[egg][i % 4]}
             className="hatch-leaf"
             style={{ ["--dx" as string]: l.dx, ["--rot" as string]: l.rot, animationDelay: `${l.delay}s` } as React.CSSProperties}
           />
@@ -167,8 +175,9 @@ export function HatchScene({
       {/* Compagnon, au même emplacement que l'œuf */}
       {born && (
         <g className={reduced ? "lab-fade-up" : "hatch-pop"} style={{ transformOrigin: "120px 220px" }}>
-          {creature === "mossy" ? (
-            <MossyFigure
+          {isFigurine(creature) ? (
+            <CompanionFigure
+              id={creature}
               mood={mossyMood}
               look={look}
               eyesClosed={phase === "blink"}

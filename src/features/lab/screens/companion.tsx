@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { EggArt } from "../art/egg";
 import { GuardianFigure } from "../art/guardians";
-import { MossyFigure } from "../art/mossy";
+import { CompanionFigure, isFigurine } from "../art/companion";
 import { creatureById, eggById, LINEAGE, STAGE_LABEL } from "../creatures";
 import { applyAction, collected, companionOf, nextEvolution, stageOf, STEPS_PER_ADVENTURE, type LabAction } from "../state";
 import { DemoNote, LAB, LabNav, LabTopBar, ProgressBar, useToast } from "../ui";
@@ -71,10 +71,11 @@ function Companion() {
                 setPoke((n) => n + 1);
                 setHappy(true);
               }} aria-label={`Saluer ${creature.name}`} className="relative mx-auto block rounded-full">
-              {companion === "mossy" ? (
-                // Mossy vivant : respiration, clignements ; au toucher, écrasement + joie
+              {isFigurine(companion) ? (
+                // Compagnon vivant : respiration, clignements ; au toucher, écrasement + joie
                 <span key={stage} className="lab-reveal block">
-                  <MossyFigure
+                  <CompanionFigure
+                    id={companion}
                     form={stage === "guardian" || stage === "lunar" ? "adult" : "young"}
                     lunar={stage === "lunar"}
                     scarf={stage === "explorer"}

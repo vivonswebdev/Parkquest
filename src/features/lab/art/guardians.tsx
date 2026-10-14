@@ -1,6 +1,6 @@
 import { useId, type ReactNode } from "react";
 import { RARITY, creatureById, type CreatureId, type StageId } from "../creatures";
-import { MossyFigure } from "./mossy";
+import { CompanionFigure, isFigurine } from "./companion";
 
 /*
  * Figurines de gardiens (SVG originaux, rendu « vinyle mat » : dégradés doux, reflet satiné, socle naturel).
@@ -359,9 +359,10 @@ export function GuardianFigure({ id, stage = "young", silhouette, halo = true, s
   const g = useId().replace(/:/g, "");
   const c = creatureById(id);
   // Mossy : nouvelle figurine (prototype de rendu en volume, en cours de validation)
-  if (id === "mossy")
+  if (isFigurine(id))
     return (
-      <MossyFigure
+      <CompanionFigure
+        id={id}
         form={stage === "guardian" || stage === "lunar" ? "adult" : "young"}
         lunar={stage === "lunar"}
         scarf={stage === "explorer"}

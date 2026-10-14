@@ -105,3 +105,26 @@ test("laboratoire : jamais relié à l'application officielle", async ({ page })
   await page.goto("/nl/lab/welcome");
   await expect(page.getByRole("heading", { name: "Ton prochain secret commence ici." })).toHaveCount(0);
 });
+
+test("laboratoire : l'œuf choisi donne le bon compagnon partout (rivière → Perline, crépuscule → Lumo)", async ({ page }) => {
+  for (const [egg, name, young] of [
+    ["Œuf de la rivière", "Perline", "Perline, jeune gardienne"],
+    ["Œuf du crépuscule", "Lumo", "Lumo, jeune gardien"],
+  ]) {
+    await page.goto("/fr/lab/choose-egg");
+    await page.getByText(egg, { exact: true }).click();
+    await page.getByRole("button", { name: "Choisir ma première aventure" }).click();
+    await page.goto("/fr/lab/hatch");
+    await expect(page.getByRole("img", { name: new RegExp(egg) })).toBeVisible();
+    await page.getByRole("button", { name: "Simuler une découverte (démo)" }).click();
+    await page.getByRole("button", { name: "Ouvrir l'œuf" }).click();
+    await page.getByRole("button", { name: "Passer l'animation" }).click();
+    await expect(page.getByRole("heading", { name: young })).toBeVisible();
+    await page.goto("/fr/lab/companion");
+    await expect(page.getByRole("heading", { name: young })).toBeVisible();
+    await page.goto("/fr/lab/home");
+    await expect(page.getByText(young).first()).toBeVisible();
+    await page.goto(`/fr/lab/${name.toLowerCase()}`);
+    await expect(page.getByRole("img", { name: `${young}, au repos` })).toBeVisible();
+  }
+});

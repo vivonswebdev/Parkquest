@@ -708,3 +708,89 @@
   transform-origin: center;
   animation: hatch-leaf 1.8s ease-out forwards;
 }
+
+/* ——— Compagnons (Perline, Lumo) : mouvements propres à chaque identité ——— */
+.comp-sway,
+.comp-wing,
+.comp-wing-fast,
+.comp-ripple,
+.comp-glow {
+  transform-box: view-box;
+}
+@keyframes comp-sway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+.comp-sway {
+  animation: comp-sway 3.6s ease-in-out infinite;
+}
+/* Ailes de voile : battement lent au repos, rapide dans la joie */
+@keyframes comp-wing {
+  0%,
+  100% {
+    transform: rotate(0) scaleX(1);
+  }
+  50% {
+    transform: rotate(-4deg) scaleX(0.92);
+  }
+}
+.comp-wing {
+  animation: comp-wing 2.8s ease-in-out infinite;
+}
+.comp-wing-fast {
+  animation: comp-wing 0.22s ease-in-out 6;
+}
+/* Lumière qui « respire » (lanterne, antennes) */
+@keyframes comp-glow {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+.comp-glow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: comp-glow 2.6s ease-in-out infinite;
+}
+/* Bulles qui montent dans le corps de Perline */
+@keyframes comp-bubble {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(-46px);
+    opacity: 0;
+  }
+}
+.comp-bubble {
+  transform-box: fill-box;
+  animation: comp-bubble 3.2s ease-in infinite;
+}
+/* Ondes sur l'eau du socle */
+@keyframes comp-ripple {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+.comp-ripple {
+  animation: comp-ripple 3s ease-out infinite;
+}

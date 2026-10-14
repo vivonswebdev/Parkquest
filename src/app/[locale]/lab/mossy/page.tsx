@@ -1,5 +1,5 @@
-import { MossyPreviewScreen } from "@/features/lab/screens/mossy-preview";
+import { FigurinePreviewScreen } from "@/features/lab/screens/figurine-preview";
 
 export default function Page() {
-  return <MossyPreviewScreen />;
+  return <FigurinePreviewScreen id="mossy" />;
 }
