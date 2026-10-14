@@ -2,10 +2,11 @@
 
 import { Footprints, GitBranch, Moon, RotateCcw, Search } from "lucide-react";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { EggArt } from "../art/egg";
 import { GuardianFigure } from "../art/guardians";
+import { MossyFigure } from "../art/mossy";
 import { creatureById, eggById, LINEAGE, STAGE_LABEL } from "../creatures";
 import { applyAction, collected, companionOf, nextEvolution, stageOf, STEPS_PER_ADVENTURE, type LabAction } from "../state";
 import { DemoNote, LAB, LabNav, LabTopBar, ProgressBar, useToast } from "../ui";
@@ -22,6 +23,12 @@ function Companion() {
   const { state, act, reset } = useLabState();
   const [toast, say] = useToast();
   const [poke, setPoke] = useState(0);
+  const [happy, setHappy] = useState(false);
+  useEffect(() => {
+    if (!poke) return;
+    const t = setTimeout(() => setHappy(false), 1400);
+    return () => clearTimeout(t);
+  }, [poke]);
   const lastStage = useRef(stageOf(state));
   const stage = stageOf(state);
   const companion = companionOf(state);
@@ -60,10 +67,31 @@ function Companion() {
           {stage === "egg" ? (
             <EggArt egg={state.egg} state="dormant" className="mx-auto h-64 w-auto" title={title} />
           ) : (
-            <button type="button" onClick={() => setPoke((n) => n + 1)} aria-label={`Saluer ${creature.name}`} className="relative mx-auto block rounded-full">
-              <span key={`${stage}-${poke}`} className={cn("block", poke > 0 ? "lab-wiggle" : "lab-reveal")}>
-                <GuardianFigure id={companion} stage={stage} className="mx-auto h-64 w-auto" title={title} />
-              </span>
+            <button type="button" onClick={() => {
+                setPoke((n) => n + 1);
+                setHappy(true);
+              }} aria-label={`Saluer ${creature.name}`} className="relative mx-auto block rounded-full">
+              {companion === "mossy" ? (
+                // Mossy vivant : respiration, clignements ; au toucher, écrasement + joie
+                <span key={stage} className="lab-reveal block">
+                  <MossyFigure
+                    form={stage === "guardian" || stage === "lunar" ? "adult" : "young"}
+                    lunar={stage === "lunar"}
+                    scarf={stage === "explorer"}
+                    idle
+                    socle
+                    mood={happy ? "happy" : "rest"}
+                    hop={poke}
+                    squish={poke}
+                    className="mx-auto h-64 w-auto"
+                    title={title}
+                  />
+                </span>
+              ) : (
+                <span key={`${stage}-${poke}`} className={cn("block", poke > 0 ? "lab-wiggle" : "lab-reveal")}>
+                  <GuardianFigure id={companion} stage={stage} className="mx-auto h-64 w-auto" title={title} />
+                </span>
+              )}
               {poke > 0 && (
                 <span key={poke} role="status" className="lab-fade-up absolute -top-1 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white px-3 py-1 text-sm font-semibold text-[var(--lab-ink)] shadow">
                   {MURMURS[poke % MURMURS.length]}

@@ -73,6 +73,13 @@ test("laboratoire : « Passer » mène au choix de l'œuf ; collection, fiche et
   await page.getByRole("button", { name: "Rares" }).click();
   await expect(page.getByText("Légendaire")).toBeVisible();
 
+  // Planche de validation de Mossy : réactions et éclosion rejouable
+  await page.goto("/fr/lab/mossy");
+  await expect(page.getByRole("img", { name: "Mossy, jeune gardien, au repos" })).toBeVisible();
+  await page.getByRole("button", { name: "Joie" }).click();
+  await page.getByRole("button", { name: "Lancer l'éclosion" }).click();
+  await expect(page.getByRole("button", { name: "Rejouer l'éclosion" })).toBeVisible({ timeout: 10_000 });
+
   await page.goto("/fr/lab/creature/selenis");
   await expect(page.getByRole("heading", { name: "Sélénis" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Rejouer l'éclosion" })).toBeVisible();

@@ -2,32 +2,37 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { EggArt } from "../art/egg";
-import { GuardianFigure } from "../art/guardians";
+import { HatchScene, isHatched, isOpening, type HatchPhase } from "../art/hatch-scene";
 import { eggById, LINEAGE } from "../creatures";
 import { companionOf } from "../state";
 import { BottomActions, DemoNote, LAB, LabTopBar, ProgressBar } from "../ui";
+import { useHatch } from "../use-hatch";
 import { useHydrated, useLabState } from "../use-lab-state";
 
 /*
- * Éclosion en cinq états : endormi → réactif → prêt → éclosion → révélation.
- * Condition écrite (1 découverte), aucun hasard. Animation courte, interruptible (« Passer l'animation »),
- * remplacée par un fondu si prefers-reduced-motion.
+ * Éclosion : endormi → réactif → prêt → séquence (balancement, secousses, fissures, lumière,
+ * coquille en morceaux, apparition, clignement, regard, joie) → nom + bouton.
+ * Condition écrite (1 découverte), aucun hasard. Interruptible ; version simplifiée si animations réduites.
  */
 
-type Phase = "dormant" | "reactive" | "ready" | "hatching" | "reveal";
+const STEPS: { label: string; done(p: HatchPhase): boolean }[] = [
+  { label: "Endormi", done: () => true },
+  { label: "Réactif", done: (p) => p !== "dormant" },
+  { label: "Prêt", done: (p) => p !== "dormant" && p !== "reactive" },
+  { label: "Éclosion", done: (p) => isOpening(p) || p === "done" },
+  { label: "Révélation", done: (p) => p === "done" },
+];
 
-const TEXT: Record<Phase, string> = {
-  dormant: "Un secret sommeille ici.",
-  reactive: "L'œuf réagit à tes découvertes.",
-  ready: "Ton œuf est prêt à éclore.",
-  hatching: "La coquille s'ouvre doucement…",
-  reveal: "Un jeune gardien est né de tes découvertes.",
-};
-
-const reducedMotion = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function headline(p: HatchPhase, name: string) {
+  if (p === "dormant") return "Un secret sommeille ici.";
+  if (p === "reactive") return "L'œuf réagit à tes découvertes.";
+  if (p === "ready") return "Ton œuf est prêt à éclore.";
+  if (p === "done") return name;
+  if (isHatched(p)) return "Bonjour, petit gardien…";
+  return "La coquille s'ouvre doucement…";
+}
 
 export function HatchScreen({ replay }: { replay: boolean }) {
   const hydrated = useHydrated();
@@ -37,85 +42,79 @@ export function HatchScreen({ replay }: { replay: boolean }) {
 function Hatch({ replay }: { replay: boolean }) {
   const { state, update } = useLabState();
   const router = useRouter();
-  const [phase, setPhase] = useState<Phase>(() => (state.hatched && !replay ? "reveal" : "dormant"));
-  const [eggOpen, setEggOpen] = useState(false);
-  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const { phase, setPhase, reduced, open, skip, reset } = useHatch(state.hatched && !replay ? "done" : "dormant");
+  const [hop, setHop] = useState(0);
+  const [squish, setSquish] = useState(0);
   const egg = eggById(state.egg);
   const companion = companionOf(state);
   const name = LINEAGE[companion].young;
   const hasDiscovery = state.discoveries >= 1;
+  const opening = isOpening(phase);
+  const done = phase === "done";
 
-  useEffect(() => () => timers.current.forEach(clearTimeout), []);
+  // L'œuf réagit un instant à la découverte, puis se déclare prêt
+  useEffect(() => {
+    if (phase !== "reactive") return;
+    const t = setTimeout(() => setPhase((p) => (p === "reactive" ? "ready" : p)), 1800);
+    return () => clearTimeout(t);
+  }, [phase, setPhase]);
 
-  const later = (ms: number, fn: () => void) => timers.current.push(setTimeout(fn, reducedMotion() ? 0 : ms));
+  const markHatched = () => update({ hatched: true, discoveries: Math.max(1, state.discoveries) });
 
   const wake = () => {
     if (!hasDiscovery) update({ discoveries: 1 });
     setPhase("reactive");
-    later(1800, () => setPhase((p) => (p === "reactive" ? "ready" : p)));
   };
 
-  const finish = () => {
-    timers.current.forEach(clearTimeout);
-    timers.current = [];
-    update({ hatched: true, discoveries: Math.max(1, state.discoveries) });
-    setPhase("reveal");
-  };
-
-  const open = () => {
-    setPhase("hatching");
-    later(1700, () => setEggOpen(true));
-    later(2800, finish);
-  };
-
+  // Rejouer : toute la séquence d'ouverture, directement depuis l'œuf prêt
   const restart = () => {
-    timers.current.forEach(clearTimeout);
-    timers.current = [];
-    setEggOpen(false);
-    setPhase("dormant");
+    reset("ready");
     router.replace(`${LAB}/hatch?replay=1`, { scroll: false });
+    setTimeout(() => open(markHatched), 700);
   };
-
-  const night = phase === "hatching" || phase === "reveal";
 
   return (
     <main
       className={cn(
         "flex min-h-full flex-col transition-[background] duration-700",
-        night ? "bg-[radial-gradient(circle_at_50%_38%,#fff1cc_0%,#f6e3b8_35%,#f8f2e4_75%)]" : "bg-[radial-gradient(circle_at_50%_38%,#f3ecd6_0%,#f8f2e4_70%)]",
+        opening || done ? "bg-[radial-gradient(circle_at_50%_38%,#fff1cc_0%,#f6e3b8_35%,#f8f2e4_75%)]" : "bg-[radial-gradient(circle_at_50%_38%,#f3ecd6_0%,#f8f2e4_70%)]",
       )}
     >
       <LabTopBar back={`${LAB}/first-discovery`} title={egg.label} />
       <div className="flex flex-1 flex-col items-center px-5">
         <ol className="mt-1 flex gap-1.5" aria-label="Étapes de l'éclosion">
-          {(["dormant", "reactive", "ready", "hatching", "reveal"] as Phase[]).map((p, i, all) => (
-            <li
-              key={p}
-              aria-current={p === phase ? "step" : undefined}
-              className={cn("h-1.5 w-8 rounded-full", all.indexOf(phase) >= i ? "bg-[var(--lab-amber)]" : "bg-[rgba(31,90,61,0.15)]")}
-            >
-              <span className="sr-only">{TEXT[p]}</span>
+          {STEPS.map((s) => (
+            <li key={s.label} className={cn("h-1.5 w-8 rounded-full transition-colors", s.done(phase) ? "bg-[var(--lab-amber)]" : "bg-[rgba(31,90,61,0.15)]")}>
+              <span className="sr-only">
+                {s.label}
+                {s.done(phase) ? " (atteint)" : ""}
+              </span>
             </li>
           ))}
         </ol>
 
-        <div className="relative mt-2 grid h-[min(34vh,18rem)] w-full place-items-center">
-          {phase !== "reveal" ? (
-            <EggArt egg={state.egg} state={eggOpen ? "open" : phase === "hatching" ? "hatching" : phase === "ready" ? "ready" : phase === "reactive" ? "reactive" : "dormant"} className="h-full w-auto" title={`${egg.label} : ${TEXT[phase]}`} />
-          ) : (
-            <div className="lab-reveal grid size-full place-items-center">
-              <GuardianFigure id={companion} stage="young" className="h-full w-auto" title={name} />
-            </div>
-          )}
+        <button
+          type="button"
+          disabled={!done}
+          onClick={() => {
+            setSquish((n) => n + 1);
+            setHop((n) => n + 1);
+          }}
+          aria-label={done ? `Saluer ${name}` : undefined}
+          className="relative mt-1 grid h-[min(40vh,21rem)] w-full place-items-center rounded-[28px] disabled:cursor-default"
+        >
+          <HatchScene egg={state.egg} creature={companion} phase={phase} reduced={reduced} hop={hop} squish={squish} className="h-full w-auto" title={`${egg.label} — ${headline(phase, name)}`} />
+        </button>
+
+        <div className="min-h-[5.5rem] w-full max-w-md text-center" aria-live="polite">
+          <h1 key={done ? "done" : "x"} className={cn("lab-serif text-[1.85rem] leading-tight font-bold text-[var(--lab-forest-deep)]", done && "lab-fade-up")}>
+            {headline(phase, name)}
+          </h1>
+          {done && <p className="lab-fade-up mt-1 text-[var(--lab-ink-soft)]">Il est né de tes découvertes. Touche-le pour le saluer.</p>}
         </div>
 
-        <div className="w-full max-w-md text-center" aria-live="polite">
-          <h1 className="lab-serif text-[1.85rem] leading-tight font-bold text-[var(--lab-forest-deep)]">{phase === "reveal" ? name : TEXT[phase]}</h1>
-          {phase === "reveal" && <p className="mt-2 text-[var(--lab-ink-soft)]">{TEXT.reveal}</p>}
-        </div>
-
-        {phase !== "reveal" && (
-          <div className="mt-5 w-full max-w-md space-y-2 rounded-[22px] bg-[rgba(255,250,240,0.85)] p-4">
+        {(phase === "dormant" || phase === "reactive" || phase === "ready") && (
+          <div className="mt-2 w-full max-w-md space-y-2 rounded-[22px] bg-[rgba(255,250,240,0.85)] p-4">
             <p className="text-sm font-semibold">Condition d&apos;éclosion : 1 découverte</p>
             <ProgressBar value={hasDiscovery || phase !== "dormant" ? 1 : 0} max={1} label="Énergie de l'œuf" tone="amber" />
             <p className="text-sm text-[var(--lab-ink-soft)]">{hasDiscovery || phase !== "dormant" ? "1 découverte sur 1 — l'œuf a assez d'énergie." : "0 découverte sur 1"}</p>
@@ -140,26 +139,33 @@ function Hatch({ replay }: { replay: boolean }) {
             </>
           ))}
         {phase === "reactive" && (
-          <button type="button" className="lab-btn lab-btn-ghost" onClick={() => setPhase("ready")}>
+          <button type="button" className="lab-btn lab-btn-primary" onClick={() => setPhase("ready")}>
             Continuer
           </button>
         )}
         {phase === "ready" && (
           <>
-            <button type="button" className="lab-btn lab-btn-amber" onClick={open}>
+            <button type="button" className="lab-btn lab-btn-amber" onClick={() => open(markHatched)}>
               Ouvrir l&apos;œuf
             </button>
             <p className="text-center text-xs text-[var(--lab-ink-soft)]">Installe-toi à l&apos;arrêt pour ce moment.</p>
           </>
         )}
-        {phase === "hatching" && (
-          <button type="button" className="lab-btn lab-btn-ghost" onClick={finish}>
+        {opening && (
+          <button
+            type="button"
+            className="lab-btn lab-btn-ghost"
+            onClick={() => {
+              skip();
+              markHatched();
+            }}
+          >
             Passer l&apos;animation
           </button>
         )}
-        {phase === "reveal" && (
+        {done && (
           <>
-            <Link href={`${LAB}/companion`} className="lab-btn lab-btn-primary">
+            <Link href={`${LAB}/companion`} className="lab-btn lab-btn-primary lab-fade-up">
               Rencontrer mon gardien
             </Link>
             <button type="button" className="lab-btn text-[var(--lab-forest)]" onClick={restart}>

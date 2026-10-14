@@ -110,6 +110,7 @@ export function EggArt({
   halo = true,
   className,
   title,
+  frame,
 }: {
   egg: EggId;
   state?: EggState;
@@ -117,6 +118,8 @@ export function EggArt({
   halo?: boolean;
   className?: string;
   title?: string;
+  /** Position dans un SVG parent (scène d'éclosion) */
+  frame?: { x: number; y: number; width: number; height: number };
 }) {
   const g = useId().replace(/:/g, "");
   const c = COLORS[egg];
@@ -131,7 +134,7 @@ export function EggArt({
     </g>
   );
   return (
-    <svg viewBox="0 0 200 240" className={className} role={title ? "img" : undefined} aria-label={title} aria-hidden={title ? undefined : true} data-egg-state={state}>
+    <svg viewBox="0 0 200 240" {...frame} className={className} role={title ? "img" : undefined} aria-label={title} aria-hidden={title ? undefined : true} data-egg-state={state}>
       <defs>
         <linearGradient id={`${g}-base`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0.25" stopColor={c.top} />

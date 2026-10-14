@@ -425,3 +425,286 @@
   opacity: calc(var(--d-day-only) * 0.45);
   transition: opacity 0.7s ease;
 }
+
+/* ——— Mossy : animations par parties (paupières, corps, bras, tête, oreilles) ——— */
+.mossy-lid,
+.mossy-arm,
+.mossy-head,
+.mossy-eyes,
+.mossy-breathe,
+.mossy-hop,
+.mossy-hop-shadow,
+.mossy-squish,
+.mossy-ear-wiggle,
+.mossy-sprout {
+  transform-box: view-box;
+}
+.mossy-lid {
+  transition: transform 0.12s ease-in-out;
+}
+.mossy-arm,
+.mossy-head {
+  transition: transform 0.45s cubic-bezier(0.3, 0.7, 0.3, 1);
+}
+.mossy-eyes {
+  transition: transform 0.35s ease-out;
+}
+@keyframes mossy-blink {
+  0%,
+  90%,
+  100% {
+    transform: scaleY(0);
+  }
+  93%,
+  95% {
+    transform: scaleY(1);
+  }
+}
+.mossy-blink {
+  animation: mossy-blink 4.6s ease-in-out infinite;
+}
+@keyframes mossy-breathe {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.012, 1.03);
+  }
+}
+.mossy-breathe {
+  animation: mossy-breathe 3.4s ease-in-out infinite;
+}
+@keyframes mossy-hop {
+  0% {
+    transform: none;
+  }
+  14% {
+    transform: scale(1.08, 0.9);
+  }
+  38% {
+    transform: translateY(-22px) scale(0.95, 1.06);
+  }
+  58% {
+    transform: translateY(0) scale(1.07, 0.92);
+  }
+  70% {
+    transform: translateY(-8px) scale(0.98, 1.03);
+  }
+  84% {
+    transform: scale(1.03, 0.97);
+  }
+  100% {
+    transform: none;
+  }
+}
+.mossy-hop {
+  animation: mossy-hop 1s cubic-bezier(0.3, 0.6, 0.3, 1) both;
+}
+@keyframes mossy-hop-shadow {
+  0%,
+  14%,
+  58%,
+  84%,
+  100% {
+    transform: none;
+    opacity: 0.3;
+  }
+  38% {
+    transform: scale(0.7);
+    opacity: 0.16;
+  }
+  70% {
+    transform: scale(0.88);
+    opacity: 0.22;
+  }
+}
+.mossy-hop-shadow {
+  animation: mossy-hop-shadow 1s cubic-bezier(0.3, 0.6, 0.3, 1) both;
+}
+@keyframes mossy-squish {
+  0% {
+    transform: none;
+  }
+  25% {
+    transform: scale(1.1, 0.88);
+  }
+  55% {
+    transform: scale(0.95, 1.06);
+  }
+  80% {
+    transform: scale(1.02, 0.98);
+  }
+  100% {
+    transform: none;
+  }
+}
+.mossy-squish {
+  animation: mossy-squish 0.55s ease-out both;
+}
+@keyframes mossy-ear-wiggle {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-9deg);
+  }
+  50% {
+    transform: rotate(7deg);
+  }
+  75% {
+    transform: rotate(-4deg);
+  }
+}
+.mossy-ear-wiggle {
+  animation: mossy-ear-wiggle 0.6s ease-in-out 2;
+}
+@keyframes mossy-sprout {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+}
+.mossy-sprout {
+  animation: mossy-sprout 3.4s ease-in-out infinite;
+}
+
+/* ——— Éclosion : balancement, secousses, morceaux de coquille ——— */
+.hatch-sway,
+.hatch-wobble,
+.hatch-shake,
+.hatch-piece,
+.hatch-bloom,
+.hatch-pop {
+  transform-box: view-box;
+}
+@keyframes hatch-sway {
+  0%,
+  100% {
+    transform: rotate(-1.6deg);
+  }
+  50% {
+    transform: rotate(1.6deg);
+  }
+}
+.hatch-sway {
+  animation: hatch-sway 2.6s ease-in-out infinite;
+}
+@keyframes hatch-wobble {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(-6deg);
+  }
+  45% {
+    transform: rotate(5deg);
+  }
+  70% {
+    transform: rotate(-3deg);
+  }
+}
+.hatch-wobble {
+  animation: hatch-wobble 0.95s ease-in-out 2;
+}
+@keyframes hatch-shake {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+  10% {
+    transform: translateX(-2.5px) rotate(-2deg);
+  }
+  20% {
+    transform: translateX(2.5px) rotate(2deg);
+  }
+  30% {
+    transform: translateX(-2px) rotate(-1.5deg);
+  }
+  40% {
+    transform: translateX(2px) rotate(1.5deg);
+  }
+  50% {
+    transform: translateX(0) rotate(0);
+  }
+}
+.hatch-shake {
+  animation: hatch-shake 0.7s ease-in-out infinite;
+}
+.hatch-piece {
+  transition:
+    transform 0.95s cubic-bezier(0.25, 0.7, 0.3, 1),
+    opacity 0.95s ease 0.15s;
+}
+@keyframes hatch-crack {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.hatch-crack {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: hatch-crack 0.45s ease-out forwards;
+}
+@keyframes hatch-bloom {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+.hatch-bloom {
+  animation: hatch-bloom 1.3s ease-out forwards;
+}
+@keyframes hatch-pop {
+  0% {
+    transform: translateY(14px) scale(0.55, 0.45);
+    opacity: 0;
+  }
+  45% {
+    transform: translateY(-6px) scale(1.06, 1.1);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1.04, 0.95);
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+.hatch-pop {
+  animation: hatch-pop 0.9s cubic-bezier(0.3, 0.7, 0.3, 1) both;
+}
+@keyframes hatch-leaf {
+  0% {
+    transform: translate(0, 0) rotate(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), -70px) rotate(var(--rot));
+    opacity: 0;
+  }
+}
+.hatch-leaf {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hatch-leaf 1.8s ease-out forwards;
+}

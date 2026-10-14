@@ -1,5 +1,6 @@
 import { useId, type ReactNode } from "react";
 import { RARITY, creatureById, type CreatureId, type StageId } from "../creatures";
+import { MossyFigure } from "./mossy";
 
 /*
  * Figurines de gardiens (SVG originaux, rendu « vinyle mat » : dégradés doux, reflet satiné, socle naturel).
@@ -357,6 +358,20 @@ export interface GuardianFigureProps {
 export function GuardianFigure({ id, stage = "young", silhouette, halo = true, socle = true, viewBox = "0 0 200 200", className, title }: GuardianFigureProps) {
   const g = useId().replace(/:/g, "");
   const c = creatureById(id);
+  // Mossy : nouvelle figurine (prototype de rendu en volume, en cours de validation)
+  if (id === "mossy")
+    return (
+      <MossyFigure
+        form={stage === "guardian" || stage === "lunar" ? "adult" : "young"}
+        lunar={stage === "lunar"}
+        scarf={stage === "explorer"}
+        socle={socle}
+        silhouette={silhouette}
+        viewBox={viewBox}
+        className={className}
+        title={title}
+      />
+    );
   const lunar = stage === "lunar";
   const p = lunar ? LUNAR : PALETTES[id];
   const ring = c ? RARITY[c.rarity].ring : "#e9a23b";
