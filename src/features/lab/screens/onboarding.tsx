@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Diorama, HOME_CAMERA, MARKERS, useElementSize } from "../art/diorama";
 import { EggArt } from "../art/egg";
 import { CreatureImage } from "../art/creature-image";
-import { ParkScene, ShowcaseScene } from "../art/scenes";
+import { BarkClue, ParkScene, ShowcaseScene } from "../art/scenes";
 import { STAGE_LABEL, type StageId } from "../creatures";
 import { BottomActions, LAB, LabTopBar, StepIndicator } from "../ui";
 import { MarkerPin } from "./map-markers";
@@ -84,13 +84,79 @@ export function OnboardingScreen({ step }: { step: number }) {
   );
 }
 
+/**
+ * Étape 2 : mini-démonstration « j'explore, j'observe, je découvre ».
+ * Toucher l'indice sur la carte le révèle (facultatif : « Suivant » reste toujours disponible).
+ * Aucune position réelle : la carte et le joueur sont fictifs.
+ */
 function MiniDiorama() {
   const [ref, size] = useElementSize<HTMLDivElement>();
+  const [found, setFound] = useState(false);
   const markers = MARKERS.filter((m) => ["start", "clue", "adventure", "player"].includes(m.id));
+  const reveal = () => {
+    if (found) return;
+    setFound(true);
+    try {
+      navigator.vibrate?.(20);
+    } catch {}
+  };
   return (
-    <div ref={ref} className="relative aspect-[6/5] w-full">
-      <Diorama theme="day" size={size} camera={{ ...HOME_CAMERA, x: 420, y: 600, zoom: 0.62 }} anchorY={0.62} markers={markers} renderMarker={(m) => <MarkerPin m={m} compact />} />
-      <p className="absolute left-3 top-3 rounded-full bg-[rgba(255,250,240,.92)] px-3 py-1 text-xs font-bold text-[var(--lab-forest)] shadow">Indice 1 · Une écorce rousse</p>
+    <div ref={ref} className="relative aspect-[6/5] w-full overflow-hidden">
+      <Diorama
+        theme="day"
+        size={size}
+        camera={{ ...HOME_CAMERA, x: 330, y: 650, zoom: 0.78 }}
+        anchorY={0.6}
+        markers={markers}
+        renderMarker={(m) =>
+          m.id === "clue" ? (
+            <span className="relative block">
+              {!found && <span aria-hidden className="lab-ping absolute left-1/2 top-[6px] size-10 -translate-x-1/2 rounded-full bg-[var(--lab-amber)]/60" />}
+              <button
+                type="button"
+                onClick={reveal}
+                onTouchStart={(e) => e.stopPropagation()}
+                onTouchEnd={(e) => e.stopPropagation()}
+                aria-label={found ? "Indice observé" : "Toucher l'indice pour l'observer"}
+                className="relative block rounded-2xl p-1"
+              >
+                <span className={cn("grid size-11 place-items-center rounded-full border-[3px] border-white text-lg font-extrabold shadow-[0_4px_12px_rgba(23,41,75,.4)] transition-colors", found ? "bg-[var(--lab-amber)] text-[#2a1a00]" : "bg-[#1f5a3d] text-white")}>
+                  {found ? "✓" : "?"}
+                </span>
+                <span className="mx-auto mt-0.5 block h-2 w-4 rounded-[50%] bg-black/20" aria-hidden />
+              </button>
+            </span>
+          ) : (
+            <MarkerPin m={m} compact />
+          )
+        }
+      />
+      {/* Consigne et progression */}
+      <div className="pointer-events-none absolute inset-x-3 top-3 flex items-start justify-between gap-2">
+        <p className={cn("rounded-full px-3 py-1.5 text-xs font-bold shadow transition-colors", found ? "bg-[rgba(255,250,240,.94)] text-[var(--lab-forest)]" : "bg-[var(--lab-forest)] text-[#fffaf0]")}>
+          {found ? "Bravo, tu as observé !" : "Touche l'indice pour l'observer"}
+        </p>
+        <p role="status" aria-label={`Indices découverts : ${found ? 1 : 0} sur 1`} className={cn("shrink-0 rounded-full px-3 py-1.5 text-xs font-extrabold tabular-nums shadow", found ? "bg-[var(--lab-amber)] text-[#2a1a00]" : "bg-[rgba(255,250,240,.94)] text-[var(--lab-ink)]")}>
+          🔎 {found ? 1 : 0}/1
+        </p>
+      </div>
+      {/* Révélation */}
+      {found && (
+        <div role="status" className="lab-fade-up absolute inset-x-3 bottom-3 flex items-center gap-3 rounded-[20px] bg-[rgba(255,250,240,.97)] p-2.5 shadow-lg">
+          <span className="relative size-14 shrink-0 overflow-hidden rounded-2xl">
+            <BarkClue revealed className="absolute inset-0 size-full" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block font-extrabold text-[var(--lab-forest-deep)]">Premier indice découvert !</span>
+            <span className="block text-xs text-[var(--lab-ink-soft)]">Une plume cachée dans l&apos;écorce rousse.</span>
+          </span>
+        </div>
+      )}
+      {!found && (
+        <p className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[rgba(255,250,240,.9)] px-3 py-1 text-[11px] font-semibold text-[var(--lab-ink-soft)]">
+          Démonstration : carte et position fictives
+        </p>
+      )}
     </div>
   );
 }

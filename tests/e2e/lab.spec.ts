@@ -65,6 +65,13 @@ test("laboratoire : parcours bienvenue → tutoriel → œuf → aventure → é
 
 test("laboratoire : « Passer » mène au choix de l'œuf ; collection, fiche et carte jour/nuit", async ({ page }) => {
   await page.goto("/fr/lab/onboarding/2");
+  // Démonstration facultative : toucher l'indice le révèle (0/1 → 1/1)
+  await expect(page.getByText("Touche l'indice pour l'observer")).toBeVisible();
+  await expect(page.getByRole("status", { name: "Indices découverts : 0 sur 1" })).toBeVisible();
+  await page.getByRole("button", { name: "Toucher l'indice pour l'observer" }).click();
+  await expect(page.getByText("Premier indice découvert !")).toBeVisible();
+  await expect(page.getByRole("status", { name: "Indices découverts : 1 sur 1" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Suivant" })).toBeVisible();
   await page.getByRole("link", { name: "Passer" }).click();
   await expect(page).toHaveURL(/\/fr\/lab\/choose-egg$/);
 
