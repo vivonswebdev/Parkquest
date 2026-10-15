@@ -18,8 +18,29 @@ export function BottomNav() {
       className="fixed inset-x-0 bottom-0 z-40 px-3 safe-bottom md:hidden"
     >
       <div className="glass-strong mx-auto flex max-w-md items-center justify-between rounded-[26px] p-1.5 card-shadow">
-        {NAV_ITEMS.map(({ key, href, icon: Icon, match }) => {
+        {NAV_ITEMS.map(({ key, href, icon: Icon, match, primary }) => {
           const active = match(pathname);
+          if (primary) {
+            // Explorer : bouton central, le plus visible de la barre.
+            return (
+              <Link
+                key={key}
+                href={href}
+                aria-current={active ? "page" : undefined}
+                className="-mt-6 flex flex-1 flex-col items-center gap-0.5"
+              >
+                <span
+                  className={cn(
+                    "inline-flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_10px_30px_-10px_var(--ring)] ring-4 ring-background transition-transform active:scale-95",
+                    active && "ring-primary/40",
+                  )}
+                >
+                  <Icon className="size-7" strokeWidth={2.2} />
+                </span>
+                <span className={cn("text-[10.5px] font-semibold", active ? "text-foreground" : "text-muted-foreground")}>{t(key)}</span>
+              </Link>
+            );
+          }
           return (
             <Link
               key={key}

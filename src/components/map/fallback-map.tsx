@@ -51,7 +51,7 @@ function blob(cx: number, cy: number, r: number, rand: () => number): string {
   return d + "Z";
 }
 
-export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onSelect, layer = "plan", className, paddingBottom = 0, nature, focus, ref }: ParkMapProps) {
+export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onSelect, layer = "plan", className, paddingBottom = 0, nature, focus, decor: withDecor = true, ref }: ParkMapProps) {
   const [sw, ne] = bounds;
   const midLat = (sw.lat + ne.lat) / 2;
   const kx = Math.cos((midLat * Math.PI) / 180);
@@ -166,6 +166,8 @@ export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onS
   const trailKey = JSON.stringify(trailPaths.map((p) => p.coordinates));
   const decor = useMemo(() => {
     const rand = seeded(`${sw.lat}${sw.lng}`);
+    // Carte à grande échelle (tous les parcs) : pas de décor de parc.
+    if (!withDecor) return { woods: [], lawns: [], ponds: [], trees: [], mPerUnit: 1, topo: [] };
     const spec: MapNature = JSON.parse(natureKey);
     const groves = makeGroves([sw, ne], `groves${sw.lat}${sw.lng}`);
     const unitsPerM = VIEW_H / (spanY * 111_320);
@@ -203,7 +205,7 @@ export function FallbackMap({ bounds, markers, paths = [], user, selectedId, onS
       topo,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- dépendances sérialisées (natureKey, trailKey)
-  }, [natureKey, trailKey, project, VIEW_H, spanY]);
+  }, [natureKey, trailKey, project, VIEW_H, spanY, withDecor]);
 
   const sat = layer === "satellite";
   // Couche nature mémorisée : les arbres ne sont pas re-rendus pendant les déplacements.

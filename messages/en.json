@@ -56,7 +56,10 @@
     "trails": "Trails",
     "tips": "Tips",
     "community": "Community",
-    "mainNavigation": "Main navigation"
+    "mainNavigation": "Main navigation",
+    "parksTab": "Parks",
+    "explore": "Explore",
+    "collection": "Collection"
   },
   "home": {
     "heroLine1": "Explore.",
@@ -150,7 +153,27 @@
     "spotsCount": "{count} places",
     "walk": "{distance} · {minutes}",
     "view3d": "3D view",
-    "view2d": "2D view"
+    "view2d": "2D view",
+    "generalTitle": "Parks map",
+    "parksTitle": "Discover parks around you",
+    "chooseParkTitle": "Choose a park",
+    "parksCount": "{count, plural, one {# park} other {# parks}}",
+    "placesCount": "{count, plural, one {# place} other {# places}}",
+    "fromYou": "Sorted from your location",
+    "enableToSort": "Turn on your location to see the nearest parks.",
+    "demoZone": "Location unavailable: map centred on the demo area (Brussels).",
+    "nearestPark": "Nearest park",
+    "openParkMap": "Park map",
+    "seePark": "View park",
+    "comingSoon": "Coming soon",
+    "parkStats": "{spots} places · {trails} trails",
+    "fullscreenEnter": "Open the map full screen",
+    "fullscreenExit": "Exit full screen",
+    "panelCollapse": "Collapse panel",
+    "panelExpand": "Open panel",
+    "panelHide": "Hide panel",
+    "panelShow": "{title} · {count}",
+    "nearbyShort": "Around you"
   },
   "gps": {
     "denied": "Location denied",
@@ -700,6 +723,201 @@
       "EW": "Extinct in the wild",
       "EX": "Extinct",
       "DD": "Data deficient"
+    }
+  },
+  "explore": {
+    "title": "Exploration mode",
+    "loading": "Preparing the adventure…",
+    "cardBody": "A guided adventure, only on the park's paths.",
+    "cardCta": "Start the adventure",
+    "demoData": "Demo data, to be validated with the park.",
+    "quests": {
+      "secretSequoia": {
+        "title": "The Secret of the Sequoia",
+        "intro": "Head to the giant sequoia: the first riddle is waiting there.",
+        "steps": {
+          "s1": {
+            "title": "The giant's riddle",
+            "body": "You're at the foot of the tallest tree on this trail. Here is its riddle:\n“Look for a tree whose leaves have rounded lobes. Its fruits wear a little cap. It's waiting further along the path.”",
+            "fact": "In their native California, giant sequoias are among the largest and oldest living things: some are over 3,000 years old."
+          },
+          "s2": {
+            "title": "The oak with little caps",
+            "body": "Well found! Look at its leaves and bark without leaving the path, then answer the question.",
+            "fact": "A single oak can host hundreds of species of insects, birds, lichens and fungi."
+          },
+          "s3": {
+            "title": "The forest of stems",
+            "body": "Get closer to the bamboo grove while staying on the path, without going into the planting. Look at the stems: can you see the regular nodes that divide them into segments?",
+            "fact": "Some bamboos are among the fastest-growing plants in the world: several tens of centimetres in a single day."
+          },
+          "s4": {
+            "title": "The cedar's whisper",
+            "body": "Listen to the cedar's hint, or read it:\n“My branches spread in wide tiers. I come from the mountains of Lebanon. Next, go where you can see far.”",
+            "fact": "The cedar of Lebanon appears on that country's flag. Its fragrant wood was already prized in Antiquity."
+          },
+          "s5": {
+            "title": "The walker's view",
+            "body": "Take time to look at the landscape. If you like, take a photo with your phone's camera. This step is optional.",
+            "fact": "In historic gardens, viewpoints were often designed to showcase a tree, a building or a vista."
+          },
+          "s6": {
+            "title": "The Secret of the Sequoia",
+            "body": "You've followed every clue. Go back to the foot of the giant sequoia: its secret is ready to be revealed.",
+            "fact": "The giant sequoia's thick, fibrous bark protects it from forest fires."
+          }
+        },
+        "reward": {
+          "name": "Sequoia Egg",
+          "body": "A special demo egg, earned for uncovering the Secret of the Sequoia. It may hatch later, when the collection's creatures arrive."
+        }
+      }
+    },
+    "safety": {
+      "title": "Before you start",
+      "l1": "{app} is played outdoors. Stay aware of your surroundings.",
+      "l2": "Never leave the permitted paths and follow the signs.",
+      "l3": "Stop before looking at your screen.",
+      "l4": "Watch out for bikes, other visitors and obstacles.",
+      "l5": "Children play with an adult.",
+      "accept": "I understand these guidelines",
+      "start": "Start the adventure",
+      "back": "Back",
+      "parkRules": "{app} does not replace the park's rules and guidelines."
+    },
+    "dashboard": {
+      "title": "Movement",
+      "remaining": "Left",
+      "minutes": "≈ {minutes} min",
+      "direction": "Direction",
+      "walked": "Walked",
+      "speed": "Speed",
+      "speedValue": "{value} km/h",
+      "note": "Calculated on your phone, never sent. For info only: going fast earns nothing."
+    },
+    "cardinals": {
+      "N": "North",
+      "NE": "North-east",
+      "E": "East",
+      "SE": "South-east",
+      "S": "South",
+      "SW": "South-west",
+      "W": "West",
+      "NW": "North-west"
+    },
+    "cardinalsShort": {
+      "N": "N",
+      "NE": "NE",
+      "E": "E",
+      "SE": "SE",
+      "S": "S",
+      "SW": "SW",
+      "W": "W",
+      "NW": "NW"
+    },
+    "pause": "Pause",
+    "paused": "Adventure paused",
+    "pausedBody": "Location tracking is stopped. Resume when you're ready.",
+    "resume": "Resume",
+    "quit": "Quit",
+    "quitTitle": "Quit the adventure?",
+    "quitBody": "Your progress stays saved on this phone.",
+    "continue": "Continue",
+    "announceResumed": "Adventure resumed.",
+    "announceStep": "Step {n}: {title}. Head to: {spot}.",
+    "arrivedVia": {
+      "gps": "Arrival confirmed by GPS: {spot}.",
+      "qr": "Arrival confirmed by QR code: {spot}.",
+      "manual": "Arrival confirmed: {spot}."
+    },
+    "step": {
+      "progress": "{done} of {total} steps done",
+      "optional": "Optional",
+      "goTo": "Head to: {spot}",
+      "here": "You're at: {spot}",
+      "arrived": "I'm here",
+      "skip": "Skip this step",
+      "gpsFallback": "No problem: you can confirm your arrival yourself at each step.",
+      "confirmTitle": "Are you at: {spot}?",
+      "confirmBody": "Your GPS can't check this precisely. Just confirm your arrival (the park's QR codes will come later).",
+      "confirmYes": "I confirm"
+    },
+    "activity": {
+      "kind": {
+        "riddle": "Riddle",
+        "quiz": "Quiz",
+        "observe": "Observation",
+        "audioHint": "Audio hint",
+        "photo": "Photo",
+        "reward": "Treasure"
+      },
+      "riddleDone": "I've read the riddle",
+      "observeDone": "I've observed",
+      "didYouKnow": "Did you know?",
+      "audioListen": "Listen to the hint",
+      "audioStop": "Stop",
+      "audioUnavailable": "Audio isn't available on this device: the hint is written below.",
+      "transcript": "Transcript",
+      "audioDone": "I understood the hint",
+      "photoNote": "Nothing is sent: your photo stays on your phone.",
+      "photoDone": "Done",
+      "openTreasure": "Reveal the secret"
+    },
+    "reward": {
+      "title": "Treasure found!",
+      "rules": "Demo egg · not tradable · not for sale · no random draw",
+      "replay": "Play again",
+      "back": "Back to the trail",
+      "announce": "Treasure found: the Sequoia Egg."
+    }
+  },
+  "game": {
+    "hello": "Hello, explorer",
+    "activeEgg": "My active egg",
+    "energy": "{value} / {max} nature energy",
+    "energyLabel": "Nature energy",
+    "discoveriesLeft": "{count, plural, one {About # discovery to go} other {About # discoveries to go}}",
+    "readyTitle": "Ready to hatch!",
+    "readyBody": "Hatching is coming soon.",
+    "firstTitle": "Your first egg is waiting",
+    "firstBody": "Start an adventure to help it grow.",
+    "chooseTitle": "Choose your next egg",
+    "noneTitle": "No egg right now",
+    "noneBody": "Your next egg comes from finishing an adventure.",
+    "exploreCta": "Explore a park",
+    "demoProgress": "Demo progress, saved on this device.",
+    "companionTitle": "My companion",
+    "companionEmpty": "No companion yet",
+    "companionEmptyBody": "A creature may be waiting in your next egg.",
+    "collectionTitle": "My collection",
+    "seeCollection": "View",
+    "collectionCount": "{count} / {total} creatures discovered",
+    "elementLocked": "{element}: not discovered yet",
+    "provisional": "Provisional emblems, until the official illustrations arrive.",
+    "nearTitle": "Near you",
+    "adventureSteps": "{count} steps",
+    "seeAdventure": "View adventure",
+    "allParks": "See all parks",
+    "eventsTitle": "Events",
+    "collectionPageTitle": "My collection",
+    "albumSoon": "The full album, creature cards and companion are coming soon.",
+    "elements": {
+      "leaf": "Leaf",
+      "water": "Water",
+      "flower": "Flower",
+      "air": "Air",
+      "forest": "Forest",
+      "moon": "Moon",
+      "sun": "Sun"
+    },
+    "eggNames": {
+      "leaf": "Leaf Egg",
+      "water": "Water Egg",
+      "flower": "Flower Egg",
+      "air": "Wind Egg",
+      "forest": "Forest Egg",
+      "moon": "Moon Egg",
+      "sun": "Sun Egg"
     }
   }
 }

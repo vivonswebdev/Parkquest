@@ -12,7 +12,16 @@ import { cn } from "@/lib/utils";
 import { submitQuizAction } from "@/server/game-actions";
 import { ActionErrorMessage, ModeNotice, PointsBurst } from "./feedback";
 
-export function QuizCard({ quizzes, visitId }: { quizzes: PublicQuiz[]; visitId?: string | null }) {
+export function QuizCard({
+  quizzes,
+  visitId,
+  onResult,
+}: {
+  quizzes: PublicQuiz[];
+  visitId?: string | null;
+  /** Appelé après chaque réponse traitée (ok = réponse enregistrée, même incorrecte). */
+  onResult?(ok: boolean): void;
+}) {
   const t = useTranslations("quiz");
   const [index, setIndex] = useState(0);
   const quiz = quizzes[index];
@@ -20,12 +29,12 @@ export function QuizCard({ quizzes, visitId }: { quizzes: PublicQuiz[]; visitId?
   return (
     <div className="space-y-3">
       {quizzes.length > 1 && <p className="text-xs font-semibold text-muted-foreground">{t("questionOf", { current: index + 1, total: quizzes.length })}</p>}
-      <QuizQuestion key={quiz.id} quiz={quiz} visitId={visitId} onNext={index < quizzes.length - 1 ? () => setIndex((i) => i + 1) : undefined} />
+      <QuizQuestion key={quiz.id} quiz={quiz} visitId={visitId} onResult={onResult} onNext={index < quizzes.length - 1 ? () => setIndex((i) => i + 1) : undefined} />
     </div>
   );
 }
 
-function QuizQuestion({ quiz, visitId, onNext }: { quiz: PublicQuiz; visitId?: string | null; onNext?: () => void }) {
+function QuizQuestion({ quiz, visitId, onNext, onResult }: { quiz: PublicQuiz; visitId?: string | null; onNext?: () => void; onResult?(ok: boolean): void }) {
   const t = useTranslations("quiz");
   const tc = useTranslations("common");
   const locale = useLocale();
@@ -39,12 +48,14 @@ function QuizQuestion({ quiz, visitId, onNext }: { quiz: PublicQuiz; visitId?: s
     if (!choice) return;
     if (!online) {
       setResult({ ok: false, error: "OFFLINE" });
+      onResult?.(false);
       return;
     }
     start(async () => {
       const firstAttempt = !(quiz.id in demo.quizAttempts);
       const r = await submitQuizAction({ quizId: quiz.id, answerId: choice, visitId: visitId ?? null, locale, firstAttempt });
       setResult(r);
+      onResult?.(r.ok);
       if (r.ok && r.mode === "demo" && firstAttempt) {
         updateDemoProgress((p) => ({
           ...p,

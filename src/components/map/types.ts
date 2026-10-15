@@ -3,7 +3,7 @@ import type { StepState } from "@/lib/game/trail-progress";
 
 export interface MapMarker {
   id: string;
-  type: "spot" | "facility" | "start";
+  type: "spot" | "facility" | "start" | "park";
   location: LatLng;
   color: string;
   /** Clé d'icône : SpotKind ou FacilityType */
@@ -66,6 +66,8 @@ export interface ParkMapProps {
    * des filtres) et étangs. Par défaut, déduit des marqueurs.
    */
   nature?: MapNature;
+  /** Décor illustré (arbres, bois, étangs). Désactivé pour une carte à grande échelle (tous les parcs). */
+  decor?: boolean;
   /** Moteur réellement utilisé (MapLibre, ou carte simplifiée en repli) */
   onEngine?(engine: MapEngine): void;
   ref?: React.Ref<MapHandle>;
