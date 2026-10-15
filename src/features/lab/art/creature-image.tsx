@@ -17,8 +17,8 @@ export const IMAGE_RATIO = 1122 / 1402;
 const pct = (n: number) => `${(n * 100).toFixed(2)}%`;
 
 function polygons(a: CreatureAsset) {
-  const pts = a.cut.map(([x, y]) => `${pct(x)} ${pct(y + 0.004)}`);
-  const ptsUp = a.cut.map(([x, y]) => `${pct(x)} ${pct(y - 0.004)}`);
+  const pts = a.cut.map(([x, y]) => `${pct(x)} ${pct(y + 0.002)}`);
+  const ptsUp = a.cut.map(([x, y]) => `${pct(x)} ${pct(y - 0.002)}`);
   const character = `polygon(0% 0%, 100% 0%, ${[...pts].reverse().join(", ")})`;
   const socle = `polygon(${ptsUp.join(", ")}, 100% 100%, 0% 100%)`;
   return { character, socle };
@@ -100,7 +100,7 @@ export function CreatureImageView({
         <div key={`j-${joy}`} className={cn("absolute inset-0", joy ? "cimg-joy" : undefined)} style={{ transformOrigin: origin }}>
           <div key={`t-${touch}`} className={cn("absolute inset-0", touch ? "cimg-touch" : undefined)} style={{ transformOrigin: origin }}>
             <div className={cn("absolute inset-0", idle && (a.floats ? "cimg-float" : "cimg-breathe"))} style={{ transformOrigin: origin }}>
-              <div className="cimg-tilt absolute inset-0" style={{ transformOrigin: origin, transform: `rotate(${tilt * 3.5}deg)` }}>
+              <div className="cimg-tilt absolute inset-0" style={{ transformOrigin: origin, transform: `rotate(${tilt * 2}deg)` }}>
                 <div className="absolute inset-0" style={{ clipPath: character }}>
                   {img(a.src)}
                 </div>

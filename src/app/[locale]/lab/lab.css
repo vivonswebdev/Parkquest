@@ -799,48 +799,48 @@
 .cimg-tilt {
   transition: transform 0.5s cubic-bezier(0.3, 0.7, 0.3, 1);
 }
-/* Respiration discrète, ancrée aux pieds */
+/* Respiration discrète, ancrée sur la ligne personnage / socle */
 @keyframes cimg-breathe {
   0%,
   100% {
     transform: scale(1, 1);
   }
   50% {
-    transform: scale(1.006, 1.016);
+    transform: scale(1.004, 1.012);
   }
 }
 .cimg-breathe {
   animation: cimg-breathe 3.6s ease-in-out infinite;
 }
-/* Flottement (Air) */
+/* Flottement (Air) : le personnage ne touche pas son socle */
 @keyframes cimg-float {
   0%,
   100% {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-2.2%);
+    transform: translateY(-0.8%);
   }
 }
 .cimg-float {
-  animation: cimg-float 3.2s ease-in-out infinite;
+  animation: cimg-float 3.4s ease-in-out infinite;
 }
-/* Joie : petit rebond sur place (étirement / tassement), sans quitter le socle */
+/* Joie : petit rebond sur place, amplitudes volontairement faibles (pas de déformation excessive) */
 @keyframes cimg-joy {
   0% {
     transform: none;
   }
-  18% {
-    transform: scale(1.04, 0.95);
+  20% {
+    transform: scale(1.02, 0.975);
   }
-  42% {
-    transform: scale(0.97, 1.06) rotate(-1.5deg);
+  45% {
+    transform: scale(0.988, 1.035) rotate(-1deg);
   }
-  62% {
-    transform: scale(1.03, 0.97) rotate(1deg);
+  65% {
+    transform: scale(1.012, 0.988) rotate(0.6deg);
   }
-  80% {
-    transform: scale(0.99, 1.02);
+  82% {
+    transform: scale(0.996, 1.01);
   }
   100% {
     transform: none;
@@ -855,10 +855,10 @@
     transform: none;
   }
   30% {
-    transform: scale(1.03, 0.96);
+    transform: scale(1.015, 0.98);
   }
   65% {
-    transform: scale(0.99, 1.02);
+    transform: scale(0.995, 1.01);
   }
   100% {
     transform: none;

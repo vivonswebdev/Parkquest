@@ -8,7 +8,8 @@ import type { FamilyId } from "./creatures";
  * Chaque image contient le personnage ET son socle (avec son ombre). Pour animer sans faire bouger
  * le socle, on découpe l'image en deux calques le long d'une ligne `cut` (coordonnées 0–1, de gauche
  * à droite) : au-dessus = personnage (animé), en dessous = socle (fixe). La ligne contourne les plantes
- * du socle et descend jusqu'aux pieds (encoche). `foot` = niveau des pieds (point d'ancrage).
+ * du socle et passe juste au-dessus du dessus du socle (mesuré sur l'image) : le bas des pieds reste fixe,
+ * sans couture, car tous les mouvements sont ancrés sur cette ligne. `foot` = ligne d'ancrage.
  * Originaux : design-assets/lab-creatures/originals ; copies mobiles : public/lab/creatures.
  */
 
@@ -49,8 +50,8 @@ export const ASSETS: Record<string, CreatureAsset> = {
     key: "leaf-a",
     src: `${P}leaf-a.webp`,
     framed: `${P}leaf-a-framed.webp`,
-    cut: notch(0.65, 0.35, 0.66, 0.815),
-    foot: 0.815,
+    cut: notch(0.65, 0.35, 0.66, 0.76),
+    foot: 0.76,
     cx: 0.5,
     details: [
       { label: "Visage", x: 0.3, y: 0.08, size: 0.42 },
@@ -62,8 +63,8 @@ export const ASSETS: Record<string, CreatureAsset> = {
     key: "leaf-b",
     src: `${P}leaf-b.webp`,
     framed: `${P}leaf-b-framed.webp`,
-    cut: notch(0.7, 0.36, 0.68, 0.815),
-    foot: 0.815,
+    cut: notch(0.7, 0.36, 0.68, 0.74),
+    foot: 0.74,
     cx: 0.52,
     details: [
       { label: "Visage", x: 0.32, y: 0.12, size: 0.42 },
@@ -107,8 +108,8 @@ export const ASSETS: Record<string, CreatureAsset> = {
     key: "flower",
     src: `${P}flower.webp`,
     framed: `${P}flower-framed.webp`,
-    cut: notch(0.68, 0.33, 0.67, 0.82),
-    foot: 0.82,
+    cut: notch(0.68, 0.33, 0.67, 0.765),
+    foot: 0.765,
     cx: 0.5,
     details: [
       { label: "Visage", x: 0.34, y: 0.1, size: 0.42 },
@@ -120,8 +121,16 @@ export const ASSETS: Record<string, CreatureAsset> = {
     key: "air",
     src: `${P}air.webp`,
     framed: `${P}air-framed.webp`,
-    cut: notch(0.72, 0.38, 0.62, 0.8),
-    foot: 0.8,
+    // Herbes de gauche entièrement dans le socle ; la vrille la plus basse touche presque la pierre
+    cut: [
+      [0, 0.68],
+      [0.38, 0.68],
+      [0.38, 0.792],
+      [0.62, 0.792],
+      [0.62, 0.72],
+      [1, 0.72],
+    ],
+    foot: 0.792,
     cx: 0.52,
     floats: true,
     details: [
@@ -134,8 +143,8 @@ export const ASSETS: Record<string, CreatureAsset> = {
     key: "forest",
     src: `${P}forest.webp`,
     framed: `${P}forest-framed.webp`,
-    cut: notch(0.72, 0.3, 0.75, 0.775),
-    foot: 0.775,
+    cut: notch(0.705, 0.2, 0.8, 0.73),
+    foot: 0.73,
     cx: 0.5,
     glows: [{ x: 0.78, y: 0.45, r: 0.12, color: "255,200,110" }],
     details: [
@@ -167,8 +176,8 @@ export const ASSETS: Record<string, CreatureAsset> = {
     key: "solar",
     src: `${P}solar.webp`,
     framed: `${P}solar-framed.webp`,
-    cut: notch(0.69, 0.37, 0.68, 0.795),
-    foot: 0.795,
+    cut: notch(0.69, 0.4, 0.66, 0.765),
+    foot: 0.765,
     cx: 0.52,
     glows: [
       { x: 0.58, y: 0.6, r: 0.13, color: "255,200,90" },

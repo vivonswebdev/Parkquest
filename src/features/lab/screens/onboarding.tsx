@@ -6,7 +6,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { Diorama, HOME_CAMERA, MARKERS, useElementSize } from "../art/diorama";
 import { EggArt } from "../art/egg";
-import { GuardianFigure } from "../art/guardians";
+import { CreatureImage } from "../art/creature-image";
 import { ParkScene, ShowcaseScene } from "../art/scenes";
 import { STAGE_LABEL, type StageId } from "../creatures";
 import { BottomActions, LAB, LabTopBar, StepIndicator } from "../ui";
@@ -17,7 +17,7 @@ import { MarkerPin } from "./map-markers";
 const STEPS: { title: string; text: string; visual: () => ReactNode }[] = [
   { title: "Choisis un parc.", text: "Des aventures t'attendent près de chez toi.", visual: () => <ParkScene withStart className="block h-auto w-full" /> },
   { title: "Suis les indices.", text: "Observe, avance à ton rythme et découvre les secrets du lieu.", visual: () => <MiniDiorama /> },
-  { title: "Garde tes découvertes.", text: "Chaque aventure enrichit ta collection.", visual: () => <ShowcaseScene className="block h-auto w-full" /> },
+  { title: "Garde tes découvertes.", text: "Chaque aventure enrichit ta collection.", visual: () => <Showcase /> },
   { title: "Réveille ton œuf.", text: "Tes découvertes donnent de l'énergie à ton futur compagnon.", visual: () => <TouchEgg /> },
   { title: "Grandis avec ton gardien.", text: "Il évolue avec les parcs et histoires que tu explores.", visual: () => <EvolutionPath /> },
 ];
@@ -110,16 +110,39 @@ function TouchEgg() {
 }
 
 const PATH_NODES: { stage: StageId; x: number; y: number }[] = [
-  { stage: "egg", x: 6, y: 62 },
+  { stage: "egg", x: 4, y: 64 },
   { stage: "young", x: 52, y: 52 },
-  { stage: "explorer", x: 12, y: 33 },
-  { stage: "guardian", x: 60, y: 18 },
+  { stage: "explorer", x: 14, y: 29 },
+  { stage: "guardian", x: 62, y: 16 },
   { stage: "lunar", x: 30, y: 2 },
 ];
 /* Centre d'un nœud (largeur 30 %, pastille 78 % de cette largeur, conteneur carré) */
 const center = (n: { x: number; y: number }) => `${n.x + 15} ${n.y + 11.7}`;
 
-/** Mini-arbre d'évolution : stades à venir en silhouettes. */
+/** Silhouette neutre d'une forme future (visuel à créer) : ne préfigure aucun dessin. */
+function FutureSilhouette({ night }: { night?: boolean }) {
+  return (
+    <svg viewBox="0 0 40 40" className="h-[62%] w-auto" aria-hidden>
+      <ellipse cx="20" cy="35" rx="13" ry="3" fill={night ? "#fff" : "#1d2a22"} opacity="0.18" />
+      <path d="M20 6 C 29 6, 32 14, 31 21 C 30 29, 26 33, 20 33 C 14 33, 10 29, 9 21 C 8 14, 11 6, 20 6 Z" fill={night ? "#fff" : "#1d2a22"} opacity="0.16" />
+      <text x="20" y="25" textAnchor="middle" fontSize="12" fontWeight="700" fill={night ? "#fff" : "#1d2a22"} opacity="0.45">
+        ?
+      </text>
+    </svg>
+  );
+}
+
+/** Collection : étagères de trouvailles, le compagnon (nouvelle image) sur la place du milieu. */
+function Showcase() {
+  return (
+    <div className="relative">
+      <ShowcaseScene className="block h-auto w-full" />
+      <CreatureImage id="leaf" className="absolute left-1/2 top-[23%] h-[24%] -translate-x-1/2" alt="" sizes="100px" />
+    </div>
+  );
+}
+
+/** Mini-arbre d'évolution : compagnon disponible, formes futures en silhouettes « Visuel à créer ». */
 export function EvolutionPath({ known = 2 }: { known?: number }) {
   return (
     <div className="relative aspect-square w-full bg-[linear-gradient(180deg,#e7e4f3_0%,#f6efdc_45%,#f8f2e4_100%)]">
@@ -132,13 +155,17 @@ export function EvolutionPath({ known = 2 }: { known?: number }) {
             <span className={cn("grid aspect-square w-[78%] place-items-center rounded-full", n.stage === "lunar" ? "bg-[#2c4677]" : "bg-[rgba(255,250,240,.85)]", "shadow-[0_6px_16px_-8px_rgba(23,41,75,.5)]")}>
               {n.stage === "egg" ? (
                 <EggArt egg="forest" nest={false} halo={false} className="h-[80%] w-auto" />
+              ) : n.stage === "young" ? (
+                // Compagnon disponible : nouvelle image de Mossy
+                <CreatureImage id="leaf" className="h-[94%]" alt="" sizes="120px" />
               ) : (
-                <GuardianFigure id="mossy" stage={n.stage} silhouette={i >= known} halo={false} socle={false} viewBox="30 40 140 130" className="h-[86%] w-auto" />
+                // Formes futures : aucune image n'existe encore, silhouette neutre (pas d'ancienne forme SVG)
+                <FutureSilhouette night={n.stage === "lunar"} />
               )}
             </span>
-            <span className="mt-1 rounded-full bg-[rgba(255,250,240,.9)] px-2 text-[10px] font-bold text-[var(--lab-ink)]">
+            <span className="mt-1 rounded-full bg-[rgba(255,250,240,.9)] px-2 text-center text-[10px] leading-tight font-bold text-[var(--lab-ink)]">
               {STAGE_LABEL[n.stage]}
-              {i >= known && <span className="sr-only"> (à découvrir)</span>}
+              {i >= known && <span className="block font-semibold text-[var(--lab-ink-soft)]">Visuel à créer</span>}
             </span>
           </li>
         ))}

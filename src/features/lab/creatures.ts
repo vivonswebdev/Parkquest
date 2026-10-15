@@ -4,7 +4,9 @@
  * - Visuels : images fournies par la personne porteuse du projet (voir design-assets/lab-creatures/PROVENANCE.md),
  *   jamais publiées hors du prototype.
  * - Rareté transparente : une condition écrite, jamais de hasard, d'achat ni de compte à rebours.
- *   Les conditions sont PROVISOIRES et reprennent à l'identique les règles déjà validées (voir RULE_ORIGIN).
+ *   Conditions et raretés = PROPOSITIONS PROVISOIRES (non validées) : reprise des anciennes conditions du
+ *   prototype, réparties sur les sept familles (voir RULE_ORIGIN). Les familles sont des identités, pas des
+ *   niveaux de rareté.
  */
 
 export type EggId = "forest" | "river" | "dusk";
@@ -127,8 +129,8 @@ export const CREATURES: Creature[] = base.map((c) => ({ ...c, name: NAMES[c.id],
 export const creatureById = (id: string) => CREATURES.find((c) => c.id === id);
 
 /**
- * Origine de chaque condition : les règles validées avec les anciens gardiens du prototype
- * sont conservées telles quelles et réattribuées aux sept familles (aucune règle modifiée).
+ * Origine de chaque condition proposée : reprise telle quelle d'une condition des anciens gardiens
+ * du prototype. Transfert provisoire, à valider.
  */
 export const RULE_ORIGIN: Record<FamilyId, { previous: string; same: boolean }> = {
   leaf: { previous: "Mossy (gardien mousse)", same: true },

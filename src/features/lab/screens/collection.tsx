@@ -75,7 +75,7 @@ export function CollectionScreen() {
           })}
         </ul>
         <div className="mt-5 space-y-2">
-          <DemoNote>Chaque gardien se découvre par une action claire, jamais par hasard ni par achat. Conditions provisoires, à valider.</DemoNote>
+          <DemoNote>Chaque gardien se découvre par une action claire, jamais par hasard ni par achat. Conditions et raretés : propositions provisoires ; les familles sont des identités, pas des niveaux de rareté.</DemoNote>
           <Link href={`${LAB}/familles#regles`} className="block text-center text-sm font-bold text-[var(--lab-forest)] underline">
             Voir d&apos;où viennent ces conditions
           </Link>

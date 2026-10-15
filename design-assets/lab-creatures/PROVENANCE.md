@@ -33,3 +33,13 @@ Format d'origine : PNG RVB 1122 × 1402 (planche : 1536 × 1024), fond crème, s
   Réglage : écart entre voisins ≤ 4 (≤ 2 pour `water-a`), écart au fond ≤ 70.
 - Limites connues : l'intérieur des bulles enfermées garde la teinte claire d'origine ; quelques bords
   clairs peuvent rester visibles sur fond nuit ; les halos lumineux qui débordent sur le fond sont atténués.
+
+## Exports transparents à la source souhaités
+Le détourage automatique est volontairement prudent (aucune retouche destructrice des parties
+translucides, des plumes ou des halos). Une version PNG transparente exportée à la source est
+recommandée pour :
+- **water-a / water-b (Perline)** : corps et bulles translucides — l'intérieur des bulles garde le crème d'origine ;
+- **air (Zéphyr)** : plumes fines, spirale de vent claire et pierre claire proche du fond ;
+- **lunar (Lumo)** et **solar (Soléa)** : halos et orbes lumineux qui débordent sur le fond ;
+- **forest (Mycélio)** : lueurs des champignons qui débordent sur le fond.
+Idéalement, pour chaque créature : personnage et socle sur deux calques séparés.

@@ -86,18 +86,19 @@ export function FamiliesScreen() {
 
         <section aria-labelledby="regles" id="regles" className="rounded-[22px] bg-[var(--lab-paper)] p-4">
           <h2 id="f-rules" className="text-lg font-extrabold">
-            Conditions de découverte (provisoires)
+            Conditions et raretés : propositions provisoires
           </h2>
           <p className="mt-1 text-sm text-[var(--lab-ink-soft)]">
-            Aucune règle n&apos;a été modifiée : les sept conditions déjà validées sont reprises à l&apos;identique et réattribuées aux sept familles. Seule
-            différence : quel gardien porte quelle condition.
+            Proposition à valider : les sept conditions de l&apos;ancien prototype sont reprises telles quelles et réparties sur les sept familles. Ce
+            transfert n&apos;est pas une validation. Les familles sont des identités, pas des niveaux de rareté : la rareté indiquée est une proposition
+            attachée à chaque gardien.
           </p>
           <table className="mt-3 w-full text-left text-sm">
             <thead>
               <tr className="text-xs text-[var(--lab-ink-soft)]">
                 <th className="py-1 pr-2 font-semibold">Famille</th>
                 <th className="py-1 pr-2 font-semibold">Condition</th>
-                <th className="py-1 font-semibold">Avant</th>
+                <th className="py-1 font-semibold">Reprise de</th>
               </tr>
             </thead>
             <tbody>

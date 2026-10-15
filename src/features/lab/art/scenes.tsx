@@ -150,14 +150,8 @@ export function ShowcaseScene({ className }: { className?: string }) {
       {[60, 180, 300].map((x, i) => (
         <g key={x} transform={`translate(${x} 128)`}>
           <ellipse cx="0" cy="0" rx="34" ry="7" fill="#7a5233" opacity="0.5" />
-          <ellipse cx="0" cy="-30" rx={i === 1 ? 30 : 24} ry={i === 1 ? 28 : 22} fill={i === 1 ? "#7fa257" : "#1d2a22"} opacity={i === 1 ? 1 : 0.14} />
-          {i === 1 && (
-            <g>
-              <ellipse cx="0" cy="-22" rx="22" ry="18" fill="#f1e6cb" />
-              <circle cx="-7" cy="-22" r="3" fill="#28362c" />
-              <circle cx="7" cy="-22" r="3" fill="#28362c" />
-            </g>
-          )}
+          {/* Places vides (la place du milieu reçoit l'image du compagnon, posée par-dessus) */}
+          {i !== 1 && <ellipse cx="0" cy="-30" rx="24" ry="22" fill="#1d2a22" opacity="0.14" />}
         </g>
       ))}
       <text x="180" y="40" textAnchor="middle" fontSize="15" fontWeight="700" fill="#1f5a3d">
