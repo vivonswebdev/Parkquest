@@ -1,0 +1,916 @@
+/* Prototype de design : styles strictement limités à .lab-root (aucun effet sur l'application officielle). */
+.lab-root {
+  --lab-cream: #f8f2e4;
+  --lab-paper: #fffaf0;
+  --lab-forest: #1f5a3d;
+  --lab-forest-deep: #143d2a;
+  --lab-moss: #6f9a4f;
+  --lab-blue: #17294b;
+  --lab-blue-soft: #2c4677;
+  --lab-amber: #e9a23b;
+  --lab-amber-deep: #b86f12;
+  --lab-ink: #1d2a22;
+  --lab-ink-soft: #55625a;
+  background: var(--lab-cream);
+  color: var(--lab-ink);
+  font-family: var(--font-jakarta), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  color-scheme: light;
+  -webkit-tap-highlight-color: transparent;
+}
+.lab-root .lab-serif {
+  font-family: var(--font-serif), Georgia, serif;
+  letter-spacing: -0.02em;
+}
+.lab-root :focus-visible:not([tabindex="-1"]) {
+  outline: 3px solid var(--lab-amber);
+  outline-offset: 3px;
+}
+.lab-card {
+  background: var(--lab-paper);
+  border-radius: 28px;
+  box-shadow: 0 1px 2px rgba(31, 61, 42, 0.06), 0 14px 34px -16px rgba(31, 61, 42, 0.28);
+}
+.lab-btn {
+  display: inline-flex;
+  min-height: 54px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0 1.5rem;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.lab-btn:active {
+  transform: scale(0.98);
+}
+.lab-btn-primary {
+  background: var(--lab-forest);
+  color: #fffaf0;
+  box-shadow: 0 10px 24px -10px rgba(31, 90, 61, 0.7);
+}
+.lab-btn-primary:hover {
+  background: var(--lab-forest-deep);
+}
+.lab-btn-primary:disabled {
+  opacity: 0.45;
+  box-shadow: none;
+}
+.lab-btn-amber {
+  background: var(--lab-amber);
+  color: #2a1a00;
+  box-shadow: 0 10px 24px -10px rgba(184, 111, 18, 0.8);
+}
+.lab-btn-ghost {
+  background: rgba(31, 90, 61, 0.08);
+  color: var(--lab-forest);
+}
+.lab-safe-bottom {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+.lab-safe-top {
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+}
+
+/* Entrée d'écran douce (désactivée par prefers-reduced-motion via la règle globale) */
+@keyframes lab-enter-next {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes lab-enter-prev {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes lab-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.lab-enter-next {
+  animation: lab-enter-next 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.lab-enter-prev {
+  animation: lab-enter-prev 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.lab-fade-up {
+  animation: lab-fade-up 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Petites vies de l'illustration */
+@keyframes lab-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes lab-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes lab-wiggle {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(-7deg);
+  }
+  45% {
+    transform: rotate(6deg);
+  }
+  70% {
+    transform: rotate(-3deg);
+  }
+}
+@keyframes lab-ping {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+.lab-float {
+  animation: lab-float 4.5s ease-in-out infinite;
+}
+.lab-glow {
+  animation: lab-glow 3.2s ease-in-out infinite;
+}
+.lab-wiggle {
+  animation: lab-wiggle 0.7s ease-in-out;
+  transform-origin: 50% 85%;
+  transform-box: fill-box;
+}
+.lab-ping {
+  animation: lab-ping 2.2s ease-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+/* Carte 2.5D : transition jour / nuit */
+.lab-map-scene * {
+  transition: fill 0.7s ease, stop-color 0.7s ease, opacity 0.7s ease;
+}
+
+/* Œuf : respiration, frémissement, fissure qui se dessine, couvercle qui s'écarte (sans explosion) */
+@keyframes lab-egg-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.025, 0.985);
+  }
+}
+@keyframes lab-egg-shake {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  15% {
+    transform: rotate(-2.5deg);
+  }
+  35% {
+    transform: rotate(2deg);
+  }
+  55% {
+    transform: rotate(-1.5deg);
+  }
+  75% {
+    transform: rotate(1deg);
+  }
+}
+@keyframes lab-crack-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes lab-lid-open {
+  from {
+    transform: none;
+    opacity: 1;
+  }
+  to {
+    transform: translate(-14px, -46px) rotate(-16deg);
+    opacity: 0.0;
+  }
+}
+@keyframes lab-reveal {
+  from {
+    transform: scale(0.82) translateY(16px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.lab-egg-breathe {
+  animation: lab-egg-breathe 2.4s ease-in-out infinite;
+}
+.lab-egg-shake {
+  animation: lab-egg-shake 0.9s ease-in-out 2;
+}
+.lab-crack-draw {
+  stroke-dasharray: 1;
+  animation: lab-crack-draw 1.2s ease-out both;
+}
+.lab-egg-lid {
+  transform-box: fill-box;
+  transform-origin: 30% 100%;
+  animation: lab-lid-open 1.1s cubic-bezier(0.3, 0.7, 0.3, 1) both;
+}
+.lab-reveal {
+  animation: lab-reveal 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Diorama : couleurs jour / nuit (transition douce, sans changer la position) */
+.dio-day {
+  --d-sky: linear-gradient(#f9ecd0, #f3ead2);
+  --d-base: #b99a6b;
+  --d-grass: #a9c77f;
+  --d-meadow: #c3d99a;
+  --d-lake: #86c3d8;
+  --d-lake-rim: #e3d6b3;
+  --d-lake-shine: rgba(255, 255, 255, 0.55);
+  --d-path: #f6e8c6;
+  --d-path-edge: #dcc79a;
+  --d-adv: #d98a1c;
+  --d-tree-0: #5f8f4e;
+  --d-tree-1: #6f9a4f;
+  --d-tree-2: #4f7d50;
+  --d-tree-light: rgba(196, 226, 150, 0.6);
+  --d-conifer: #3f6b46;
+  --d-trunk: #8a6446;
+  --d-wall: #f3ead2;
+  --d-roof: #b4563c;
+  --d-glass: rgba(191, 228, 242, 0.85);
+  --d-frame: #8a9a8c;
+  --d-window: #9cc3cf;
+  --d-lamp-post: #4a5250;
+  --d-lamp-light: #e5dcc5;
+  --d-lamp-halo: rgba(255, 210, 120, 0);
+  --d-bench: #a46d42;
+  --d-night-only: 0;
+  --d-day-only: 1;
+}
+.dio-night {
+  --d-sky: linear-gradient(#0f1b38, #1a2b52);
+  --d-base: #0d1830;
+  --d-grass: #1d3550;
+  --d-meadow: #22405a;
+  --d-lake: #18355c;
+  --d-lake-rim: #2c4677;
+  --d-lake-shine: rgba(255, 214, 140, 0.18);
+  --d-path: #c9a873;
+  --d-path-edge: #6e5a3e;
+  --d-adv: #ffc35e;
+  --d-tree-0: #234a46;
+  --d-tree-1: #285449;
+  --d-tree-2: #1d3f40;
+  --d-tree-light: rgba(120, 170, 200, 0.25);
+  --d-conifer: #1b3a3c;
+  --d-trunk: #3e3330;
+  --d-wall: #3a4a6e;
+  --d-roof: #5a3a44;
+  --d-glass: rgba(255, 206, 120, 0.55);
+  --d-frame: #6a7aa0;
+  --d-window: #ffcf7a;
+  --d-lamp-post: #9aa6c4;
+  --d-lamp-light: #ffe2a6;
+  --d-lamp-halo: rgba(255, 210, 120, 0.45);
+  --d-bench: #6e5a4e;
+  --d-night-only: 1;
+  --d-day-only: 0;
+}
+.dio-sky {
+  background: var(--d-sky);
+}
+.dio-base {
+  fill: var(--d-base);
+}
+.dio-grass {
+  fill: var(--d-grass);
+}
+.dio-meadow {
+  fill: var(--d-meadow);
+}
+.dio-lake {
+  fill: var(--d-lake);
+}
+.dio-lake-rim {
+  fill: var(--d-lake-rim);
+}
+.dio-lake-shine {
+  fill: var(--d-lake-shine);
+}
+.dio-stream {
+  fill: none;
+  stroke: var(--d-lake);
+  stroke-width: 22;
+  stroke-linecap: round;
+}
+.dio-path,
+.dio-path-edge {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.dio-path {
+  stroke: var(--d-path);
+  stroke-width: 22;
+}
+.dio-path-edge {
+  stroke: var(--d-path-edge);
+  stroke-width: 30;
+}
+.dio-adventure {
+  fill: none;
+  stroke: var(--d-adv);
+  stroke-width: 7;
+  stroke-dasharray: 2 14;
+  stroke-linecap: round;
+}
+.dio-plaza {
+  fill: var(--d-path);
+  stroke: var(--d-path-edge);
+  stroke-width: 6;
+}
+.dio-tree-0 {
+  fill: var(--d-tree-0);
+}
+.dio-tree-1 {
+  fill: var(--d-tree-1);
+}
+.dio-tree-2 {
+  fill: var(--d-tree-2);
+}
+.dio-tree-light {
+  fill: var(--d-tree-light);
+}
+.dio-conifer {
+  fill: var(--d-conifer);
+}
+.dio-trunk {
+  fill: var(--d-trunk);
+}
+.dio-sequoia-trunk {
+  fill: #9b5a3a;
+}
+.dio-wall {
+  fill: var(--d-wall);
+}
+.dio-roof {
+  fill: var(--d-roof);
+}
+.dio-glass {
+  fill: var(--d-glass);
+}
+.dio-frame {
+  stroke: var(--d-frame);
+  stroke-width: 2;
+  fill: none;
+}
+.dio-window {
+  fill: var(--d-window);
+}
+.dio-lamp-post {
+  fill: var(--d-lamp-post);
+}
+.dio-lamp-light {
+  fill: var(--d-lamp-light);
+}
+.dio-lamp-halo {
+  fill: var(--d-lamp-halo);
+}
+.dio-bench {
+  fill: var(--d-bench);
+}
+.dio-night-only {
+  opacity: var(--d-night-only);
+  transition: opacity 0.7s ease;
+}
+.dio-day-only {
+  opacity: calc(var(--d-day-only) * 0.45);
+  transition: opacity 0.7s ease;
+}
+
+/* ——— Mossy : animations par parties (paupières, corps, bras, tête, oreilles) ——— */
+.mossy-lid,
+.mossy-arm,
+.mossy-head,
+.mossy-eyes,
+.mossy-breathe,
+.mossy-hop,
+.mossy-hop-shadow,
+.mossy-squish,
+.mossy-ear-wiggle,
+.mossy-sprout {
+  transform-box: view-box;
+}
+.mossy-lid {
+  transition: transform 0.12s ease-in-out;
+}
+.mossy-arm,
+.mossy-head {
+  transition: transform 0.45s cubic-bezier(0.3, 0.7, 0.3, 1);
+}
+.mossy-eyes {
+  transition: transform 0.35s ease-out;
+}
+@keyframes mossy-blink {
+  0%,
+  90%,
+  100% {
+    transform: scaleY(0);
+  }
+  93%,
+  95% {
+    transform: scaleY(1);
+  }
+}
+.mossy-blink {
+  animation: mossy-blink 4.6s ease-in-out infinite;
+}
+@keyframes mossy-breathe {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.012, 1.03);
+  }
+}
+.mossy-breathe {
+  animation: mossy-breathe 3.4s ease-in-out infinite;
+}
+@keyframes mossy-hop {
+  0% {
+    transform: none;
+  }
+  14% {
+    transform: scale(1.08, 0.9);
+  }
+  38% {
+    transform: translateY(-22px) scale(0.95, 1.06);
+  }
+  58% {
+    transform: translateY(0) scale(1.07, 0.92);
+  }
+  70% {
+    transform: translateY(-8px) scale(0.98, 1.03);
+  }
+  84% {
+    transform: scale(1.03, 0.97);
+  }
+  100% {
+    transform: none;
+  }
+}
+.mossy-hop {
+  animation: mossy-hop 1s cubic-bezier(0.3, 0.6, 0.3, 1) both;
+}
+@keyframes mossy-hop-shadow {
+  0%,
+  14%,
+  58%,
+  84%,
+  100% {
+    transform: none;
+    opacity: 0.3;
+  }
+  38% {
+    transform: scale(0.7);
+    opacity: 0.16;
+  }
+  70% {
+    transform: scale(0.88);
+    opacity: 0.22;
+  }
+}
+.mossy-hop-shadow {
+  animation: mossy-hop-shadow 1s cubic-bezier(0.3, 0.6, 0.3, 1) both;
+}
+@keyframes mossy-squish {
+  0% {
+    transform: none;
+  }
+  25% {
+    transform: scale(1.1, 0.88);
+  }
+  55% {
+    transform: scale(0.95, 1.06);
+  }
+  80% {
+    transform: scale(1.02, 0.98);
+  }
+  100% {
+    transform: none;
+  }
+}
+.mossy-squish {
+  animation: mossy-squish 0.55s ease-out both;
+}
+@keyframes mossy-ear-wiggle {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-9deg);
+  }
+  50% {
+    transform: rotate(7deg);
+  }
+  75% {
+    transform: rotate(-4deg);
+  }
+}
+.mossy-ear-wiggle {
+  animation: mossy-ear-wiggle 0.6s ease-in-out 2;
+}
+@keyframes mossy-sprout {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+}
+.mossy-sprout {
+  animation: mossy-sprout 3.4s ease-in-out infinite;
+}
+
+/* ——— Éclosion : balancement, secousses, morceaux de coquille ——— */
+.hatch-sway,
+.hatch-wobble,
+.hatch-shake,
+.hatch-piece,
+.hatch-bloom,
+.hatch-pop {
+  transform-box: view-box;
+}
+@keyframes hatch-sway {
+  0%,
+  100% {
+    transform: rotate(-1.6deg);
+  }
+  50% {
+    transform: rotate(1.6deg);
+  }
+}
+.hatch-sway {
+  animation: hatch-sway 2.6s ease-in-out infinite;
+}
+@keyframes hatch-wobble {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(-6deg);
+  }
+  45% {
+    transform: rotate(5deg);
+  }
+  70% {
+    transform: rotate(-3deg);
+  }
+}
+.hatch-wobble {
+  animation: hatch-wobble 0.95s ease-in-out 2;
+}
+@keyframes hatch-shake {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+  10% {
+    transform: translateX(-2.5px) rotate(-2deg);
+  }
+  20% {
+    transform: translateX(2.5px) rotate(2deg);
+  }
+  30% {
+    transform: translateX(-2px) rotate(-1.5deg);
+  }
+  40% {
+    transform: translateX(2px) rotate(1.5deg);
+  }
+  50% {
+    transform: translateX(0) rotate(0);
+  }
+}
+.hatch-shake {
+  animation: hatch-shake 0.7s ease-in-out infinite;
+}
+.hatch-piece {
+  transition:
+    transform 0.95s cubic-bezier(0.25, 0.7, 0.3, 1),
+    opacity 0.95s ease 0.15s;
+}
+@keyframes hatch-crack {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.hatch-crack {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: hatch-crack 0.45s ease-out forwards;
+}
+@keyframes hatch-bloom {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+.hatch-bloom {
+  animation: hatch-bloom 1.3s ease-out forwards;
+}
+@keyframes hatch-pop {
+  0% {
+    transform: translateY(14px) scale(0.55, 0.45);
+    opacity: 0;
+  }
+  45% {
+    transform: translateY(-6px) scale(1.06, 1.1);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1.04, 0.95);
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+.hatch-pop {
+  animation: hatch-pop 0.9s cubic-bezier(0.3, 0.7, 0.3, 1) both;
+}
+@keyframes hatch-leaf {
+  0% {
+    transform: translate(0, 0) rotate(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), -70px) rotate(var(--rot));
+    opacity: 0;
+  }
+}
+.hatch-leaf {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hatch-leaf 1.8s ease-out forwards;
+}
+
+/* ——— Compagnons (Perline, Lumo) : mouvements propres à chaque identité ——— */
+.comp-sway,
+.comp-wing,
+.comp-wing-fast,
+.comp-ripple,
+.comp-glow {
+  transform-box: view-box;
+}
+@keyframes comp-sway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+.comp-sway {
+  animation: comp-sway 3.6s ease-in-out infinite;
+}
+/* Ailes de voile : battement lent au repos, rapide dans la joie */
+@keyframes comp-wing {
+  0%,
+  100% {
+    transform: rotate(0) scaleX(1);
+  }
+  50% {
+    transform: rotate(-4deg) scaleX(0.92);
+  }
+}
+.comp-wing {
+  animation: comp-wing 2.8s ease-in-out infinite;
+}
+.comp-wing-fast {
+  animation: comp-wing 0.22s ease-in-out 6;
+}
+/* Lumière qui « respire » (lanterne, antennes) */
+@keyframes comp-glow {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+.comp-glow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: comp-glow 2.6s ease-in-out infinite;
+}
+/* Bulles qui montent dans le corps de Perline */
+@keyframes comp-bubble {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(-46px);
+    opacity: 0;
+  }
+}
+.comp-bubble {
+  transform-box: fill-box;
+  animation: comp-bubble 3.2s ease-in infinite;
+}
+/* Ondes sur l'eau du socle */
+@keyframes comp-ripple {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+.comp-ripple {
+  animation: comp-ripple 3s ease-out infinite;
+}
+
+/* ——— Créatures en image : seul le calque « personnage » bouge, le socle reste fixe ——— */
+.cimg-tilt {
+  transition: transform 0.5s cubic-bezier(0.3, 0.7, 0.3, 1);
+}
+/* Respiration discrète, ancrée sur la ligne personnage / socle */
+@keyframes cimg-breathe {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.004, 1.012);
+  }
+}
+.cimg-breathe {
+  animation: cimg-breathe 3.6s ease-in-out infinite;
+}
+/* Flottement (Air) : le personnage ne touche pas son socle */
+@keyframes cimg-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.8%);
+  }
+}
+.cimg-float {
+  animation: cimg-float 3.4s ease-in-out infinite;
+}
+/* Joie : petit rebond sur place, amplitudes volontairement faibles (pas de déformation excessive) */
+@keyframes cimg-joy {
+  0% {
+    transform: none;
+  }
+  20% {
+    transform: scale(1.02, 0.975);
+  }
+  45% {
+    transform: scale(0.988, 1.035) rotate(-1deg);
+  }
+  65% {
+    transform: scale(1.012, 0.988) rotate(0.6deg);
+  }
+  82% {
+    transform: scale(0.996, 1.01);
+  }
+  100% {
+    transform: none;
+  }
+}
+.cimg-joy {
+  animation: cimg-joy 0.9s cubic-bezier(0.3, 0.6, 0.3, 1) both;
+}
+/* Réaction au toucher : léger tassement */
+@keyframes cimg-touch {
+  0% {
+    transform: none;
+  }
+  30% {
+    transform: scale(1.015, 0.98);
+  }
+  65% {
+    transform: scale(0.995, 1.01);
+  }
+  100% {
+    transform: none;
+  }
+}
+.cimg-touch {
+  animation: cimg-touch 0.5s ease-out both;
+}
+/* Lumière douce (Lunaire, Solaire, champignons de la Forêt) */
+@keyframes cimg-glow {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.06);
+  }
+}
+.cimg-glow {
+  animation: cimg-glow 3.4s ease-in-out infinite;
+}
+/* Éclosion : le socle apparaît en fondu, le personnage surgit de la coquille */
+@keyframes cimg-socle-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.cimg-socle-in {
+  animation: cimg-socle-in 0.8s ease-out both;
+}
+@keyframes cimg-pop {
+  0% {
+    transform: translateY(6%) scale(0.6, 0.5);
+    opacity: 0;
+  }
+  45% {
+    transform: translateY(-1%) scale(1.04, 1.07);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1.02, 0.97);
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+.cimg-pop {
+  animation: cimg-pop 0.9s cubic-bezier(0.3, 0.7, 0.3, 1) both;
+}
