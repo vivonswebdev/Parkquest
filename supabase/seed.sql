@@ -124,11 +124,11 @@ insert into public.spot_translations (spot_id, locale, name, label, summary, abo
   ('00000003-0000-4000-8000-000000000005', 'en', 'Viewpoint', 'Panorama', 'An open view over the pond and the castle.', 'From this small hill you can take in the pond, the tall trees and the castle''s silhouette. Best time: late afternoon.', 'Photographers call the light at the end of the day the “golden hour”.', 'Climb the gently sloping trail to the right of the rose garden.', null),
   ('00000003-0000-4000-8000-000000000005', 'es', 'Mirador', 'Panorama', null, null, null, null, null),
   ('00000003-0000-4000-8000-000000000005', 'de', 'Aussichtspunkt', 'Panorama', null, null, null, null, null),
-  ('00000003-0000-4000-8000-000000000006', 'fr', 'Pavillon historique (démo)', 'Lieu historique — à confirmer', 'Un lieu d''exemple pour illustrer les fiches « histoire ».', 'Ce spot est un exemple fictif. Il sera remplacé par un bâtiment historique réel du domaine, avec un texte validé par l''équipe du jardin.', 'Les fiches histoire peuvent afficher dates, architectes et anecdotes validées.', 'Revenez vers l''allée principale, le pavillon est sur la droite.', null),
-  ('00000003-0000-4000-8000-000000000006', 'nl', 'Historisch paviljoen (demo)', 'Historische plek — te bevestigen', 'Een voorbeeldplek om de « geschiedenis »-fiches te tonen.', 'Deze plek is fictief. Ze wordt vervangen door een echt historisch gebouw van het domein, met een tekst gevalideerd door het tuinteam.', 'Geschiedenisfiches kunnen gevalideerde data, architecten en anekdotes tonen.', 'Ga terug naar de hoofddreef, het paviljoen ligt rechts.', null),
-  ('00000003-0000-4000-8000-000000000006', 'en', 'Historic pavilion (demo)', 'Historic place — to be confirmed', 'A sample place to illustrate “history” cards.', 'This spot is fictional. It will be replaced by a real historic building on the estate, with text validated by the garden team.', 'History cards can show validated dates, architects and anecdotes.', 'Head back to the main avenue; the pavilion is on the right.', null),
-  ('00000003-0000-4000-8000-000000000006', 'es', 'Pabellón histórico (demo)', 'Lugar histórico — por confirmar', null, null, null, null, null),
-  ('00000003-0000-4000-8000-000000000006', 'de', 'Historischer Pavillon (Demo)', 'Historischer Ort — zu bestätigen', null, null, null, null, null),
+  ('00000003-0000-4000-8000-000000000006', 'fr', 'Pavillon historique', 'Lieu historique — à confirmer', 'Un lieu d''exemple pour illustrer les fiches « histoire ».', 'Ce spot est un exemple fictif. Il sera remplacé par un bâtiment historique réel du domaine, avec un texte validé par l''équipe du jardin.', 'Les fiches histoire peuvent afficher dates, architectes et anecdotes validées.', 'Revenez vers l''allée principale, le pavillon est sur la droite.', null),
+  ('00000003-0000-4000-8000-000000000006', 'nl', 'Historisch paviljoen', 'Historische plek — te bevestigen', 'Een voorbeeldplek om de « geschiedenis »-fiches te tonen.', 'Deze plek is fictief. Ze wordt vervangen door een echt historisch gebouw van het domein, met een tekst gevalideerd door het tuinteam.', 'Geschiedenisfiches kunnen gevalideerde data, architecten en anekdotes tonen.', 'Ga terug naar de hoofddreef, het paviljoen ligt rechts.', null),
+  ('00000003-0000-4000-8000-000000000006', 'en', 'Historic pavilion', 'Historic place — to be confirmed', 'A sample place to illustrate “history” cards.', 'This spot is fictional. It will be replaced by a real historic building on the estate, with text validated by the garden team.', 'History cards can show validated dates, architects and anecdotes.', 'Head back to the main avenue; the pavilion is on the right.', null),
+  ('00000003-0000-4000-8000-000000000006', 'es', 'Pabellón histórico', 'Lugar histórico — por confirmar', null, null, null, null, null),
+  ('00000003-0000-4000-8000-000000000006', 'de', 'Historischer Pavillon', 'Historischer Ort — zu bestätigen', null, null, null, null, null),
   ('00000003-0000-4000-8000-000000000007', 'fr', 'Ginkgo', 'Fossile vivant', 'Un arbre qui a connu les dinosaures.', 'Le ginkgo existait déjà il y a plus de 200 millions d''années. Ses feuilles en éventail deviennent jaune or en automne.', 'Des ginkgos ont survécu à Hiroshima en 1945 et poussent encore.', null, 'Chine'),
   ('00000003-0000-4000-8000-000000000007', 'nl', 'Ginkgo', 'Levend fossiel', 'Een boom die de dinosaurussen heeft gekend.', 'De ginkgo bestond al meer dan 200 miljoen jaar geleden. Zijn waaiervormige bladeren kleuren goudgeel in de herfst.', 'Ginkgo''s overleefden Hiroshima in 1945 en groeien er nog steeds.', null, 'China'),
   ('00000003-0000-4000-8000-000000000007', 'en', 'Ginkgo', 'Living fossil', 'A tree that knew the dinosaurs.', 'The ginkgo already existed more than 200 million years ago. Its fan-shaped leaves turn golden in autumn.', 'Ginkgos survived Hiroshima in 1945 and still grow there.', null, 'China'),
@@ -253,9 +253,9 @@ insert into public.facility_translations (facility_id, locale, name, description
   ('00000006-0000-4000-8000-00000000000a', 'fr', 'Belvédère', null),
   ('00000006-0000-4000-8000-00000000000a', 'nl', 'Belvedère', null),
   ('00000006-0000-4000-8000-00000000000a', 'en', 'Lookout', null),
-  ('00000006-0000-4000-8000-00000000000b', 'fr', 'Arrêt de bus (démo)', null),
-  ('00000006-0000-4000-8000-00000000000b', 'nl', 'Bushalte (demo)', null),
-  ('00000006-0000-4000-8000-00000000000b', 'en', 'Bus stop (demo)', null);
+  ('00000006-0000-4000-8000-00000000000b', 'fr', 'Arrêt de bus', null),
+  ('00000006-0000-4000-8000-00000000000b', 'nl', 'Bushalte', null),
+  ('00000006-0000-4000-8000-00000000000b', 'en', 'Bus stop', null);
 
 insert into public.quizzes (id, park_id, spot_id, status, is_demo_data, points_value, sort_order) values
   ('00000007-0000-4000-8000-000000000001', '00000001-0000-4000-8000-000000000001', '00000003-0000-4000-8000-000000000001', 'PUBLISHED', true, 10, 1),
