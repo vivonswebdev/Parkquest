@@ -701,5 +701,72 @@
       "EX": "Extinta",
       "DD": "Datos insuficientes"
     }
+  },
+  "explore": {
+    "title": "Modo Exploración",
+    "loading": "Preparando la aventura…",
+    "cardBody": "Una aventura guiada, solo por los caminos del parque.",
+    "cardCta": "Empezar la aventura",
+    "demoData": "Dato de demostración, pendiente de validar con el parque.",
+    "objective": "Objetivo",
+    "quests": {
+      "secretSequoia": {
+        "title": "El secreto de la secuoya",
+        "intro": "Ve a la secuoya gigante: allí te espera el primer enigma."
+      }
+    },
+    "safety": {
+      "title": "Antes de empezar",
+      "l1": "{app} se juega al aire libre. Presta atención a tu entorno.",
+      "l2": "No salgas nunca de los caminos autorizados y respeta las señales.",
+      "l3": "Detente antes de mirar la pantalla.",
+      "l4": "Cuidado con las bicis, los demás visitantes y los obstáculos.",
+      "l5": "Los niños juegan con un adulto.",
+      "accept": "He entendido estas indicaciones",
+      "start": "Empezar la aventura",
+      "back": "Volver",
+      "parkRules": "{app} no sustituye las normas e indicaciones del parque."
+    },
+    "dashboard": {
+      "title": "Desplazamiento",
+      "remaining": "Falta",
+      "minutes": "≈ {minutes} min",
+      "direction": "Dirección",
+      "walked": "Recorrido",
+      "speed": "Velocidad",
+      "speedValue": "{value} km/h",
+      "note": "Calculado en tu teléfono, nunca enviado. Indicativo: ir rápido no da nada."
+    },
+    "cardinals": {
+      "N": "Norte",
+      "NE": "Noreste",
+      "E": "Este",
+      "SE": "Sureste",
+      "S": "Sur",
+      "SW": "Suroeste",
+      "W": "Oeste",
+      "NW": "Noroeste"
+    },
+    "cardinalsShort": {
+      "N": "N",
+      "NE": "NE",
+      "E": "E",
+      "SE": "SE",
+      "S": "S",
+      "SW": "SO",
+      "W": "O",
+      "NW": "NO"
+    },
+    "pause": "Pausa",
+    "paused": "Aventura en pausa",
+    "pausedBody": "El seguimiento de tu ubicación está detenido. Continúa cuando quieras.",
+    "resume": "Continuar",
+    "quit": "Salir",
+    "quitTitle": "¿Salir de la aventura?",
+    "quitBody": "Podrás empezarla de nuevo más tarde.",
+    "continue": "Seguir",
+    "announceStart": "Aventura iniciada. Objetivo: {name}, a {distance}.",
+    "announceResumed": "Aventura reanudada.",
+    "announceObjective": "Nuevo objetivo: {name}."
   }
 }

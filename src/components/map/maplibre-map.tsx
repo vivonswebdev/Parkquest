@@ -446,7 +446,7 @@ export function MapLibreParkMap({
   }, [user]);
 
   useImperativeHandle(ref, () => ({
-    flyTo: (pt, zoom) => map.current?.flyTo({ center: [pt.lng, pt.lat], zoom: zoom ?? Math.max(map.current.getZoom(), 17), essential: true }),
+    flyTo: (pt, zoom) => map.current?.flyTo({ center: [pt.lng, pt.lat], zoom: zoom ?? Math.max(map.current.getZoom(), 17) }),
     fitBounds: () => map.current?.fitBounds(lngLatBounds(), { padding }),
     resetNorth: () => map.current?.easeTo({ bearing: 0, pitch: view3d ? PITCH_3D : 0 }),
   }));
