@@ -2,17 +2,15 @@
 
 import { Footprints, GitBranch, Moon, RotateCcw, Search } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { cn } from "@/lib/utils";
+import { useRef, useState } from "react";
 import { EggArt } from "../art/egg";
-import { GuardianFigure } from "../art/guardians";
-import { CompanionFigure, isFigurine } from "../art/companion";
+import { CreatureImage } from "../art/creature-image";
 import { creatureById, eggById, LINEAGE, STAGE_LABEL } from "../creatures";
 import { applyAction, collected, companionOf, nextEvolution, stageOf, STEPS_PER_ADVENTURE, type LabAction } from "../state";
 import { DemoNote, LAB, LabNav, LabTopBar, ProgressBar, useToast } from "../ui";
 import { useHydrated, useLabState } from "../use-lab-state";
 
-const MURMURS = ["Tu as vu cette mousse ?", "On continue un peu ?", "J'aime quand on prend le temps.", "Écoute… un oiseau !"];
+const MURMURS = ["On continue un peu ?", "J'aime quand on prend le temps.", "Écoute… un oiseau !", "Regarde autour de toi !"];
 
 export function CompanionScreen() {
   const hydrated = useHydrated();
@@ -23,12 +21,6 @@ function Companion() {
   const { state, act, reset } = useLabState();
   const [toast, say] = useToast();
   const [poke, setPoke] = useState(0);
-  const [happy, setHappy] = useState(false);
-  useEffect(() => {
-    if (!poke) return;
-    const t = setTimeout(() => setHappy(false), 1400);
-    return () => clearTimeout(t);
-  }, [poke]);
   const lastStage = useRef(stageOf(state));
   const stage = stageOf(state);
   const companion = companionOf(state);
@@ -59,40 +51,16 @@ function Companion() {
       <LabTopBar back={`${LAB}/home`} title="Mon compagnon" />
       <div className="px-5">
         <div
-          className={cn(
-            "lab-card relative overflow-hidden px-4 pb-5 pt-4 text-center",
-            stage === "lunar" && "bg-[linear-gradient(180deg,#1a2b52,#2c4677)] text-[#f8f2e4]",
-          )}
+          className="lab-card relative overflow-hidden px-4 pb-5 pt-4 text-center"
         >
           {stage === "egg" ? (
             <EggArt egg={state.egg} state="dormant" className="mx-auto h-64 w-auto" title={title} />
           ) : (
-            <button type="button" onClick={() => {
-                setPoke((n) => n + 1);
-                setHappy(true);
-              }} aria-label={`Saluer ${creature.name}`} className="relative mx-auto block rounded-full">
-              {isFigurine(companion) ? (
-                // Compagnon vivant : respiration, clignements ; au toucher, écrasement + joie
-                <span key={stage} className="lab-reveal block">
-                  <CompanionFigure
-                    id={companion}
-                    form={stage === "guardian" || stage === "lunar" ? "adult" : "young"}
-                    lunar={stage === "lunar"}
-                    scarf={stage === "explorer"}
-                    idle
-                    socle
-                    mood={happy ? "happy" : "rest"}
-                    hop={poke}
-                    squish={poke}
-                    className="mx-auto h-64 w-auto"
-                    title={title}
-                  />
-                </span>
-              ) : (
-                <span key={`${stage}-${poke}`} className={cn("block", poke > 0 ? "lab-wiggle" : "lab-reveal")}>
-                  <GuardianFigure id={companion} stage={stage} className="mx-auto h-64 w-auto" title={title} />
-                </span>
-              )}
+            <button type="button" onClick={() => setPoke((n) => n + 1)} aria-label={`Saluer ${creature.name}`} className="relative mx-auto block rounded-full">
+              {/* Image fournie : respiration discrète, petite réaction au toucher et rebond de joie (socle fixe) */}
+              <span key={stage} className="lab-reveal block">
+                <CreatureImage id={companion} idle joy={poke} touch={poke} className="mx-auto h-72" alt={title} priority />
+              </span>
               {poke > 0 && (
                 <span key={poke} role="status" className="lab-fade-up absolute -top-1 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white px-3 py-1 text-sm font-semibold text-[var(--lab-ink)] shadow">
                   {MURMURS[poke % MURMURS.length]}
@@ -101,8 +69,13 @@ function Companion() {
             </button>
           )}
           <h1 className="lab-serif mt-2 text-[1.75rem] leading-tight font-bold">{title}</h1>
-          <p className={cn("mt-1 text-sm font-bold", stage === "lunar" ? "text-[#f3c86e]" : "text-[var(--lab-moss)]")}>{STAGE_LABEL[stage]}</p>
-          <p className={cn("mt-3 italic", stage === "lunar" ? "text-white/80" : "text-[var(--lab-ink-soft)]")}>« {creature.lore} »</p>
+          <p className="mt-1 text-sm font-bold text-[var(--lab-moss)]">{STAGE_LABEL[stage]}</p>
+          <p className="mt-3 italic text-[var(--lab-ink-soft)]">« {creature.lore} »</p>
+          {stage !== "egg" && stage !== "young" && (
+            <p className="mx-auto mt-3 max-w-xs rounded-2xl border-2 border-dashed border-[rgba(31,90,61,0.25)] px-3 py-2 text-xs text-[var(--lab-ink-soft)]">
+              Visuel de la forme « {STAGE_LABEL[stage]} » à créer : l&apos;image affichée reste celle du jeune gardien.
+            </p>
+          )}
         </div>
 
         <section aria-labelledby="lab-next" className="mt-4 rounded-[22px] bg-[var(--lab-paper)] p-4">

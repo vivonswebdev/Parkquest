@@ -1,13 +1,10 @@
 import { notFound } from "next/navigation";
-import { CREATURES, creatureById } from "@/features/lab/creatures";
+import { creatureById } from "@/features/lab/creatures";
 import { CreatureScreen } from "@/features/lab/screens/creature";
 
-export function generateStaticParams() {
-  return CREATURES.map((c) => ({ id: c.id }));
-}
-
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+export default async function Page({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ fond?: string }> }) {
   const c = creatureById((await params).id);
   if (!c) notFound();
-  return <CreatureScreen c={c} />;
+  const { fond } = await searchParams;
+  return <CreatureScreen c={c} initialBackdrop={fond === "nuit" ? "night" : "light"} />;
 }

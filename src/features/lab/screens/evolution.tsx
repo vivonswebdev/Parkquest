@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { EggArt } from "../art/egg";
-import { GuardianFigure } from "../art/guardians";
+import { CreatureImage } from "../art/creature-image";
 import { eggById, LINEAGE, STAGE_CONDITION, STAGE_LABEL, STAGE_ORDER } from "../creatures";
 import { companionOf, stageOf } from "../state";
 import { DemoNote, LAB, LabNav, LabTopBar } from "../ui";
@@ -42,7 +42,15 @@ export function EvolutionScreen() {
                     {st === "egg" ? (
                       <EggArt egg={state.egg} nest={false} halo={false} className="h-16 w-auto" />
                     ) : (
-                      <GuardianFigure id={companion} stage={st} silhouette={!known} halo={false} socle={false} viewBox="30 40 140 130" className="h-16 w-auto" />
+                      st === "young" ? (
+                        <CreatureImage id={companion} silhouette={!known} className="h-[4.75rem]" alt="" sizes="80px" />
+                      ) : (
+                        // Une seule image par créature : les formes suivantes restent à dessiner
+                        <span className={cn("grid size-16 place-items-center rounded-full border-2 border-dashed text-center text-[10px] leading-tight font-bold", st === "lunar" ? "border-white/40" : "border-[rgba(31,90,61,0.3)] text-[var(--lab-ink-soft)]")}>
+                          Visuel
+                          <br />à créer
+                        </span>
+                      )
                     )}
                   </span>
                   <span className="min-w-0 flex-1">

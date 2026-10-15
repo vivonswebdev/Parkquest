@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { EggArt } from "../art/egg";
-import { EGGS, type EggId } from "../creatures";
+import { CreatureImage } from "../art/creature-image";
+import { EGGS, FAMILY_LABEL, type EggId } from "../creatures";
 import { DEFAULT_NAME, INITIAL_STATE, sanitizeName, STYLES, type ExplorerStyle } from "../state";
 import { BottomActions, ChoiceCard, DemoNote, LAB, LabTopBar } from "../ui";
 import { useHydrated, useLabState } from "../use-lab-state";
@@ -86,8 +87,14 @@ function ChooseEggForm() {
                   checked={egg === e.id}
                   onChange={(v) => setEgg(v as EggId)}
                   label={e.label}
-                  hint={`${e.biome}. ${e.clue}`}
-                  visual={<EggArt egg={e.id} nest={false} className="h-20 w-16 shrink-0" />}
+                  hint={`${e.biome}. ${e.clue} Compagnon : famille ${FAMILY_LABEL[e.hatches]}.`}
+                  visual={
+                    <span className="relative flex shrink-0 items-end">
+                      <EggArt egg={e.id} nest={false} className="h-20 w-16" />
+                      {/* Qui sommeille dans l'œuf : silhouette seulement, la surprise reste pour l'éclosion */}
+                      <CreatureImage id={e.hatches} silhouette className="-ml-3 h-12" alt="" sizes="48px" />
+                    </span>
+                  }
                 />
               ))}
             </div>

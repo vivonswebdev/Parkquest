@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { HatchScene, isOpening } from "../art/hatch-scene";
-import { CompanionFigure, type CompanionId } from "../art/companion";
+import { CompanionFigure, FAMILY_OF, type CompanionId } from "../art/companion";
 import type { FigureMood } from "../art/figure-kit";
 import { EGGS, LINEAGE } from "../creatures";
 import { DemoNote, LAB, LabTopBar } from "../ui";
@@ -21,8 +21,8 @@ const INTRO: Record<CompanionId, string> = {
 const ORDER: CompanionId[] = ["mossy", "perline", "lumo"];
 
 export function FigurinePreviewScreen({ id }: { id: CompanionId }) {
-  const names = LINEAGE[id];
-  const egg = EGGS.find((e) => e.hatches === id)!;
+  const names = LINEAGE[FAMILY_OF[id]];
+  const egg = EGGS.find((e) => e.hatches === FAMILY_OF[id])!;
   const short = names.young.split(",")[0];
   const [mood, setMood] = useState<FigureMood>("rest");
   const [look, setLook] = useState(0);
@@ -65,7 +65,7 @@ export function FigurinePreviewScreen({ id }: { id: CompanionId }) {
 
   return (
     <main className="flex min-h-full flex-col pb-10">
-      <LabTopBar back={`${LAB}`} title={`${short} · planche de validation`} />
+      <LabTopBar back={`${LAB}`} title={`${short} · exploration SVG (archive)`} />
       <nav aria-label="Compagnons" className="mb-3 flex justify-center gap-2 px-5">
         {ORDER.map((c) => (
           <Link
@@ -74,7 +74,7 @@ export function FigurinePreviewScreen({ id }: { id: CompanionId }) {
             aria-current={c === id ? "page" : undefined}
             className={cn("min-h-11 rounded-full px-4 py-2.5 text-sm font-bold", c === id ? "bg-[var(--lab-forest)] text-[#fffaf0]" : "bg-[var(--lab-paper)]")}
           >
-            {LINEAGE[c].young.split(",")[0]}
+            {LINEAGE[FAMILY_OF[c]].young.split(",")[0]}
           </Link>
         ))}
       </nav>
@@ -165,7 +165,7 @@ export function FigurinePreviewScreen({ id }: { id: CompanionId }) {
         <Link href={`${LAB}/hatch?replay=1`} className="lab-btn lab-btn-primary w-full">
           Voir dans le parcours complet
         </Link>
-        <DemoNote>Prototype de rendu : figurine dessinée en SVG (dégradés, reflets, ombres) et animée par parties. Les autres gardiens attendent la validation.</DemoNote>
+        <DemoNote>Archive : exploration SVG précédente (figurine dessinée et animée par parties). Les visuels actuels du prototype sont les images des sept familles.</DemoNote>
       </div>
     </main>
   );

@@ -4,7 +4,7 @@ import { ChevronRight, Clock, Map as MapIcon, Moon, Route } from "lucide-react";
 import Link from "next/link";
 import { Diorama, MARKERS, useElementSize } from "../art/diorama";
 import { EggArt } from "../art/egg";
-import { GuardianFigure } from "../art/guardians";
+import { CreatureImage } from "../art/creature-image";
 import { eggById, LINEAGE, STAGE_LABEL } from "../creatures";
 import { collected, companionOf, nextEvolution, stageOf, TOTAL_CREATURES } from "../state";
 import { DemoNote, LAB, LabNav, LabTools, ProgressBar } from "../ui";
@@ -45,7 +45,7 @@ export function HomeScreen() {
             {stage === "egg" ? (
               <EggArt egg={state.egg} nest={false} className="h-20 w-auto" />
             ) : (
-              <GuardianFigure id={companion} stage={stage} halo={false} className="h-20 w-auto" />
+              <CreatureImage id={companion} idle className="h-20" alt="" sizes="96px" />
             )}
           </span>
           <span className="min-w-0 flex-1">

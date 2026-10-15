@@ -15,7 +15,12 @@ export const LAB = "/fr/lab";
 /** Barre haute : retour (optionnel), titre discret, accès au début du prototype et aux outils. */
 export function LabTopBar({ back, title, dark }: { back?: string; title?: string; dark?: boolean }) {
   return (
-    <header className={cn("lab-safe-top sticky top-0 z-20 flex items-center gap-2 px-4 pb-2", dark ? "text-[#f8f2e4]" : "text-[var(--lab-ink)]")}>
+    <header
+      className={cn(
+        "lab-safe-top sticky top-0 z-20 flex items-center gap-2 px-4 pb-2",
+        dark ? "text-[#f8f2e4]" : "bg-[rgba(248,242,228,0.9)] text-[var(--lab-ink)] backdrop-blur-sm",
+      )}
+    >
       {back ? (
         <Link href={back} aria-label="Retour" className={cn("grid size-11 place-items-center rounded-full", dark ? "bg-white/10" : "bg-[rgba(31,90,61,0.08)]")}>
           <ArrowLeft className="size-5" aria-hidden />

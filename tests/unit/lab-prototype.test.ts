@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { CREATURES, RARITY } from "../../src/features/lab/creatures";
-import { applyAction, collected, INITIAL_STATE, nextEvolution, parseState, sanitizeName, stageOf, type LabState } from "../../src/features/lab/state";
+import { applyAction, collected, companionOf, INITIAL_STATE, nextEvolution, parseState, sanitizeName, stageOf, type LabState } from "../../src/features/lab/state";
 
 const hatched: LabState = { ...INITIAL_STATE, discoveries: 1, hatched: true };
 const repeat = (s: LabState, a: Parameters<typeof applyAction>[1], n: number) => Array.from({ length: n }).reduce<LabState>((acc) => applyAction(acc, a), s);
@@ -29,8 +29,13 @@ describe("laboratoire de design : compagnon évolutif", () => {
       assert.ok(c.unlock.length > 5);
       assert.ok(RARITY[c.rarity].label);
     }
-    assert.deepEqual([...collected(hatched)], ["mossy"]);
-    assert.ok(collected(applyAction(hatched, "dusk")).has("lumo"));
+    assert.deepEqual([...collected(hatched)], ["leaf"]);
+    assert.ok(collected(applyAction(hatched, "dusk")).has("lunar"));
+    // Mêmes conditions qu'avant, réattribuées aux sept familles
+    assert.ok(collected({ ...hatched, steps: 3 }).has("flower"));
+    assert.ok(collected({ ...hatched, parks: 2 }).has("air"));
+    assert.ok(collected({ ...hatched, adventures: 2 }).has("forest"));
+    assert.ok(collected({ ...hatched, adventures: 4, parks: 4 }).has("solar"));
   });
 
   it("relit l'état local prudemment", () => {
@@ -41,5 +46,24 @@ describe("laboratoire de design : compagnon évolutif", () => {
     assert.equal(s.discoveries, 0);
     assert.equal(s.steps, 99);
     assert.equal(sanitizeName("a".repeat(40)).length, 24);
+  });
+});
+
+describe("laboratoire de design : sept familles", () => {
+  it("identifiants techniques indépendants des noms affichés", () => {
+    assert.deepEqual(
+      CREATURES.map((c) => c.id),
+      ["leaf", "water", "flower", "air", "forest", "lunar", "solar"],
+    );
+    assert.deepEqual(
+      CREATURES.map((c) => c.name),
+      ["Mossy", "Perline", "Floréa", "Zéphyr", "Mycélio", "Lumo", "Soléa"],
+    );
+  });
+
+  it("chaque œuf de départ révèle le bon compagnon (Feuille et Forêt restent distinctes)", () => {
+    assert.equal(companionOf({ egg: "forest" }), "leaf");
+    assert.equal(companionOf({ egg: "river" }), "water");
+    assert.equal(companionOf({ egg: "dusk" }), "lunar");
   });
 });

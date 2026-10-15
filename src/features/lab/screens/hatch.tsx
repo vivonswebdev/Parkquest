@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { HatchScene, isHatched, isOpening, type HatchPhase } from "../art/hatch-scene";
-import { eggById, LINEAGE } from "../creatures";
+import { isHatched, isOpening, type HatchPhase } from "../art/hatch-scene";
+import { HatchStage } from "../art/hatch-stage";
+import { eggById, FAMILY_LABEL, LINEAGE, type EggId } from "../creatures";
 import { companionOf } from "../state";
 import { BottomActions, DemoNote, LAB, LabTopBar, ProgressBar } from "../ui";
 import { useHatch } from "../use-hatch";
@@ -34,13 +35,17 @@ function headline(p: HatchPhase, name: string) {
   return "La coquille s'ouvre doucement…";
 }
 
-export function HatchScreen({ replay }: { replay: boolean }) {
+export function HatchScreen({ replay, egg }: { replay: boolean; egg?: EggId }) {
   const hydrated = useHydrated();
-  return hydrated ? <Hatch replay={replay} /> : <main className="min-h-full" />;
+  return hydrated ? <Hatch replay={replay} eggParam={egg} /> : <main className="min-h-full" />;
 }
 
-function Hatch({ replay }: { replay: boolean }) {
+function Hatch({ replay, eggParam }: { replay: boolean; eggParam?: EggId }) {
   const { state, update } = useLabState();
+  // Lien direct vers l'éclosion d'un œuf précis (démonstration) : l'œuf choisi devient celui de l'état local
+  useEffect(() => {
+    if (eggParam && eggParam !== state.egg) update({ egg: eggParam, hatched: false });
+  }, [eggParam, state.egg, update]);
   const router = useRouter();
   const { phase, setPhase, reduced, open, skip, reset } = useHatch(state.hatched && !replay ? "done" : "dormant");
   const [hop, setHop] = useState(0);
@@ -103,14 +108,18 @@ function Hatch({ replay }: { replay: boolean }) {
           aria-label={done ? `Saluer ${name}` : undefined}
           className="relative mt-1 grid h-[min(40vh,21rem)] w-full place-items-center rounded-[28px] disabled:cursor-default"
         >
-          <HatchScene egg={state.egg} creature={companion} phase={phase} reduced={reduced} hop={hop} squish={squish} className="h-full w-auto" title={`${egg.label} — ${headline(phase, name)}`} />
+          <HatchStage egg={state.egg} creature={companion} phase={phase} reduced={reduced} joy={hop} touch={squish} className="h-full" title={`${egg.label} — ${headline(phase, name)}`} />
         </button>
 
         <div className="min-h-[5.5rem] w-full max-w-md text-center" aria-live="polite">
           <h1 key={done ? "done" : "x"} className={cn("lab-serif text-[1.85rem] leading-tight font-bold text-[var(--lab-forest-deep)]", done && "lab-fade-up")}>
             {headline(phase, name)}
           </h1>
-          {done && <p className="lab-fade-up mt-1 text-[var(--lab-ink-soft)]">Il est né de tes découvertes. Touche-le pour le saluer.</p>}
+          {done && (
+            <p className="lab-fade-up mt-1 text-[var(--lab-ink-soft)]">
+              Famille {FAMILY_LABEL[companion]} · né de tes découvertes. Touche-le pour le saluer.
+            </p>
+          )}
         </div>
 
         {(phase === "dormant" || phase === "reactive" || phase === "ready") && (

@@ -3,7 +3,7 @@
  * Aucun compte, aucun appel réseau, aucune position. Réinitialisable à tout moment.
  * Le compagnon évolue seulement avec des actions d'exploration (jamais avec une connexion quotidienne).
  */
-import { CREATURES, eggById, type CreatureId, type EggId, type StageId } from "./creatures";
+import { CREATURES, eggById, type CreatureId, type EggId, type StageId, type StarterId } from "./creatures";
 
 export type ExplorerStyle = "nature" | "secrets" | "family" | "calm";
 export type LocationChoice = "nearby-demo" | "manual";
@@ -76,7 +76,7 @@ export function parseState(raw: string | null): LabState {
 }
 
 /** Compagnon issu de l'œuf choisi */
-export const companionOf = (s: Pick<LabState, "egg">) => eggById(s.egg).hatches as "mossy" | "perline" | "lumo";
+export const companionOf = (s: Pick<LabState, "egg">) => eggById(s.egg).hatches as StarterId;
 
 /** Stade d'évolution : conditions transparentes, dans l'ordre. */
 export function stageOf(s: LabState): StageId {
@@ -109,12 +109,13 @@ export function nextEvolution(s: LabState): { label: string; current: number; ta
 export function collected(s: LabState): Set<CreatureId> {
   const set = new Set<CreatureId>();
   if (s.hatched) set.add(companionOf(s));
-  if (s.steps >= 3) set.add("fougerin");
-  if (s.parks >= 2) set.add("galene");
-  if (s.discoveries >= 3) set.add("perline");
-  if (s.dusk) set.add("lumo");
-  if (s.adventures >= 2) set.add("ecorcelle");
-  if (s.adventures >= 4 && s.parks >= 4) set.add("selenis");
+  // Mêmes conditions qu'avant, réattribuées aux sept familles (voir RULE_ORIGIN)
+  if (s.steps >= 3) set.add("flower");
+  if (s.parks >= 2) set.add("air");
+  if (s.discoveries >= 3) set.add("water");
+  if (s.dusk) set.add("lunar");
+  if (s.adventures >= 2) set.add("forest");
+  if (s.adventures >= 4 && s.parks >= 4) set.add("solar");
   return set;
 }
 

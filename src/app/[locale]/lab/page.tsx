@@ -3,9 +3,11 @@ import { CREATURES } from "@/features/lab/creatures";
 
 /* Sommaire du laboratoire : uniquement pour tester le prototype (non relié à l'application officielle). */
 const SCREENS: [string, string][] = [
-  ["Mossy · planche de validation", "/fr/lab/mossy"],
-  ["Perline · planche de validation", "/fr/lab/perline"],
-  ["Lumo · planche de validation", "/fr/lab/lumo"],
+  ["Les sept familles (planche)", "/fr/lab/familles"],
+  ["Comparatifs Feuille A/B et Eau A/B", "/fr/lab/variantes"],
+  ["Éclosion · Œuf de la forêt", "/fr/lab/hatch?egg=forest"],
+  ["Éclosion · Œuf de la rivière", "/fr/lab/hatch?egg=river"],
+  ["Éclosion · Œuf du crépuscule", "/fr/lab/hatch?egg=dusk"],
   ["Bienvenue", "/fr/lab/welcome"],
   ["Tutoriel · étape 1", "/fr/lab/onboarding/1"],
   ["Tutoriel · étape 4 (œuf)", "/fr/lab/onboarding/4"],
@@ -22,6 +24,9 @@ const SCREENS: [string, string][] = [
   ["Accueil prototype", "/fr/lab/home"],
   ["Carte de jour", "/fr/lab/map?theme=day"],
   ["Carte de nuit", "/fr/lab/map?theme=night"],
+  ["Archive SVG · Mossy", "/fr/lab/mossy"],
+  ["Archive SVG · Perline", "/fr/lab/perline"],
+  ["Archive SVG · Lumo", "/fr/lab/lumo"],
 ];
 
 export default function Page() {

@@ -1,6 +1,19 @@
 import { useId, type ReactNode } from "react";
-import { RARITY, creatureById, type CreatureId, type StageId } from "../creatures";
+import { RARITY, type Rarity, type StageId } from "../creatures";
 import { CompanionFigure, isFigurine } from "./companion";
+
+/** Archive de l'exploration SVG précédente (identifiants propres, indépendants des sept familles). */
+export type LegacyGuardianId = "mossy" | "fougerin" | "galene" | "perline" | "lumo" | "ecorcelle" | "selenis";
+type CreatureId = LegacyGuardianId;
+const LEGACY_RARITY: Record<LegacyGuardianId, Rarity> = {
+  mossy: "common",
+  fougerin: "common",
+  galene: "common",
+  perline: "uncommon",
+  lumo: "uncommon",
+  ecorcelle: "rare",
+  selenis: "legendary",
+};
 
 /*
  * Figurines de gardiens (SVG originaux, rendu « vinyle mat » : dégradés doux, reflet satiné, socle naturel).
@@ -357,7 +370,6 @@ export interface GuardianFigureProps {
 
 export function GuardianFigure({ id, stage = "young", silhouette, halo = true, socle = true, viewBox = "0 0 200 200", className, title }: GuardianFigureProps) {
   const g = useId().replace(/:/g, "");
-  const c = creatureById(id);
   // Mossy : nouvelle figurine (prototype de rendu en volume, en cours de validation)
   if (isFigurine(id))
     return (
@@ -375,7 +387,7 @@ export function GuardianFigure({ id, stage = "young", silhouette, halo = true, s
     );
   const lunar = stage === "lunar";
   const p = lunar ? LUNAR : PALETTES[id];
-  const ring = c ? RARITY[c.rarity].ring : "#e9a23b";
+  const ring = RARITY[LEGACY_RARITY[id]].ring;
   const s = STAGE_SCALE[stage];
   return (
     <svg viewBox={viewBox} className={className} role={title ? "img" : undefined} aria-label={title} aria-hidden={title ? undefined : true}>

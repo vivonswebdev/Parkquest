@@ -794,3 +794,123 @@
 .comp-ripple {
   animation: comp-ripple 3s ease-out infinite;
 }
+
+/* ——— Créatures en image : seul le calque « personnage » bouge, le socle reste fixe ——— */
+.cimg-tilt {
+  transition: transform 0.5s cubic-bezier(0.3, 0.7, 0.3, 1);
+}
+/* Respiration discrète, ancrée aux pieds */
+@keyframes cimg-breathe {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.006, 1.016);
+  }
+}
+.cimg-breathe {
+  animation: cimg-breathe 3.6s ease-in-out infinite;
+}
+/* Flottement (Air) */
+@keyframes cimg-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2.2%);
+  }
+}
+.cimg-float {
+  animation: cimg-float 3.2s ease-in-out infinite;
+}
+/* Joie : petit rebond sur place (étirement / tassement), sans quitter le socle */
+@keyframes cimg-joy {
+  0% {
+    transform: none;
+  }
+  18% {
+    transform: scale(1.04, 0.95);
+  }
+  42% {
+    transform: scale(0.97, 1.06) rotate(-1.5deg);
+  }
+  62% {
+    transform: scale(1.03, 0.97) rotate(1deg);
+  }
+  80% {
+    transform: scale(0.99, 1.02);
+  }
+  100% {
+    transform: none;
+  }
+}
+.cimg-joy {
+  animation: cimg-joy 0.9s cubic-bezier(0.3, 0.6, 0.3, 1) both;
+}
+/* Réaction au toucher : léger tassement */
+@keyframes cimg-touch {
+  0% {
+    transform: none;
+  }
+  30% {
+    transform: scale(1.03, 0.96);
+  }
+  65% {
+    transform: scale(0.99, 1.02);
+  }
+  100% {
+    transform: none;
+  }
+}
+.cimg-touch {
+  animation: cimg-touch 0.5s ease-out both;
+}
+/* Lumière douce (Lunaire, Solaire, champignons de la Forêt) */
+@keyframes cimg-glow {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.06);
+  }
+}
+.cimg-glow {
+  animation: cimg-glow 3.4s ease-in-out infinite;
+}
+/* Éclosion : le socle apparaît en fondu, le personnage surgit de la coquille */
+@keyframes cimg-socle-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.cimg-socle-in {
+  animation: cimg-socle-in 0.8s ease-out both;
+}
+@keyframes cimg-pop {
+  0% {
+    transform: translateY(6%) scale(0.6, 0.5);
+    opacity: 0;
+  }
+  45% {
+    transform: translateY(-1%) scale(1.04, 1.07);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1.02, 0.97);
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+.cimg-pop {
+  animation: cimg-pop 0.9s cubic-bezier(0.3, 0.7, 0.3, 1) both;
+}

@@ -80,8 +80,9 @@ test("laboratoire : « Passer » mène au choix de l'œuf ; collection, fiche et
   await page.getByRole("button", { name: "Lancer l'éclosion" }).click();
   await expect(page.getByRole("button", { name: "Rejouer l'éclosion" })).toBeVisible({ timeout: 10_000 });
 
-  await page.goto("/fr/lab/creature/selenis");
-  await expect(page.getByRole("heading", { name: "Sélénis" })).toBeVisible();
+  await page.goto("/fr/lab/creature/solar?fond=nuit");
+  await expect(page.getByRole("heading", { name: "Soléa" })).toBeVisible();
+  await expect(page.getByRole("radio", { name: "Fond nuit" })).toHaveAttribute("aria-checked", "true");
   await expect(page.getByRole("link", { name: "Rejouer l'éclosion" })).toBeVisible();
 
   await page.goto("/fr/lab/map?theme=night");
@@ -126,5 +127,32 @@ test("laboratoire : l'œuf choisi donne le bon compagnon partout (rivière → P
     await expect(page.getByText(young).first()).toBeVisible();
     await page.goto(`/fr/lab/${name.toLowerCase()}`);
     await expect(page.getByRole("img", { name: `${young}, au repos` })).toBeVisible();
+  }
+});
+
+test("laboratoire : planche des sept familles, comparatifs A/B et éclosions directes", async ({ page }) => {
+  await page.goto("/fr/lab/familles");
+  for (const name of ["Mossy", "Perline", "Floréa", "Zéphyr", "Mycélio", "Lumo", "Soléa"]) {
+    await expect(page.getByRole("img", { name: new RegExp(`^${name}, famille`) })).toBeVisible();
+  }
+  await page.getByRole("radio", { name: "Détouré, fond nuit" }).click();
+
+  // Variante B de la Feuille : choix provisoire, appliqué au compagnon, sans supprimer A
+  await page.goto("/fr/lab/variantes");
+  await expect(page.getByRole("img", { name: "Feuille, variante A" }).first()).toBeVisible();
+  await page.getByRole("radio", { name: "Utiliser B (provisoire)" }).first().click();
+  await expect(page.getByText("(utilisée)").first()).toBeVisible();
+
+  for (const [egg, young] of [
+    ["forest", "Mossy, jeune gardien"],
+    ["river", "Perline, jeune gardienne"],
+    ["dusk", "Lumo, jeune gardien"],
+  ]) {
+    await page.goto(`/fr/lab/hatch?egg=${egg}`);
+    // Après le premier œuf, la découverte est déjà faite : le bouton change de libellé
+    await page.getByRole("button", { name: /Lui confier ma découverte|Simuler une découverte/ }).click();
+    await page.getByRole("button", { name: "Ouvrir l'œuf" }).click();
+    await page.getByRole("button", { name: "Passer l'animation" }).click();
+    await expect(page.getByRole("heading", { name: young })).toBeVisible();
   }
 });

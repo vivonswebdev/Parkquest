@@ -3,17 +3,17 @@
 import Link from "next/link";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { GuardianFigure } from "../art/guardians";
-import { BIOME_LABEL, CREATURES, RARITY, type Creature } from "../creatures";
+import { CreatureImage } from "../art/creature-image";
+import { CREATURES, RARITY, type Creature } from "../creatures";
 import { collected, TOTAL_CREATURES } from "../state";
 import { DemoNote, LAB, LabNav, LabTopBar, ProgressBar, RarityBadge } from "../ui";
 import { useHydrated, useLabState } from "../use-lab-state";
 
 const FILTERS: { id: string; label: string; test(c: Creature): boolean }[] = [
   { id: "all", label: "Tous", test: () => true },
-  { id: "forest", label: "Forêt", test: (c) => c.biome === "forest" },
-  { id: "water", label: "Eau", test: (c) => c.biome === "water" },
-  { id: "night", label: "Nocturne", test: (c) => c.biome === "night" },
+  { id: "plants", label: "Végétal", test: (c) => c.id === "leaf" || c.id === "flower" || c.id === "forest" },
+  { id: "elements", label: "Eau et air", test: (c) => c.id === "water" || c.id === "air" },
+  { id: "light", label: "Lumière", test: (c) => c.id === "lunar" || c.id === "solar" },
   { id: "rare", label: "Rares", test: (c) => c.rarity === "rare" || c.rarity === "legendary" },
 ];
 
@@ -35,6 +35,7 @@ export function CollectionScreen() {
           <div className="mt-2">
             <ProgressBar value={owned.size} max={TOTAL_CREATURES} label="Gardiens découverts" />
           </div>
+          <p className="mt-2 text-xs text-[var(--lab-ink-soft)]">Sept familles : Feuille, Eau, Fleur, Air, Forêt, Lunaire, Solaire.</p>
         </div>
         <div role="group" aria-label="Filtrer la collection" className="-mx-5 mt-4 flex gap-2 overflow-x-auto px-5 pb-1">
           {FILTERS.map((f) => (
@@ -43,10 +44,7 @@ export function CollectionScreen() {
               type="button"
               aria-pressed={filter === f.id}
               onClick={() => setFilter(f.id)}
-              className={cn(
-                "min-h-11 shrink-0 rounded-full px-4 text-sm font-bold",
-                filter === f.id ? "bg-[var(--lab-forest)] text-[#fffaf0]" : "bg-[var(--lab-paper)] text-[var(--lab-ink)]",
-              )}
+              className={cn("min-h-11 shrink-0 rounded-full px-4 text-sm font-bold", filter === f.id ? "bg-[var(--lab-forest)] text-[#fffaf0]" : "bg-[var(--lab-paper)] text-[var(--lab-ink)]")}
             >
               {f.label}
             </button>
@@ -62,11 +60,12 @@ export function CollectionScreen() {
                   className="flex h-full flex-col rounded-[24px] border-2 bg-[var(--lab-paper)] p-2.5 shadow-[0_1px_2px_rgba(31,61,42,.08)]"
                   style={{ borderColor: has ? RARITY[c.rarity].ring : "transparent" }}
                 >
-                  <span className={cn("grid aspect-square place-items-center rounded-[18px]", c.biome === "night" ? (has ? "bg-[#1f3159]" : "bg-[#e6e2f0]") : c.biome === "water" ? "bg-[#e3f1f4]" : "bg-[#f3ead2]")}>
-                    <GuardianFigure id={c.id} silhouette={!has} halo={has} className="h-[92%] w-auto" />
+                  <span className="grid place-items-center rounded-[18px] px-1 pt-1" style={{ background: has ? c.tint : "#efe9dc" }}>
+                    <CreatureImage id={c.id} silhouette={!has} className="w-[88%]" alt={has ? c.name : `Silhouette : gardien de la famille ${c.family} à découvrir`} sizes="(max-width: 480px) 45vw, 200px" />
                   </span>
                   <span className="mt-2 block px-1 font-extrabold">{has ? c.name : "Gardien à découvrir"}</span>
-                  <span className="block px-1 text-xs text-[var(--lab-ink-soft)]">{has ? `${c.title} · ${BIOME_LABEL[c.biome]}` : c.unlock}</span>
+                  <span className="block px-1 text-xs font-semibold text-[var(--lab-ink-soft)]">Famille {c.family}</span>
+                  {!has && <span className="mt-1 block px-1 text-xs text-[var(--lab-ink-soft)]">{c.unlock} (provisoire)</span>}
                   <span className="mt-2 px-1">
                     <RarityBadge rarity={c.rarity} />
                   </span>
@@ -75,8 +74,11 @@ export function CollectionScreen() {
             );
           })}
         </ul>
-        <div className="mt-5">
-          <DemoNote>Chaque gardien se découvre par une action claire, jamais par hasard ni par achat.</DemoNote>
+        <div className="mt-5 space-y-2">
+          <DemoNote>Chaque gardien se découvre par une action claire, jamais par hasard ni par achat. Conditions provisoires, à valider.</DemoNote>
+          <Link href={`${LAB}/familles#regles`} className="block text-center text-sm font-bold text-[var(--lab-forest)] underline">
+            Voir d&apos;où viennent ces conditions
+          </Link>
         </div>
       </div>
       <LabNav />
