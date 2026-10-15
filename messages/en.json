@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "ParkQuest — Explore. Learn. Play.",
+    "title": "TYLIA — Explore. Learn. Play.",
     "description": "Your companion for parks and gardens: map, trails, discoveries, quizzes and challenges."
   },
   "common": {
-    "appName": "ParkQuest",
+    "appName": "TYLIA",
     "startVisit": "Start the visit",
     "exploreTrails": "Explore trails",
     "seeAll": "See all",
@@ -15,7 +15,7 @@
     "errorTitle": "Oops, something went wrong.",
     "errorBody": "Try again in a moment. If the problem persists, go back home.",
     "notFoundTitle": "Page not found",
-    "notFoundBody": "This place doesn't exist on ParkQuest (yet).",
+    "notFoundBody": "This place doesn't exist on TYLIA (yet).",
     "goHome": "Back to home",
     "demo": "Demo",
     "demoData": "Demo data",
@@ -122,7 +122,7 @@
     "practicalInfo": "Practical info",
     "openMap": "Open the map",
     "noTrails": "No trail has been published for this park yet.",
-    "notReady": "This park is coming soon to ParkQuest. Trails and spots are being prepared.",
+    "notReady": "This park is coming soon to TYLIA. Trails and spots are being prepared.",
     "downloadPark": "Download this park",
     "downloadParkHint": "For a visit without network (cards, trails, optimised images)."
   },
@@ -494,7 +494,7 @@
     "terms": "Terms of use",
     "gdpr": "GDPR",
     "placeholder": "Provisional document — to be validated by legal counsel before launch.",
-    "footer": "Demo data — ParkQuest is not affiliated with any of the parks shown."
+    "footer": "Demo data — TYLIA is not affiliated with any of the parks shown."
   },
   "offline": {
     "title": "You're offline",
@@ -504,7 +504,7 @@
   },
   "pwa": {
     "install": "Install the app",
-    "installBody": "Add ParkQuest to your home screen."
+    "installBody": "Add TYLIA to your home screen."
   },
   "demo": {
     "title": "Demo tools",
@@ -536,7 +536,7 @@
   },
   "geo": {
     "consentTitle": "Turn on your location",
-    "consentIntro": "ParkQuest uses your location only to:",
+    "consentIntro": "TYLIA uses your location only to:",
     "consentUse1": "show you on the park map;",
     "consentUse2": "guide you to remarkable trees and places;",
     "consentUse3": "tell you the distance to the next spot.",
@@ -659,7 +659,7 @@
     "demoNote": "Demo data: the photo stays on this device and isn't published.",
     "pending": "Awaiting review",
     "you": "You",
-    "community": "ParkQuest community",
+    "community": "TYLIA community",
     "official": "Official park photo",
     "wikimedia": "Wikimedia Commons",
     "cover": "Cover photo",

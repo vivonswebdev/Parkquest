@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "ParkQuest — Ontdek. Leer. Speel.",
+    "title": "TYLIA — Ontdek. Leer. Speel.",
     "description": "Je gids voor parken en tuinen: kaart, routes, ontdekkingen, quizzen en uitdagingen."
   },
   "common": {
-    "appName": "ParkQuest",
+    "appName": "TYLIA",
     "startVisit": "Start het bezoek",
     "exploreTrails": "Routes verkennen",
     "seeAll": "Alles bekijken",
@@ -15,7 +15,7 @@
     "errorTitle": "Oeps, er ging iets mis.",
     "errorBody": "Probeer het zo meteen opnieuw. Blijft het probleem, ga dan terug naar de startpagina.",
     "notFoundTitle": "Pagina niet gevonden",
-    "notFoundBody": "Deze plek bestaat (nog) niet op ParkQuest.",
+    "notFoundBody": "Deze plek bestaat (nog) niet op TYLIA.",
     "goHome": "Terug naar start",
     "demo": "Demo",
     "demoData": "Demogegevens",
@@ -122,7 +122,7 @@
     "practicalInfo": "Praktische info",
     "openMap": "Kaart openen",
     "noTrails": "Er is nog geen route gepubliceerd voor dit park.",
-    "notReady": "Dit park komt binnenkort op ParkQuest. Routes en spots worden voorbereid.",
+    "notReady": "Dit park komt binnenkort op TYLIA. Routes en spots worden voorbereid.",
     "downloadPark": "Dit park downloaden",
     "downloadParkHint": "Voor een bezoek zonder netwerk (fiches, routes, geoptimaliseerde beelden)."
   },
@@ -494,7 +494,7 @@
     "terms": "Gebruiksvoorwaarden",
     "gdpr": "AVG",
     "placeholder": "Voorlopig document — te laten valideren door een juridisch adviseur vóór de lancering.",
-    "footer": "Demogegevens — ParkQuest is niet verbonden aan de getoonde parken."
+    "footer": "Demogegevens — TYLIA is niet verbonden aan de getoonde parken."
   },
   "offline": {
     "title": "Je bent offline",
@@ -504,7 +504,7 @@
   },
   "pwa": {
     "install": "App installeren",
-    "installBody": "Zet ParkQuest op je startscherm."
+    "installBody": "Zet TYLIA op je startscherm."
   },
   "demo": {
     "title": "Demohulpmiddelen",
@@ -536,7 +536,7 @@
   },
   "geo": {
     "consentTitle": "Zet je locatie aan",
-    "consentIntro": "ParkQuest gebruikt je locatie alleen om:",
+    "consentIntro": "TYLIA gebruikt je locatie alleen om:",
     "consentUse1": "je op de parkkaart te tonen;",
     "consentUse2": "je naar merkwaardige bomen en plekken te leiden;",
     "consentUse3": "de afstand tot de volgende spot aan te geven.",
@@ -659,7 +659,7 @@
     "demoNote": "Demogegevens: de foto blijft op dit toestel en wordt niet gepubliceerd.",
     "pending": "Wacht op controle",
     "you": "Jij",
-    "community": "ParkQuest-community",
+    "community": "TYLIA-community",
     "official": "Officiële foto van het park",
     "wikimedia": "Wikimedia Commons",
     "cover": "Omslagfoto",
