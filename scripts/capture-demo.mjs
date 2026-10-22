@@ -79,6 +79,8 @@ async function run(theme) {
   await page.getByText("Activez votre position").waitFor();
   await shot("03-consentement-position");
   await page.getByRole("dialog").getByRole("button", { name: "Activer ma position" }).click();
+  // Panneau « Autour de vous » réduit par défaut sur téléphone : on l'ouvre
+  await page.getByRole("button", { name: "Ouvrir le panneau", exact: true }).first().click();
   await page.getByRole("heading", { name: "Autour de vous" }).waitFor();
   await shot("04-carte-autour-de-vous");
   await page.getByRole("button", { name: /Voir les \d+ lieux/ }).first().click();
@@ -130,6 +132,7 @@ async function run(theme) {
   // États GPS
   await setGeo("denied");
   await go("/fr/parks/plantentuin-meise/map");
+  await page.getByRole("button", { name: "Ouvrir le panneau", exact: true }).first().click();
   await page.getByText("Position refusée").first().waitFor();
   await shot("15-gps-refuse");
   const discoverOn = async (slug, geoMode, text, name) => {

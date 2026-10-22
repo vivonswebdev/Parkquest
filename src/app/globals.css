@@ -261,6 +261,16 @@ html[data-theme-pref="default"] .reading-light {
 .animate-pulse-ring {
   animation: pq-pulse-ring 2s ease-out infinite;
 }
+/* Œuf de récompense : léger flottement (uniquement si les animations sont acceptées) */
+@keyframes pq-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *,

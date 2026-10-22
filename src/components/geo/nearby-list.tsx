@@ -68,6 +68,7 @@ export function NearbyList({
   onFilterChange,
   expanded,
   onExpandedChange,
+  headerAction,
   className,
 }: {
   parkSlug: string;
@@ -87,6 +88,8 @@ export function NearbyList({
   /** Replié : titre, filtres et les 2 lieux les plus proches ; la carte reste visible. */
   expanded: boolean;
   onExpandedChange(v: boolean): void;
+  /** Action d'en-tête (ex. réduire le panneau de la carte). */
+  headerAction?: React.ReactNode;
   className?: string;
 }) {
   const t = useTranslations("geo");
@@ -108,15 +111,18 @@ export function NearbyList({
 
   return (
     <section aria-labelledby="nearby-title" className={cn("glass-strong pointer-events-auto rounded-[var(--radius-sheet)] p-3 card-shadow", className)}>
-      <button
-        type="button"
-        onClick={() => onExpandedChange(!expanded)}
-        aria-expanded={expanded}
-        aria-label={expanded ? t("collapseList") : t("expandList", { count: rows.length })}
-        className="-mt-1 mb-1 flex w-full justify-center py-1.5"
-      >
-        <span aria-hidden className="h-1 w-10 rounded-full bg-foreground/25" />
-      </button>
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => onExpandedChange(!expanded)}
+          aria-expanded={expanded}
+          aria-label={expanded ? t("collapseList") : t("expandList", { count: rows.length })}
+          className="-mt-1 mb-1 flex w-full justify-center py-1.5"
+        >
+          <span aria-hidden className="h-1 w-10 rounded-full bg-foreground/25" />
+        </button>
+        {headerAction && <div className="absolute -top-1 right-0">{headerAction}</div>}
+      </div>
       <div className="flex items-baseline justify-between gap-2 px-1">
         <h2 id="nearby-title" className="font-display text-lg font-extrabold">
           {t("nearbyTitle")}
