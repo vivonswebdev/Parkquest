@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
+import { brand } from "@/config/brand";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "ParkQuest",
-    short_name: "ParkQuest",
+    name: brand.name,
+    short_name: brand.name,
     description: "Explorez. Apprenez. Jouez. Le compagnon de visite des parcs et jardins.",
     start_url: "/fr",
     scope: "/",
