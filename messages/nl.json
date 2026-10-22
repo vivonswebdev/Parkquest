@@ -701,5 +701,72 @@
       "EX": "Uitgestorven",
       "DD": "Onvoldoende gegevens"
     }
+  },
+  "explore": {
+    "title": "Verkenningsmodus",
+    "loading": "Avontuur wordt voorbereid…",
+    "cardBody": "Een begeleid avontuur, alleen op de paden van het park.",
+    "cardCta": "Start het avontuur",
+    "demoData": "Demogegevens, nog te valideren met het park.",
+    "objective": "Doel",
+    "quests": {
+      "secretSequoia": {
+        "title": "Het geheim van de sequoia",
+        "intro": "Ga naar de reuzensequoia: daar wacht het eerste raadsel."
+      }
+    },
+    "safety": {
+      "title": "Voor je begint",
+      "l1": "{app} speel je buiten. Let op je omgeving.",
+      "l2": "Verlaat nooit de toegelaten paden en volg de borden.",
+      "l3": "Sta stil voor je op je scherm kijkt.",
+      "l4": "Let op fietsers, andere bezoekers en obstakels.",
+      "l5": "Kinderen spelen samen met een volwassene.",
+      "accept": "Ik heb deze richtlijnen begrepen",
+      "start": "Start het avontuur",
+      "back": "Terug",
+      "parkRules": "{app} vervangt de regels en richtlijnen van het park niet."
+    },
+    "dashboard": {
+      "title": "Verplaatsing",
+      "remaining": "Nog",
+      "minutes": "≈ {minutes} min",
+      "direction": "Richting",
+      "walked": "Afgelegd",
+      "speed": "Snelheid",
+      "speedValue": "{value} km/u",
+      "note": "Berekend op je telefoon, nooit verstuurd. Ter info: snel gaan levert niets op."
+    },
+    "cardinals": {
+      "N": "Noord",
+      "NE": "Noordoost",
+      "E": "Oost",
+      "SE": "Zuidoost",
+      "S": "Zuid",
+      "SW": "Zuidwest",
+      "W": "West",
+      "NW": "Noordwest"
+    },
+    "cardinalsShort": {
+      "N": "N",
+      "NE": "NO",
+      "E": "O",
+      "SE": "ZO",
+      "S": "Z",
+      "SW": "ZW",
+      "W": "W",
+      "NW": "NW"
+    },
+    "pause": "Pauze",
+    "paused": "Avontuur gepauzeerd",
+    "pausedBody": "Je locatie wordt niet meer gevolgd. Ga verder wanneer je klaar bent.",
+    "resume": "Verder",
+    "quit": "Stoppen",
+    "quitTitle": "Avontuur stoppen?",
+    "quitBody": "Je kunt later opnieuw beginnen.",
+    "continue": "Doorgaan",
+    "announceStart": "Avontuur gestart. Doel: {name}, op {distance}.",
+    "announceResumed": "Avontuur hervat.",
+    "announceObjective": "Nieuw doel: {name}."
   }
 }

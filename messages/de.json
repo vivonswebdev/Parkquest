@@ -701,5 +701,72 @@
       "EX": "Ausgestorben",
       "DD": "Ungenügende Datengrundlage"
     }
+  },
+  "explore": {
+    "title": "Erkundungsmodus",
+    "loading": "Abenteuer wird vorbereitet…",
+    "cardBody": "Ein geführtes Abenteuer, nur auf den Wegen des Parks.",
+    "cardCta": "Abenteuer starten",
+    "demoData": "Demodaten, noch mit dem Park abzustimmen.",
+    "objective": "Ziel",
+    "quests": {
+      "secretSequoia": {
+        "title": "Das Geheimnis des Mammutbaums",
+        "intro": "Geh zum Riesenmammutbaum: Dort wartet das erste Rätsel."
+      }
+    },
+    "safety": {
+      "title": "Bevor du startest",
+      "l1": "{app} spielt man draußen. Achte auf deine Umgebung.",
+      "l2": "Verlasse nie die erlaubten Wege und beachte die Schilder.",
+      "l3": "Bleib stehen, bevor du auf den Bildschirm schaust.",
+      "l4": "Achte auf Fahrräder, andere Besucher und Hindernisse.",
+      "l5": "Kinder spielen mit einem Erwachsenen.",
+      "accept": "Ich habe diese Hinweise verstanden",
+      "start": "Abenteuer starten",
+      "back": "Zurück",
+      "parkRules": "{app} ersetzt nicht die Regeln und Hinweise des Parks."
+    },
+    "dashboard": {
+      "title": "Bewegung",
+      "remaining": "Noch",
+      "minutes": "≈ {minutes} Min.",
+      "direction": "Richtung",
+      "walked": "Gegangen",
+      "speed": "Tempo",
+      "speedValue": "{value} km/h",
+      "note": "Auf deinem Handy berechnet, nie gesendet. Nur zur Info: Schnelligkeit bringt nichts."
+    },
+    "cardinals": {
+      "N": "Norden",
+      "NE": "Nordosten",
+      "E": "Osten",
+      "SE": "Südosten",
+      "S": "Süden",
+      "SW": "Südwesten",
+      "W": "Westen",
+      "NW": "Nordwesten"
+    },
+    "cardinalsShort": {
+      "N": "N",
+      "NE": "NO",
+      "E": "O",
+      "SE": "SO",
+      "S": "S",
+      "SW": "SW",
+      "W": "W",
+      "NW": "NW"
+    },
+    "pause": "Pause",
+    "paused": "Abenteuer pausiert",
+    "pausedBody": "Die Standortverfolgung ist gestoppt. Mach weiter, wenn du bereit bist.",
+    "resume": "Weiter",
+    "quit": "Beenden",
+    "quitTitle": "Abenteuer beenden?",
+    "quitBody": "Du kannst es später neu starten.",
+    "continue": "Weiterspielen",
+    "announceStart": "Abenteuer gestartet. Ziel: {name}, {distance} entfernt.",
+    "announceResumed": "Abenteuer fortgesetzt.",
+    "announceObjective": "Neues Ziel: {name}."
   }
 }

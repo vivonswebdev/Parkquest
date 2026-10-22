@@ -13,7 +13,7 @@
 ┌───────────────────────────────┴───────────────────────────────────────────────┐
 │ Domaine PUR, testé, sans navigateur : src/lib/*                                │
 │ progression de parcours ✅ · règles GPS ✅ · « autour de vous » ✅ · météo ✅     │
-│ déplacement ⏳ · quêtes ⏳ · QR ⏳ · lieux du parc ⏳ · guidage audio (textes) ⏳  │
+│ déplacement ✅ · quêtes ⏳ · QR ⏳ · lieux du parc ⏳ · guidage audio (textes) ⏳  │
 └───────────────────────────────▲───────────────────────────────────────────────┘
                                 │ interfaces (LocationSource, SpeechOutput, QrScanner, WakeLock)
 ┌───────────────────────────────┴───────────────────────────────────────────────┐
@@ -50,8 +50,8 @@ réécriture React Native).
 |---|---|---|---|
 | `lib/game/trail-progress` ✅ | états ✓ ● ◉ ○, restant | ✅ | `TrailProgress` ✅ |
 | `components/exploration/exploration-shell` ✅ | pseudo-plein-écran, emplacements, blocage du défilement | — | ✅ (E1) |
-| `lib/movement` ⏳ | tableau de bord : distance parcourue, vitesse actuelle/moyenne (lissée), cap, temps restant, dénivelé si disponible ; filtre des positions imprécises (> 30 m) | calculs à partir d'une suite de positions | `useMovement` sur `useGeolocation` ✅ |
-| `lib/quests` ⏳ | moteur de quête : étapes (aller au spot, lire, quiz, observer, photo, récompense, indice), conditions, récompenses | machine d'états | route `/[locale]/parks/[parkSlug]/explore/[questSlug]` |
+| `lib/movement` ✅ | tableau de bord : distance parcourue, vitesse actuelle/moyenne (lissée), cap, temps restant, dénivelé si disponible ; filtre des positions imprécises (> 30 m) | calculs à partir d'une suite de positions | `useMovement` sur `useGeolocation` ✅ |
+| `lib/quests` ⏳ (catalogue ✅) | moteur de quête : étapes (aller au spot, lire, quiz, observer, photo, récompense, indice), conditions, récompenses | machine d'états | route `/[locale]/parks/[parkSlug]/explore/[questSlug]` |
 | `lib/qr` ⏳ | format des codes (court, non devinable, sans donnée personnelle), résolution → spot / étape / lieu, `discoveredVia: "gps" \| "qr" \| "manual"` | validation, parsing | route `/qr/[code]`, saisie manuelle du code en secours |
 | `lib/places` ⏳ | inventaire de tous les lieux du parc (mobilier, services, nature, culture, accès), catégories/tags, statut `demo \| validated \| parkVerified`, source | filtres, couches, chargement par emprise visible | couches carte par catégorie, « montre-moi les toilettes / accès PMR » |
 | `lib/audio-guide` ⏳ | consignes pas à pas (« tournez à gauche dans 10 m », « vous êtes arrivé »), file d'attente, priorité, annulation | génération des phrases à partir de la géométrie | adaptateur `speechSynthesis`, transcription écrite toujours affichée |
@@ -85,7 +85,7 @@ réécriture React Native).
 | Étape | Contenu | État |
 |---|---|---|
 | E1 | Extraction de l'enveloppe plein écran (`ExplorationShell` + emplacements), blocage du défilement ; rendu identique au pixel près | ✅ |
-| E2 | Route `explore/[questSlug]`, écran de sécurité avant le jeu, contrôles 2D/3D, recentrer, orientation, pause, quitter | ⏳ |
+| E2 | Route `explore/[questSlug]`, écran de sécurité avant le jeu, contrôles 2D/3D (MapLibre seulement), recentrer, nord en haut, pause, quitter ; tableau de déplacement léger (distance, temps restant, direction, vitesse lissée, calcul local, aucune récompense liée à la vitesse) | ✅ |
 | E3 | Moteur de quête pur + quête démo « Le secret du Séquoia » (6 étapes, trésor final) | ⏳ |
 | E4 | Récompenses et collection (démo) | ⏳ |
 | E5 | Panneau latéral desktop | ⏳ |
