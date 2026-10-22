@@ -382,7 +382,7 @@ export const meiseSpots: SpotRecord[] = [
     categoryKeys: ["history"],
     translations: {
       fr: {
-        name: "Pavillon historique (démo)",
+        name: "Pavillon historique",
         label: "Lieu historique — à confirmer",
         summary: "Un lieu d'exemple pour illustrer les fiches « histoire ».",
         about:
@@ -391,7 +391,7 @@ export const meiseSpots: SpotRecord[] = [
         directions: "Revenez vers l'allée principale, le pavillon est sur la droite.",
       },
       nl: {
-        name: "Historisch paviljoen (demo)",
+        name: "Historisch paviljoen",
         label: "Historische plek — te bevestigen",
         summary: "Een voorbeeldplek om de « geschiedenis »-fiches te tonen.",
         about:
@@ -400,7 +400,7 @@ export const meiseSpots: SpotRecord[] = [
         directions: "Ga terug naar de hoofddreef, het paviljoen ligt rechts.",
       },
       en: {
-        name: "Historic pavilion (demo)",
+        name: "Historic pavilion",
         label: "Historic place — to be confirmed",
         summary: "A sample place to illustrate “history” cards.",
         about:
@@ -408,8 +408,8 @@ export const meiseSpots: SpotRecord[] = [
         funFact: "History cards can show validated dates, architects and anecdotes.",
         directions: "Head back to the main avenue; the pavilion is on the right.",
       },
-      es: { name: "Pabellón histórico (demo)", label: "Lugar histórico — por confirmar" },
-      de: { name: "Historischer Pavillon (Demo)", label: "Historischer Ort — zu bestätigen" },
+      es: { name: "Pabellón histórico", label: "Lugar histórico — por confirmar" },
+      de: { name: "Historischer Pavillon", label: "Historischer Ort — zu bestätigen" },
     },
   },
   {
@@ -713,7 +713,7 @@ const facilitySeeds: FacilitySeed[] = [
   { id: F(10), type: "VIEWPOINT", location: { lat: 50.92735, lng: 4.33055 }, details: {},
     translations: { fr: { name: "Belvédère" }, nl: { name: "Belvedère" }, en: { name: "Lookout" } } },
   { id: F(11), type: "PUBLIC_TRANSPORT", location: { lat: 50.9309, lng: 4.3262 }, details: {},
-    translations: { fr: { name: "Arrêt de bus (démo)" }, nl: { name: "Bushalte (demo)" }, en: { name: "Bus stop (demo)" } } },
+    translations: { fr: { name: "Arrêt de bus" }, nl: { name: "Bushalte" }, en: { name: "Bus stop" } } },
 ];
 
 export const meiseFacilities: FacilityRecord[] = facilitySeeds.map((f, i) => ({

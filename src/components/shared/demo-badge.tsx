@@ -3,13 +3,17 @@ import { useTranslations } from "next-intl";
 import { Pill } from "@/components/ui/pill";
 import { cn } from "@/lib/utils";
 
-/** Signale qu'un contenu est une donnée de démonstration (jamais présenté comme officiel). */
+/**
+ * Signale discrètement qu'un contenu est une donnée de démonstration (jamais présenté comme
+ * officiel) : pastille-icône, sans le mot « Démo ». Le texte complet « Donnée de démonstration à
+ * valider avec le parc. » est lu par les lecteurs d'écran et affiché par `DemoNotice` sur la page.
+ */
 export function DemoBadge({ className }: { className?: string }) {
   const t = useTranslations("common");
   return (
-    <Pill tone="demo" size="sm" className={className} title={t("demoDataNotice")}>
-      <FlaskConical />
-      {t("demo")}
+    <Pill tone="demo" size="sm" className={cn("px-1.5", className)} title={t("demoDataNotice")}>
+      <FlaskConical aria-hidden />
+      <span className="sr-only">{t("demoDataNotice")}</span>
     </Pill>
   );
 }
